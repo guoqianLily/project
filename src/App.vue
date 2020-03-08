@@ -43,7 +43,7 @@
         </ul>
         <el-menu
           mode="horizontal"
-          background-color="#5576BD"
+          background-color="#000"
           text-color="#fff"
           active-text-color="#ffd04b"
           :default-active="activeIndex"
@@ -307,7 +307,7 @@ export default {
 .app-Header{
   width:100%;
   height: 48px;
-  background: #5576BD;
+  background: #000;
 }
 .app-Header .app-headerBox{
   width:90%;
@@ -346,7 +346,7 @@ export default {
     float:left;
     color: rgb(255, 255, 255);
     border-bottom-color: transparent;
-    background-color: #5576BD;
+    background-color: #000;
     font-size: 14px;
     cursor: pointer;
     box-sizing: border-box;
@@ -356,10 +356,11 @@ export default {
     padding:0 10px;
 }
 .userInfo-box li:hover{
-    background-color: #5576BD !important;
+    background-color: #6c6d6e !important;
     color: rgb(255, 255, 255);
     border-bottom-color: transparent;
 }
+
 .userInfo-box li i{
     margin-right: 5px;
     text-align: center;
@@ -377,22 +378,22 @@ export default {
 </style>
 <style>
 .backColorPop{
-  background-color:#5576BD !important;
-  color:#fff;
+  background-color:#0080ff !important;
+  color:#fff !important;
 }
 .backColorPop .popper__arrow::after{
-    border-bottom-color: #5576BD !important;
+    border-bottom-color: #0080ff !important;
 }
 .backColorPopout{
   width:110px;
   min-width: 110px;
-  background-color:#5576BD !important;
-  color:#fff;
+  background-color:#0080ff !important;
+  color:#fff !important;
   padding-left: 0;
   padding-right: 0;
 }
 .backColorPopout .popper__arrow::after{
-    border-bottom-color: #5576BD !important;
+    border-bottom-color: #0080ff !important;
 }
 .backColorPopout p{
   padding:5px 0 5px 25px;
@@ -432,4 +433,5 @@ export default {
 .headerNav .el-menu-item i{
   color:inherit !important;
 }
+
 </style>

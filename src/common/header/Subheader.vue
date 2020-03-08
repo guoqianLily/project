@@ -36,7 +36,7 @@ export default {
 .subheader{
     width:100%;
     height: 40px;
-    background-color: #f7f7f7;
+    background-color: #000;
 }
 .subheader .subheaderBox{
     width:88%;
@@ -47,5 +47,6 @@ export default {
 .subheader .subheaderBox .subheaderName{
     margin-left: 7%;
     display: inline-block;
+     background-color: #000;
 }
 </style>

@@ -19,8 +19,7 @@ export function search(pageNo, pageSize, engineer, department,level,completionSt
                 serviceAttitude:serviceAttitude,
                 userId: userId
             }
-        })
-            .then(({data,status})=>{
+        }).then(({data,status})=>{
                 if(status == 200){
                     resolve(data);
                 }

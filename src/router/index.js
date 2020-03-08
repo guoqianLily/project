@@ -13,6 +13,14 @@ const router = new Router({
                 import ('../pages/homePage/Root')
         },
         {
+            name: 'taskfeedback', //任务反馈
+            path: '/taskfeedback',
+            meta: { navShow: true, navNone: false },
+            component: () =>
+                import ('../pages/taskFeedback/index.vue')
+
+        },
+        {
             name: "login", //登录
             path: '/login',
             meta: { navShow: false, navNone: true },
