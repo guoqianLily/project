@@ -2,7 +2,6 @@
     <div class="projectDetails">
         <el-row>
             <div class="bigTitle">{{name}}</div>
-            <div class="returnBtn" @click="returnMonth"><span class="indic-icon el-icon-back"></span>返回</div>
         </el-row>
         <div class="Detailscontent">
             <el-form :model="detailForm" :rules="rules" ref="ruleForm" label-width="120px">
@@ -56,14 +55,9 @@
                 rules: {},
                 str: '',
                 show: false,
-
             }
         },
         methods: {
-            //返回
-            returnMonth() {
-                this.$router.go(-1)
-            },
             //获取文本编辑器的内容
             getcontent(data) {
                 this.str = data;
@@ -80,7 +74,6 @@
 <style lang="scss">
     .projectDetails {
         width: 100%;
-
         .el-row {
             width: 100%;
             height: 35px;
