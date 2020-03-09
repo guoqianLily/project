@@ -17,7 +17,6 @@
     export default {
         components: {
             projectDetails,
-            policyProfeedback,
             policyRequire,
         },
         data() {

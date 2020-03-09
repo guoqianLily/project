@@ -34,11 +34,11 @@
                 <el-table-column prop="actualCompletionTime" label="达成时间" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                    <span class="btn" @click="declareSth(scope.$index, scope.row)">申报</span>
-                    <span class="btn">导出</span>
-                    <span class="btn">详情</span>
-                    <span class="btn">修改</span>
-                    <span class="btn">删除</span>
+                        <span class="btn" @click="declareSth(scope.$index, scope.row)">申报</span>
+                        <span class="btn">导出</span>
+                        <span class="btn">详情</span>
+                        <span class="btn" @click="revise(scope.$index, scope.row)">修改</span>
+                        <span class="btn">删除</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -133,25 +133,32 @@
         methods: {
             //导出页面
             declareSth(index, row) {
-                  this.$router.push({
-                  name:"detail",
-                  params: {
-                    // id:''
-                  }
-              })
+                this.$router.push({
+                    name: "detail",
+                    params: {
+                        params: {
+                        state: '1',//1可编辑,
+                    }
+                    }
+                })
                 //   this.$router.replace('/detail')
             },
             getcontent(data) {
                 this.str = data;
             },
             //新建
-            addnewly(){
-                 this.$router.push({
-                  name:"newModification",
-                  params: {
-                    id:''
-                  }
-              });
+            addnewly() {
+                this.$router.push({
+                    name: "newModification",
+                    params: {
+                        state: '1',//1可编辑,
+                        type:'add'//新增，还是修改
+                    }
+                });
+            },
+            //修改
+            revise(index, row) {
+
             },
             //查询
             search() {

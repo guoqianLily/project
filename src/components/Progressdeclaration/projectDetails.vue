@@ -1,25 +1,25 @@
 <template>
     <div class="projectDetails">
         <el-row>
-            <div class="bigTitle">{{name}}</div>
+           
         </el-row>
         <div class="Detailscontent">
             <el-form :model="detailForm" :rules="rules" ref="ruleForm" label-width="120px">
                 <el-form-item label="项目编码" prop="" style="width:50%">
-                    <template v-show="!show"><span>{{detailForm.code}}</span></template>
-                    <el-input v-model="detailForm.code" v-show="show"></el-input>
+                    <el-input v-if="state==1" v-model="detailForm.code" ></el-input>
+                     <template v-else><span>{{detailForm.code}}</span></template>
                 </el-form-item>
                 <el-form-item label="项目名称" prop="" style="width:50%">
-                    <template v-show="!show"><span>{{detailForm.name}}</span></template>
-                    <el-input v-model="detailForm.name" v-show="show"></el-input>
+                    <el-input v-if="state==1" v-model="detailForm.name" ></el-input>
+                     <template v-else><span>{{detailForm.name}}</span></template>
                 </el-form-item>
                 <el-form-item label="所属平台" prop="" style="width:50%">
-                    <template v-show="!show"><span>{{detailForm.platform}}</span></template>
-                    <el-input v-model="detailForm.platform" v-show="show"></el-input>
+                    <el-input v-if="state==1" v-model="detailForm.platform" ></el-input>
+                    <template v-else><span>{{detailForm.platform}}</span></template>
                 </el-form-item>
                 <el-form-item label="达成时间" prop="" style="width:50%">
-                    <template v-show="!show"><span>{{detailForm.time}}</span></template>
-                    <el-input v-model="detailForm.time" v-show="show"></el-input>
+                    <el-input v-if="state==1" v-model="detailForm.time"  ></el-input>
+                    <template v-else><span>{{detailForm.time}}</span></template>
                 </el-form-item>
                 <el-form-item label="对接部门" prop="">
                     <quillEditor @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
@@ -52,10 +52,16 @@
                     dockingDepartment: 'DDD',
                     wayAddcontent: 'AAAAAA',
                 },
-                type: 1,
+                state: this.$route.params.state,
                 rules: {},
                 str: '',
                 show: false,
+                type:this.$route.params.type
+            }
+        },
+        mounted(){
+            if(this.type=="add"){
+                this.show=true
             }
         },
         methods: {
@@ -103,7 +109,7 @@
                     position: relative;
                     float: left;
                     width: 100%;
-
+    margin-bottom: 5px;
                     .el-form-item__label {
                         color: #02A7F0;
                     }

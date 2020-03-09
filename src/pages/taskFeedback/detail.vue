@@ -1,6 +1,7 @@
 <template>
     <div id="detail">
         <el-row>
+            <div class="bigTitle"><span></span>{{name}}</div>
             <div class="returnBtn" @click="returnMonth"><span class="indic-icon el-icon-back"></span>返回</div>
         </el-row>
         <div id="projectDetails" class="content">
@@ -24,7 +25,7 @@
                     <!-- <listofIndicators v-if="activeName=='third'"></listofIndicators> -->
                 </el-tab-pane>
                 <el-tab-pane label="附件" name="five">
-                    <!-- <listofIndicators v-if="activeName=='third'"></listofIndicators> -->
+                    <filesUploadDown v-if="activeName=='five'"></filesUploadDown>
                 </el-tab-pane>
             </el-tabs>
         </div>
@@ -35,17 +36,20 @@
     import projectprogressfeedback from '../../components/Progressdeclaration/projectprogressfeedback';
     import policyProfeedback from '../../components/progessReport/policyProfeedback'
     import policyRequire from '../../components/progessReport/policyRequire'
-     import monthlytarget from '../../components/Progressdeclaration/monthlytarget'
+    import monthlytarget from '../../components/Progressdeclaration/monthlytarget'
+    import filesUploadDown from '../../components/progessReport/filesUploadDown'
     export default {
         components: {
             projectDetails,
             projectprogressfeedback,
             policyProfeedback,
             policyRequire,
-            monthlytarget
+            monthlytarget,
+            filesUploadDown
         },
         data() {
             return {
+                name: '项目详情',
                 activeName: 'first'
             }
 
@@ -54,7 +58,7 @@
             handleClick(tab, event) {
                 console.log(tab, event);
             },
-             //返回
+            //返回
             returnMonth() {
                 this.$router.replace('/taskfeedback')
             },
@@ -76,11 +80,27 @@
             line-height: 35px;
             display: flex;
 
+            .bigTitle {
+                color: #02A7F0;
+                font-size: 16px;
+                float: left;
+                position: relative;
+                width: 86%;
+                padding-left: 60px;
+                span {
+                    width: 2px;
+                    height: 34px;
+                    padding: 0px 6px 1px 0px;
+                    background-color: #02A7F0;
+                    margin-right: 5px;
+                }
+            }
+
             .returnBtn {
                 color: #02A7F0;
                 font-size: 14px;
                 float: right;
-                    margin-left: 90%;
+
             }
         }
 
