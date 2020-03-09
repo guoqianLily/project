@@ -13,7 +13,7 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="当月目标">
+            <el-form-item label="当月目标" class="autoElform">
                 <quillEditor
                     @content="getcontent"
                     v-bind:content="searchForm.monthBud"
@@ -24,15 +24,15 @@
             </el-form-item>
         </el-form>
     </div>
-    <div class="listBox">
-      <div class="tableBox">
+    <div class="listBox" style="height:68%;">
+      <div class="tableBox" style="height:100%;" >
         <el-table
           v-loading="loading"
           element-loading-text="数据加载..."
           element-loading-spinner="el-icon-loading"
           :data="tableData"
           border
-          style="width: 100%"
+          style="width: 90%;margin:0 auto;"
           height="100%"
         >
           <el-table-column prop="fieldChinese" label="政策分类" width="180px">

@@ -67,9 +67,11 @@
             .el-form {
                 width: 100%;
                 height: 100%;
-                .autoElform{
+
+                .autoElform {
                     height: auto !important;
                 }
+
                 .el-form-item {
                     width: 95%;
                     float: left;
@@ -121,9 +123,11 @@
                     margin: 10px 0 0 0;
                     text-align: right;
                     box-sizing: border-box;
-                    .el-form-item__content{
-                        width:98%;
+
+                    .el-form-item__content {
+                        width: 98%;
                     }
+
                     .el-form-item__label {
                         width: 0;
                     }
@@ -304,11 +308,12 @@
                 }
 
                 .el-table__body {
-                    .hanleBtns{
+                    .hanleBtns {
                         cursor: pointer;
-                        color:#409eff;
+                        color: #409eff;
                         text-decoration: underline;
                     }
+
                     button {
                         margin: 0 5px 0 0;
                         width: 37px;
@@ -319,6 +324,7 @@
                         font-size: 12px;
                         margin-left: 5px;
                     }
+
                     button:nth-child(even) {
                         margin: 0;
                     }
@@ -365,9 +371,92 @@
             }
         }
     }
-    .queryRow{
-        width:100%;
-        
+
+    .queryRow {
+        width: 100%;
+
+        .el-form {
+            width: 100%;
+            height: 100%;
+            .autoElform{
+                height: auto;
+            }
+            .el-form-item {
+                padding-left: 5%;
+                margin: 5px 10px 5px 0;
+                .el-form-item__label {}
+
+                .el-form-item__content {
+                    width: 90%;
+                    float: left;
+                    display: flex;
+
+                    .el-select {
+                        height: 36px;
+                        line-height: 36px;
+                        width: 160px;
+
+                        .el-input {
+                            height: 100%;
+                            line-height: 30px;
+
+                            input {
+                                height: 100%;
+                                line-height: 30px;
+                            }
+
+                            .el-select__caret {
+                                line-height: 30px;
+                            }
+                        }
+                    }
+
+                    .el-input {
+                        height: 36px;
+                        line-height: 36px;
+                        width: 160px;
+
+                        .el-input__inner {
+                            height: 100%;
+                            // background-color: $colorTransparent !important;
+                        }
+                    }
+                }
+            }
+
+            .el-form-item.dateLine {
+                width: calc(25% - 10px);
+
+                .el-form-item__label {
+                    width: 20%;
+                    height: 36px;
+                    line-height: 36px;
+                }
+
+                .el-form-item__content {
+                    width: 80%;
+                    height: 36px;
+                    line-height: 36px;
+                    float: left;
+
+                    .el-date-editor {
+                        width: 100%;
+                        height: 100%;
+                        padding: 0 10px;
+
+                        .el-range-separator {
+                            width: auto;
+                            line-height: 30px;
+                        }
+
+                        .el-range__icon,
+                        .el-range__close-icon {
+                            line-height: 30px;
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
