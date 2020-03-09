@@ -1,0 +1,369 @@
+.listPage {
+    padding: 0 15px 20px 15px;
+    border-radius: 10px;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+
+    .bigtitle {
+        height: 40px;
+        line-height: 26px;
+        display: inline;
+        margin-bottom: 10px;
+        float: left;
+        width: 100%;
+        padding: 7px 10px;
+        box-sizing: border-box;
+
+        .bigtitleName {
+            width: 50%;
+            float: left;
+            color: #409eff;
+        }
+
+        .el-button {
+            padding: 0 10px;
+            height: 26px;
+            line-height: 26px;
+        }
+
+        .titleBtn {
+            float: right;
+        }
+
+    }
+
+    .el-dialog {
+        .el-dialog__header {
+            padding: 0 20px;
+            height: 40px;
+
+            .el-dialog__title {
+                float: left;
+                height: 100%;
+                font-size: 12px;
+                line-height: 40px;
+            }
+
+            .el-dialog__headerbtn {
+                top: 11px;
+            }
+        }
+
+        .el-dialog__body {
+            padding: 0 20px 10px 20px;
+            box-sizing: border-box;
+
+            .el-tabs__content {
+                margin-top: 28px;
+                text-align: center;
+
+                .el-tab-pane {
+                    height: 300px;
+                }
+            }
+
+            .el-form {
+                width: 100%;
+                height: 100%;
+
+                .el-form-item {
+                    width: 95%;
+                    float: left;
+                    height: 40px;
+                    margin: 0 0 18px 0;
+                    padding-left: 3%;
+                    display: flex;
+
+                    .el-form-item__label {
+                        width: 80px;
+                        float: left;
+                        height: 100%;
+                        line-height: 40px;
+                    }
+
+                    .el-form-item__content {
+                        float: left;
+                        width: calc(100% - 80px);
+                        height: 100%;
+
+                        .el-input {
+                            height: 100%;
+                            width: 100%;
+
+                            input {
+                                height: 100%;
+                                width: 100%;
+                            }
+                        }
+
+                        .el-select {
+                            width: 100%;
+                            height: 100%;
+                        }
+
+                        .el-textarea {
+                            width: 100%;
+                            height: 100%;
+
+                            .el-textarea__inner {
+                                height: 100% !important;
+                            }
+                        }
+                    }
+                }
+
+                .el-form-item.btnItem {
+                    width: 100%;
+                    margin: 10px 0 0 0;
+                    text-align: right;
+                    box-sizing: border-box;
+                    .el-form-item__content{
+                        width:98%;
+                    }
+                    .el-form-item__label {
+                        width: 0;
+                    }
+                }
+
+                .rankLine {
+                    width: 90%;
+                    height: 72px;
+                }
+            }
+
+            .el-transfer {
+                text-align: center;
+                height: 29px;
+
+                .el-transfer-panel {
+                    text-align: left;
+                    height: 100%;
+                    overflow: hidden;
+
+                    .el-transfer-panel__header {
+                        height: 40px;
+
+                        .el-checkbox {
+                            .el-checkbox__label {
+                                span {
+                                    right: -100%;
+                                }
+                            }
+                        }
+                    }
+
+                    .el-transfer-panel__body {
+                        height: calc(100% - 40px);
+                        overflow: hidden;
+
+                        .el-input {
+                            margin: 15px 0;
+                            height: 30px;
+                            padding: 0 10px;
+                        }
+
+                        .el-checkbox-group {
+                            height: calc(100% - 60px);
+                            overflow: auto;
+                        }
+                    }
+                }
+            }
+
+            .el-tree {
+                height: 29px;
+                overflow: auto;
+            }
+
+            .el-row {
+                width: 100%;
+                height: 40px;
+                text-align: right;
+                padding-left: 9.5%;
+
+                // margin: 0.2rem 0 0 0;
+                button {
+                    width: 80px;
+                    height: 36px;
+                    line-height: 36px;
+                    font-size: 12px;
+                    padding: 0;
+                }
+            }
+
+            .tableBox {
+                height: auto;
+                width: 100%;
+
+                .el-table {
+                    th {
+                        height: 40px;
+                        font-weight: 400;
+                        padding: 0;
+                        font-size: 12px;
+                        text-align: center;
+                    }
+
+                    td {
+                        height: 40px;
+                        padding: 0;
+                        font-size: 12px;
+                        text-align: center;
+                    }
+
+                    .el-table__body {
+                        button {
+                            margin: 0 5px 0 0;
+                            width: 37px;
+                            padding: 0;
+                            height: 26px;
+                            line-height: 26px;
+                            float: left;
+                            font-size: 12px;
+                            margin-left: 10px;
+                        }
+
+
+
+                        button:nth-child(even) {
+                            margin: 0;
+                        }
+                    }
+                }
+
+                .el-table__header-wrapper {
+                    width: 100%;
+                    height: 40px;
+                }
+
+                .el-table__body-wrapper {
+                    width: 100%;
+                    height: calc(100% - 40px);
+
+                    table {
+                        width: 100%;
+                        height: 100%;
+
+                        tbody {
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+
+                .el-table--border::after,
+                .el-table--group::after,
+                .el-table::before {
+                    display: none;
+                }
+            }
+
+            .el-pagination {
+                height: 100%;
+                padding: 3% 0 0;
+                text-align: center;
+            }
+        }
+    }
+
+    .listBox {
+        height: calc(100% - 10px);
+        position: relative;
+        float: left;
+        width: 100%;
+
+        .tableBox {
+            height: 87%;
+            width: 100%;
+
+            .el-table {
+                max-height: 100%;
+                // overflow: auto;
+                overflow-y: hidden;
+                overflow-x: auto;
+
+                th {
+                    height: 36px;
+                    font-weight: 400;
+                    padding: 0;
+                    font-size: 12px;
+                    text-align: center;
+                    background-color: #409eff !important;
+                    color: #fff !important;
+                }
+
+                td {
+                    height: 36px;
+                    padding: 0;
+                    font-size: 12px;
+                    text-align: center;
+                }
+
+                .el-table__body {
+                    .hanleBtns{
+                        cursor: pointer;
+                        color:#409eff;
+                        text-decoration: underline;
+                    }
+                    button {
+                        margin: 0 5px 0 0;
+                        width: 37px;
+                        padding: 0;
+                        height: 26px;
+                        line-height: 26px;
+                        // float: left;
+                        font-size: 12px;
+                        margin-left: 5px;
+                    }
+                    button:nth-child(even) {
+                        margin: 0;
+                    }
+                }
+            }
+
+            .el-table__header-wrapper {
+                width: 100%;
+                height: 36px;
+            }
+
+            .el-table__body-wrapper {
+                width: 100%;
+                height: calc(100% - 36px);
+
+                table {
+                    width: 100%;
+                    height: 100%;
+
+                    tbody {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+            }
+
+            .el-table--border::after,
+            .el-table--group::after,
+            .el-table::before {
+                display: none;
+            }
+
+        }
+
+        .pagination {
+            width: 100%;
+            height: 10%;
+            margin-top: 1.5%;
+
+            .el-pagination {
+                height: 100%;
+                padding: 0;
+                text-align: center;
+            }
+        }
+    }
+
+
+
+}

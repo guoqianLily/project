@@ -21,6 +21,14 @@ const router = new Router({
 
         },
         {
+            name: 'policyRequire', //政策需求
+            path: '/policyRequire',
+            meta: { navShow: true, navNone: false },
+            component: () =>
+                import ('../components/progessReport/policyRequire.vue')
+
+        },
+        {
             name: "login", //登录
             path: '/login',
             meta: { navShow: false, navNone: true },
