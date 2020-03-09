@@ -81,10 +81,16 @@
     components: {
       quillEditor
     },
-    props: ["content"],
+    props: {
+      content: {
+        type: String,
+        default:{
+          return:'',
+        }
+      }
+    },
     data() {
       return {
-        content: '',
         editorOption: {
           placeholder: "请输入",
           theme: "snow", // or 'bubble' 
@@ -114,6 +120,27 @@
         return this.$refs.myQuillEditor.quill;
         console.log(this.$refs.myQuillEditor.quill)
       },
+      // content: {
+      //   get() {
+      //     return this.content;
+      //   },
+      //   set(val) {
+      //     var newval = val;
+      //     if (val.split("strong").length > 1) {
+      //       newval = val.slice(0, val.split("strong")[0].length + 6) + ' style="font-weight: bold !important"' + val
+      //         .slice(val.split("strong")[0].length + 6)
+      //       val = newval;
+      //     }
+      //     if (val.split("em").length > 1) {
+      //       newval = val.slice(0, val.split("em")[0].length + 2) + ' style="font-style: italic !important"' + val
+      //         .slice(
+      //           val.split("em")[0].length + 2)
+      //       val = newval;
+      //     }
+      //     //grants_改变由父组件控制
+      //     this.$emit("on-change-cantent", val);
+      //   }
+      // }
     },
     mounted() {
       let content = ''; // 请求后台返回的内容字符串
@@ -132,9 +159,9 @@
             val.split("em")[0].length + 2)
           val = newval;
         }
-        console.log(newval);
-        console.log(val)
-        this.$emit('content', val)
+        // console.log(newval);
+        // console.log(val)
+         this.$emit("on-change-cantent", val);
       },
     }
   }
@@ -145,12 +172,12 @@
     width: 100%;
     position: relative;
     float: left;
-
+    
     .ql-toolbar.ql-snow {
       padding: 2px 8px 2px 4px;
       line-height: 34px;
       border-radius: 10px 10px 0px 0px;
-
+         text-align: left;
       .ql-formats {
         margin-right: -4px;
       }

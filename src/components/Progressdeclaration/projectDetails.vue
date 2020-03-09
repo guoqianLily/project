@@ -22,11 +22,13 @@
                     <el-input v-model="detailForm.time" v-show="show"></el-input>
                 </el-form-item>
                 <el-form-item label="对接部门" prop="">
-                    <quillEditor @content="getcontent" v-bind:content="detailForm.dockingDepartment" style="height:150px;" v-model="detailForm.dockingDepartment">
+                    <quillEditor @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
+                        style="height:150px;">
                     </quillEditor>
                 </el-form-item>
                 <el-form-item label="路径/内容" prop="">
-                    <quillEditor @content="getcontent" v-bind:content="detailForm.wayAddcontent"  style="height:150px;" v-model="detailForm.wayAddcontent">
+                    <quillEditor @on-change-cantent="getcontent2" :content="detailForm.wayAddcontent"
+                        style="height:150px;">
                     </quillEditor>
                 </el-form-item>
             </el-form>
@@ -35,11 +37,9 @@
 </template>
 <script>
     import quillEditor from '../ue'
-     import quillEditor2 from '../ue2'
     export default {
         components: {
             quillEditor,
-            quillEditor2
         },
         data() {
             return {
@@ -49,9 +49,10 @@
                     name: '原28家互联工厂升级提效并满负荷',
                     platform: '海尔智家平台(智慧家庭)',
                     time: '2020年9月',
-                    dockingDepartment: 'dddddd',
-                    wayAddcontent: 'ttttt',
+                    dockingDepartment: 'DDD',
+                    wayAddcontent: 'AAAAAA',
                 },
+                type: 1,
                 rules: {},
                 str: '',
                 show: false,
@@ -59,21 +60,19 @@
         },
         methods: {
             //获取文本编辑器的内容
-            getcontent(data) {
-                this.str = data;
+            getcontent(val) {
+                this.detailForm.dockingDepartment = val;
+            },
+            getcontent2(val) {
+                this.detailForm.wayAddcontent = val;
             },
         },
-        watch:{
-            detailForm(val, oldVal){
-                console.log(val)
-            }
-
-        }
     }
 </script>
 <style lang="scss">
     .projectDetails {
         width: 100%;
+
         .el-row {
             width: 100%;
             height: 35px;
@@ -98,13 +97,22 @@
         .Detailscontent {
             width: 100%;
             height: calc(100% - 35px);
+
             .el-form {
                 .el-form-item {
                     position: relative;
                     float: left;
                     width: 100%;
-                    .el-form-item__label{
+
+                    .el-form-item__label {
                         color: #02A7F0;
+                    }
+
+                    .el-form-item__content {
+                        /* margin-left: 0 !important; */
+                        width: calc(100% - 120px);
+                        display: flex;
+                        float: left;
                     }
                 }
             }
