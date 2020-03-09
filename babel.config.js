@@ -7,8 +7,13 @@ module.exports = {
       "component",
       {
         "libraryName": "element-ui",
-        "styleLibraryName": "theme-chalk"
+        "styleLibraryName": "theme-chalk",
+        "postcss-pxtorem": {
+          "rootValue": 16,
+          "propList": ["*"]
+        }
       }
+      
     ]
   ]
 }
