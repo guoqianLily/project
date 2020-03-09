@@ -3,14 +3,14 @@
         <div class="queryRow">
             <el-form :model="searchForm">
                 <el-form-item>
-                    <el-button type="primary" @click="addIndex()" class="addBtn">新增月度目标</el-button>
+                    <el-button v-if="state==1" type="primary" @click="addIndex()" class="addBtn">新增月度目标</el-button>
                 </el-form-item>
             </el-form>
         </div>
         <div class="listBox">
             <div class="tableBox">
                 <el-table v-loading="loading" element-loading-text="数据加载..." element-loading-spinner="el-icon-loading"
-                    :data="tableData" :stripe="stripe" style="width: 100%" height="98%">
+                    :data="tableData" border style="width: 100%" height="98%">
                     <el-table-column label="序号" prop="" width="80">
                         <template slot-scope="scope">
                             <span v-text="getIndex(scope.$index)"> </span>
@@ -22,7 +22,7 @@
                     </el-table-column>
                     <el-table-column prop="indicatorTypeName" label="政策月度目标">
                     </el-table-column>
-                    <el-table-column prop="" label="操作">
+                    <el-table-column prop="" label="操作" v-if="state==1">
                         <template slot-scope="scope">
                             <span @click="handleEdit(scope.$index, scope.row)" class="upBtns">修改</span>
                         </template>
@@ -67,6 +67,8 @@
         },
         data() {
             return {
+                state: this.$route.params.state,
+                type: this.$route.params.type,
                 currenttime: '',
                 stripe: true,
                 title: '新增',
@@ -263,7 +265,11 @@
                         text-decoration: underline;
                     }
                 }
+                td {
+                    text-align: center;
+                }
             }
+
         }
 
         #addNewdialog {

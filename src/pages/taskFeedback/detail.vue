@@ -7,7 +7,7 @@
         <div id="projectDetails" class="content">
             <projectDetails></projectDetails>
         </div>
-        <div id="projectrequirement" class="content">
+        <div id="projectrequirement" class="content"  style="height:600px">
             <policyRequire></policyRequire>
         </div>
         <div id="projectTab" class="content">
@@ -16,14 +16,14 @@
                     <projectprogressfeedback v-if="activeName=='first'"></projectprogressfeedback>
                 </el-tab-pane>
                 <el-tab-pane label="政策进度反馈" name="second">
-                    <policyProfeedback v-if="activeName=='second'"></policyProfeedback>
+                    <policyProfeedback v-if="activeName=='second'" class="projectDetails"></policyProfeedback>
                 </el-tab-pane>
                 <el-tab-pane label="月度目标" name="third">
                     <monthlytarget v-if="activeName=='third'"></monthlytarget>
                 </el-tab-pane>
-                <el-tab-pane label="项目回顾" name="four">
+                <!-- <el-tab-pane label="项目回顾" name="four"> -->
                     <!-- <listofIndicators v-if="activeName=='third'"></listofIndicators> -->
-                </el-tab-pane>
+                <!-- </el-tab-pane> -->
                 <el-tab-pane label="附件" name="five">
                     <filesUploadDown v-if="activeName=='five'"></filesUploadDown>
                 </el-tab-pane>
@@ -116,6 +116,9 @@
                 background: none !important;
                 color: #409EFF !important;
             }
+        }
+        .projectDetails{
+            height: 400px;
         }
 
     }

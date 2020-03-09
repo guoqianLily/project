@@ -5,26 +5,33 @@
                 <el-form-item label="当前时间" prop="">
                     <!-- <template v-show="!show"><span>{{detailForm.code}}</span></template> -->
                     <!-- <el-input v-model="detailForm.code" v-show="show"></el-input> -->
-                    <el-date-picker v-model="detailForm.week" type="week" format="yyyy年MM月第WW周" placeholder="选择周">
+                    <el-date-picker v-if="state==1" v-model="detailForm.week" type="week" format="yyyy年MM月第WW周"
+                        placeholder="选择周">
                     </el-date-picker>
+                    <template v-else><span>{{detailForm.week}}</span></template>
                 </el-form-item>
                 <el-form-item label="当月目标" prop="">
-                    <quillEditor @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
+                    <quillEditor v-if="state==1" @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
                         style="height:150px;">
                     </quillEditor>
+                    <div class="department" v-else
+                        v-html="detailForm.dockingDepartment"></div>
                 </el-form-item>
                 <el-form-item label="本周进展" prop="">
-                    <quillEditor @on-change-cantent="getcontent" :content="detailForm.wayAddcontent"
+                    <quillEditor v-if="state==1"  @on-change-cantent="getcontent" :content="detailForm.wayAddcontent"
                         style="height:150px;">
                     </quillEditor>
+                    <div class="department" v-else
+                        v-html="detailForm.wayAddcontent"></div>
                 </el-form-item>
                 <el-form-item label="项目进展分类" prop="">
-                    <el-select v-model="typeValue" placeholder="请选择">
+                    <el-select v-if="state==1" v-model="detailForm.typeValue" placeholder="请选择">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
+                    <template v-else><span>{{detailForm.typeValue}}</span></template>
                 </el-form-item>
-                <el-form-item class="btnItem">
+                <el-form-item class="btnItem" v-if="state==1">
                     <el-button @click="closeForm('ruleForm')">取消</el-button>
                     <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
                 </el-form-item>
@@ -40,7 +47,6 @@
         },
         data() {
             return {
-                typeValue: '',
                 name: '项目详情',
                 detailForm: {
                     week: '2020年03月第W11周',
@@ -49,10 +55,11 @@
                     time: '2020年9月',
                     dockingDepartment: 'dddddd',
                     wayAddcontent: 'ttttt',
+                    typeValue:'海尔智家平台(智慧家庭)',
                 },
                 rules: {},
-                str: '',
-                show: false,
+                state: this.$route.params.state,
+                type: this.$route.params.type,
                 options: [{
                     value: '海尔智家平台(智慧家庭)',
                     label: '海尔智家平台(智慧家庭)'
@@ -126,6 +133,15 @@
                         width: calc(100% - 120px);
                         display: flex;
                         float: left;
+                          .department,
+                        .ljcontent {
+                            height: 150px;
+                            overflow: auto;
+                            width: 100%;
+                            border-radius: 10px;
+                            border: 1px solid #ccc;
+                            padding: 10px 10px 10px 10px;
+                        }
                     }
                 }
 

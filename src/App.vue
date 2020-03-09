@@ -119,6 +119,8 @@ export default {
         }
     };
     return{
+      departmantName:'',
+      userCode:'',
       activeIndex: 'home',
       menuData:[],
       headerFalg:true,
@@ -303,6 +305,9 @@ export default {
 <style lang="scss" scoped>
 #app{
   min-width: 1000px;
+}
+ .el-table th.gutter{
+display: table-cell!important;
 }
 .app-Header{
   width:100%;

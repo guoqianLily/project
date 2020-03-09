@@ -1,35 +1,44 @@
 <template>
     <div class="projectDetails">
         <el-row>
-           
+            <div class="query">
+                <el-button type="primary" size="small" class="titleBtn" @click="addIndex" v-if="state==1">
+                    提交</el-button>
+            </div>
         </el-row>
         <div class="Detailscontent">
-            <el-form :model="detailForm" :rules="rules" ref="ruleForm" label-width="120px">
+            <el-form :model="detailForm" :rules="rules" ref="ruleForm" label-width="80px">
                 <el-form-item label="项目编码" prop="" style="width:50%">
-                    <el-input v-if="state==1" v-model="detailForm.code" ></el-input>
-                     <template v-else><span>{{detailForm.code}}</span></template>
+                    <el-input v-if="state==1" v-model="detailForm.code"></el-input>
+                    <template v-else><span>{{detailForm.code}}</span></template>
                 </el-form-item>
                 <el-form-item label="项目名称" prop="" style="width:50%">
-                    <el-input v-if="state==1" v-model="detailForm.name" ></el-input>
-                     <template v-else><span>{{detailForm.name}}</span></template>
+                    <el-input v-if="state==1" v-model="detailForm.name"></el-input>
+                    <template v-else><span>{{detailForm.name}}</span></template>
                 </el-form-item>
                 <el-form-item label="所属平台" prop="" style="width:50%">
-                    <el-input v-if="state==1" v-model="detailForm.platform" ></el-input>
+                    <el-input v-if="state==1" v-model="detailForm.platform"></el-input>
                     <template v-else><span>{{detailForm.platform}}</span></template>
                 </el-form-item>
                 <el-form-item label="达成时间" prop="" style="width:50%">
-                    <el-input v-if="state==1" v-model="detailForm.time"  ></el-input>
+                    <el-input v-if="state==1" v-model="detailForm.time"></el-input>
                     <template v-else><span>{{detailForm.time}}</span></template>
                 </el-form-item>
                 <el-form-item label="对接部门" prop="">
-                    <quillEditor @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
+                    <quillEditor v-if="state==1" @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
                         style="height:150px;">
                     </quillEditor>
+                    <div v-else class="department">
+                        {{detailForm.dockingDepartment}}
+                    </div>
                 </el-form-item>
                 <el-form-item label="路径/内容" prop="">
-                    <quillEditor @on-change-cantent="getcontent2" :content="detailForm.wayAddcontent"
+                    <quillEditor v-if="state==1" @on-change-cantent="getcontent2" :content="detailForm.wayAddcontent"
                         style="height:150px;">
                     </quillEditor>
+                    <div v-else class="ljcontent">
+                        {{detailForm.wayAddcontent}}
+                    </div>
                 </el-form-item>
             </el-form>
         </div>
@@ -52,16 +61,28 @@
                     dockingDepartment: 'DDD',
                     wayAddcontent: 'AAAAAA',
                 },
-                state: this.$route.params.state,
                 rules: {},
                 str: '',
                 show: false,
-                type:this.$route.params.type
+                state: this.$route.params.state,
+                type: this.$route.params.type
             }
         },
-        mounted(){
+        mounted() {
+            if (this.type == "add" || this.type == "updata") {
+                this.state = 1
+            } else {
+                this.state = 0
+            }
             if(this.type=="add"){
-                this.show=true
+                this.detailForm= {
+                    code: '',
+                    name: '',
+                    platform: '',
+                    time: '',
+                    dockingDepartment: '',
+                    wayAddcontent: '',
+                }
             }
         },
         methods: {
@@ -72,31 +93,27 @@
             getcontent2(val) {
                 this.detailForm.wayAddcontent = val;
             },
+            addIndex() {
+                console(this.detailForm);
+            }
         },
     }
 </script>
 <style lang="scss">
     .projectDetails {
         width: 100%;
-
         .el-row {
             width: 100%;
-            height: 35px;
-            line-height: 35px;
+            height: 45px;
+            line-height: 45px;
             display: flex;
 
-            .bigTitle {
-                color: #02A7F0;
-                font-size: 14px;
-                float: left;
-                position: relative;
-                width: 95%;
-            }
-
-            .returnBtn {
-                color: #02A7F0;
-                font-size: 14px;
+            .query {
+                width: 100%;
+                font-size: 12px;
                 float: right;
+                text-align: right;
+                margin-right: 42px;
             }
         }
 
@@ -109,7 +126,8 @@
                     position: relative;
                     float: left;
                     width: 100%;
-    margin-bottom: 5px;
+                    margin-bottom: 5px;
+
                     .el-form-item__label {
                         color: #02A7F0;
                     }
@@ -119,6 +137,16 @@
                         width: calc(100% - 120px);
                         display: flex;
                         float: left;
+
+                        .department,
+                        .ljcontent {
+                            height: 150px;
+                            overflow: auto;
+                            width: 100%;
+                            border-radius: 10px;
+                            border: 1px solid #ccc;
+                            padding: 10px 10px 10px 10px;
+                        }
                     }
                 }
             }

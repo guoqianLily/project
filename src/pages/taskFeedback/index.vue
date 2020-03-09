@@ -1,6 +1,6 @@
 <template>
-    <div class="frame taskfeedback" id="taskFeedback">
-        <div class="search_content">
+    <div class="frame taskfeedback listPage" id="taskFeedback">
+        <div class="queryRow search_content">
             <el-form :model="formInline">
                 <el-form-item label="平台">
                     <el-select v-model="formInline.terraceValue" placeholder="请选择">
@@ -23,32 +23,36 @@
                 </el-form-item>
             </el-form>
         </div>
-        <div class="table_search">
-            <el-table ref="searchMulTable" :data="tableData" :cell-style="cellStyle"
-                :header-cell-style="headerCellStyle" :height="tableHeight">
-                <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
-                <el-table-column prop="id" label="id" align="center" v-if='show'></el-table-column>
-                <el-table-column prop="engineerName" label="平台" align="center"></el-table-column>
-                <el-table-column prop="departmantName" label="编号" align="center"></el-table-column>
-                <el-table-column prop="titleName" label="项目名称" align="center"></el-table-column>
-                <el-table-column prop="actualCompletionTime" label="达成时间" align="center"></el-table-column>
-                <el-table-column label="操作" align="center">
-                    <template slot-scope="scope">
-                        <span class="btn" @click="declareSth(scope.$index, scope.row)">申报</span>
-                        <span class="btn">导出</span>
-                        <span class="btn">详情</span>
-                        <span class="btn" @click="revise(scope.$index, scope.row)">修改</span>
-                        <span class="btn">删除</span>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <div class="pagination_footer">
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                    :current-page.sync="currentPage" :page-sizes="[8]" :page-size="pageSize" background
-                    layout=" prev, pager, next" prev-text="<<" next-text=">>" :total="total">
+        <div class="listBox">
+            <div class="tableBox table_search">
+                <el-table ref="searchMulTable" v-loading="loading" element-loading-text="数据加载..." :data="tableData"
+                    element-loading-spinner="el-icon-loading" border style="width: 100%">
+                    <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
+                    <el-table-column prop="id" label="id" align="center" v-if='show'></el-table-column>
+                    <el-table-column prop="engineerName" label="平台" align="center"></el-table-column>
+                    <el-table-column prop="departmantName" label="编号" align="center"></el-table-column>
+                    <el-table-column prop="titleName" label="项目名称" align="center"></el-table-column>
+                    <el-table-column prop="actualCompletionTime" label="达成时间" align="center"></el-table-column>
+                    <el-table-column label="操作" align="center">
+                        <template slot-scope="scope">
+                            <span class="btn" @click="declareSth(scope.$index, scope.row)">申报</span>
+                            <span class="btn">导出</span>
+                            <span class="btn" @click="datailQuery(scope.$index, scope.row)">详情</span>
+                            <span class="btn" @click="revise(scope.$index, scope.row)">修改</span>
+                            <span class="btn">删除</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="pagination">
+                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                    :current-page="currentPage" :page-size="pageSize" layout="prev, pager, next" :total="tableTotal"
+                    style="margin-top:5px;">
                 </el-pagination>
             </div>
+
         </div>
+
         <el-dialog title="新建" :visible.sync="dialogFormVisible">
             <el-form :model="addform">
                 <el-form-item label="文本编辑">
@@ -82,7 +86,7 @@
                 dialogFormVisible: false,
                 show: false,
                 currentPage: 1,
-                total: 0,
+                tableTotal: 0,
                 pageSize: 8,
                 tableData: [{
                     id: '',
@@ -131,17 +135,26 @@
             }
         },
         methods: {
-            //导出页面
+            //申报页面
             declareSth(index, row) {
                 this.$router.push({
                     name: "detail",
                     params: {
-                        params: {
-                        state: '1',//1可编辑,
-                    }
+                        state: '1', //1可编辑,
+
                     }
                 })
                 //   this.$router.replace('/detail')
+            },
+            //详情页面查看
+            datailQuery(index, row) {
+                this.$router.push({
+                    name: "detail",
+                    params: {
+                        state: '0', //1可编辑,
+
+                    }
+                })
             },
             getcontent(data) {
                 this.str = data;
@@ -151,13 +164,20 @@
                 this.$router.push({
                     name: "newModification",
                     params: {
-                        state: '1',//1可编辑,
-                        type:'add'//新增，还是修改up
+                        state: '1', //1可编辑,
+                        type: 'add' //新增，还是修改up
                     }
                 });
             },
             //修改
             revise(index, row) {
+                this.$router.push({
+                    name: "newModification",
+                    params: {
+                        state: '1', //1可编辑,
+                        type: 'updata' //新增，还是修改up
+                    }
+                });
 
             },
             //查询
@@ -181,11 +201,19 @@
     }
 </script>
 <style lang="scss">
+    .el-table th.gutter {
+        display: table-cell !important;
+    }
+
     #taskFeedback {
-        width: 100%;
-        height: calc(100% - 53px);
         position: relative;
         float: left;
+        padding: 0 15px 20px 15px;
+        border-radius: 10px;
+        height: calc(100% - 48px);
+        overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
 
         .search_content {
             width: calc(100% - 20px);
@@ -225,63 +253,45 @@
             }
         }
 
-        .table_search {
-            margin-top: 20px;
-            width: 100%;
-            height: calc(100% - 80px);
-            float: left;
+        .listBox {
+            // padding: 2px 16px 0px 16px;
+            height: calc(100% - 35px);
             position: relative;
+            float: left;
+            width: 100%;
 
-            .el-table {
-                font-size: 12px;
-                width: calc(100% - 40px);
-                padding: 2px 0px 0px 20px;
+            .tableBox {
+                max-height: calc(100% - 63px);
+                width: 100%;
 
-                th {
-                    background-color: #409eff !important;
-                    color: #fff !important;
-                }
+                .el-table {
+                    font-size: 12px;
 
-                .btn {
-                    color: #409eff !important;
-                    cursor: pointer;
-                    padding: 5px;
-                }
+                    th {
+                        background-color: #409eff !important;
+                        color: #fff !important;
+                    }
 
-                .btn:hover {
-                    color: #000 !important;
+                    .btn {
+                        color: #409eff !important;
+                        cursor: pointer;
+                        padding: 5px;
+                        text-decoration: underline
+                    }
+
+                    .btn:hover {
+                        color: #000 !important;
+                    }
                 }
             }
 
-            .pagination_footer {
-                margin: 20px 0 0 0;
-                height: 30px;
+            .pagination {
                 text-align: center;
-                padding: 0;
-
-                .el-pagination {
-                    padding: 2px 0 0 0;
-                }
             }
 
-            .cell {
-                line-height: 20px;
-            }
 
-            transition: height .4s linear;
-
-            .el-pagination button,
-            .el-pagination span:not([class*=suffix]) {
-                font-size: 12px;
-                padding: 0 10px;
-            }
-
-            .el-button.is-disabled {
-                border-color: rgb(125, 123, 123);
-                background-color: rgb(125, 123, 123);
-                color: #fff;
-            }
         }
+
 
 
 
