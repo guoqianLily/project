@@ -2,13 +2,13 @@
     <div class="frame taskfeedback listPage" id="taskFeedback">
         <div class="queryRow search_content">
             <el-form :model="formInline">
-                <el-form-item label="平台">
+                <el-form-item label="平台" >
                     <el-select v-model="formInline.terraceValue" placeholder="请选择">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="项目">
+                <el-form-item label="项目" >
                     <el-input v-model="formInline.itemValue" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <el-form-item label="达成时间">
@@ -79,6 +79,7 @@
         },
         data() {
             return {
+                loading:false,
                 str: '',
                 addform: {
                     name: ''
@@ -134,6 +135,9 @@
 
             }
         },
+        mounted(){
+
+        },
         methods: {
             //申报页面
             declareSth(index, row) {
@@ -141,7 +145,6 @@
                     name: "detail",
                     params: {
                         state: '1', //1可编辑,
-
                     }
                 })
                 //   this.$router.replace('/detail')
@@ -229,21 +232,20 @@
                 .el-form-item {
                     margin: 0 .1rem 0 0;
                     float: left;
-
+                    display: flex;
                     .el-form-item__label {
+                        width: 62px;
                         text-align: right;
                         height: 35px;
                         line-height: 35px;
                         font-size: 12px;
                     }
-
                     .el-form-item__content {
-                        width: 80%;
+                        // width: 80%;
                         height: 35px;
                         line-height: 35px;
                         float: left;
                         display: flex;
-
                         .el-select,
                         .el-input {
                             width: 100%;
