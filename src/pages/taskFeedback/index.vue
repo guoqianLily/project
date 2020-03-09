@@ -152,7 +152,7 @@
                     name: "newModification",
                     params: {
                         state: '1',//1可编辑,
-                        type:'add'//新增，还是修改
+                        type:'add'//新增，还是修改up
                     }
                 });
             },
