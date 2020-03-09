@@ -4,7 +4,7 @@
       <div class="bigtitleName">
         政策需求
       </div>
-      <el-button type="primary" size="small" class="titleBtn" @click="addIndex">
+      <el-button type="primary" size="small" class="titleBtn" @click="addIndex" v-if="upDateFlag">
         任务政策需求</el-button
       >
     </div>
@@ -19,12 +19,23 @@
           style="width: 100%"
           height="100%"
         >
-          <el-table-column prop="fieldChinese" label="政策分类" width="180px">
+          <el-table-column prop="fieldChinese" label="政策分类" width="180px" align='center'>
           </el-table-column>
-          <el-table-column prop="fieldName" label="政策内容"> </el-table-column>
-          <el-table-column prop="fieldxuqiu" label="进度需求" width="260px">
+          <el-table-column prop="fieldName" label="政策内容">
+               <template slot-scope="scope">
+                     <div :style="(scope.row.fieldName ? '' : 'text-align:center;')">
+                        <span v-html="(scope.row.fieldName ? scope.row.fieldName : '/')"></span>
+                    </div>
+                </template>
           </el-table-column>
-          <el-table-column prop="" label="操作" width="80px">
+          <el-table-column prop="fieldxuqiu" label="进度需求" width="400px">
+              <template slot-scope="scope">
+                    <div :style="(scope.row.fieldxuqiu ? '' : 'text-align:center;')">
+                        <span v-html="(scope.row.fieldxuqiu ? scope.row.fieldxuqiu : '/')"></span>
+                    </div>
+                </template>
+          </el-table-column>
+          <el-table-column prop="" label="操作" width="80px" align='center' v-if="upDateFlag">
             <template slot-scope="scope">
               <span
                 class="hanleBtns"
@@ -202,15 +213,13 @@ export default {
         },
         {
           fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
+          fieldName:"",
+          fieldxuqiu: ""
         },
         {
           fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
+          fieldName:"",
+          fieldxuqiu: ""
         },
         {
           fieldChinese: "Ⅰ类市重大项目（12项）",
@@ -586,7 +595,8 @@ export default {
         }
       ],
       loading: false,
-      interfaceId: this.$route.query.id
+      interfaceId: this.$route.query.id,
+      upDateFlag:true,
     };
   },
   mounted() {
@@ -677,7 +687,7 @@ export default {
     addIndex() {
       this.addIndexVisible = true;
 
-      this.title = "新增接口字段";
+      this.title = "政策需求新增";
       this.$nextTick(() => {
         this.$refs.addForm.resetFields(); //等弹窗里的form表单的dom渲染完在执行this.$refs.addForm.resetFields()，去除验证
         this.addForm = {
@@ -695,7 +705,7 @@ export default {
     //   修改
     handleEdit(index, row) {
       this.addIndexVisible = true;
-      this.title = "修改接口字段信息";
+      this.title = "优化政策需求新增";
       this.$nextTick(() => {
         this.addForm = {
           id: row.id,

@@ -1,31 +1,39 @@
 <template>
   <div id="policyProfeedback" class="listPage">
     <div class="queryRow">
-        <el-form :model="searchForm">
-            <el-form-item label="当前时间">
-                <el-select v-model="searchForm.fieldChinese" filterable>
-                    <el-option
-                    v-for="item in searchForm.fieldArr"
-                    :key="item.id"
-                    :label="item.label"
-                    :value="item.value"
-                    >
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="当月目标" class="autoElform">
-                <quillEditor
-                    @content="getcontent"
-                    v-bind:content="searchForm.monthBud"
-                    style="height:150px;"
-                    v-model="searchForm.monthBud"
-                >
-                </quillEditor>
-            </el-form-item>
-        </el-form>
+      <el-form :model="searchForm">
+        <el-form-item label="当前时间">
+          <el-date-picker
+            v-model="nowTime"
+            type="week"
+            placeholder="选择日期"
+            @change="getNowTime"
+            format="yyyy年M月份第W周"
+            value-format="yyyy-MM-dd"
+            v-if="updateFlag"
+          >
+          </el-date-picker>
+          <el-input v-model="nowTimeValue" v-else> </el-input>
+        </el-form-item>
+        <el-form-item label="当月目标" class="autoElform">
+          <quillEditor
+            @content="getcontent"
+            v-bind:content="searchForm.monthBud"
+            style="height:150px;"
+            v-model="searchForm.monthBud"
+            v-if="updateFlag"
+          >
+          </quillEditor>
+          <div
+            style="width:100%;height:150px;border:1px solid #ccc;border-radius:10px;"
+            v-else
+            v-html="searchForm.monthBud"
+          ></div>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="listBox" style="height:68%;">
-      <div class="tableBox" style="height:100%;" >
+      <div class="tableBox" style="height:100%;">
         <el-table
           v-loading="loading"
           element-loading-text="数据加载..."
@@ -35,23 +43,36 @@
           style="width: 90%;margin:0 auto;"
           height="100%"
         >
-          <el-table-column prop="fieldChinese" label="政策分类" width="180px">
+          <el-table-column
+            prop="fieldChinese"
+            label="政策分类"
+            width="180px"
+            align="center"
+          >
           </el-table-column>
           <el-table-column prop="fieldName" label="政策内容"> </el-table-column>
           <el-table-column prop="fieldxuqiu" label="进度需求" width="260px">
           </el-table-column>
-          <el-table-column prop="" label="操作" width="80px">
+          <el-table-column prop="" label="对接部门" width="100px">
+          </el-table-column>
+          <el-table-column
+            prop=""
+            label="操作"
+            width="80px"
+            align="center"
+            v-if="updateFlag"
+          >
             <template slot-scope="scope">
               <span
                 class="hanleBtns"
                 @click="handleEdit(scope.$index, scope.row)"
-                >优化</span
+                >申报</span
               >
             </template>
           </el-table-column>
         </el-table>
       </div>
-     
+
       <!-- <div class="pagination">
         <el-pagination
           background
@@ -66,14 +87,33 @@
         </el-pagination>
       </div> -->
     </div>
-    <el-dialog :title="title" :visible.sync="addIndexVisible" id="addNewdialog" width="60%">
+    <el-dialog
+      :title="title"
+      :visible.sync="addIndexVisible"
+      id="addNewdialog"
+      width="60%"
+    >
       <el-form
         :model="addForm"
         ref="addForm"
         :rules="rules"
         label-position="right"
       >
-        <el-form-item label="政策分类" prop="zcClass">
+        <el-form-item
+          label="本周进展"
+          prop="fieldChinese"
+          class="autoElform"
+          label-width="120px"
+        >
+          <quillEditor
+            @content="getcontent"
+            v-bind:content="addForm.fieldChinese"
+            style="height:150px;"
+            v-model="addForm.fieldChinese"
+          >
+          </quillEditor>
+        </el-form-item>
+        <el-form-item label="政策进展分类" prop="zcClass" label-width="120px">
           <el-select v-model="addForm.zcClass" placeholder="请选择">
             <el-option
               v-for="item in searchForm.zcClass"
@@ -84,30 +124,6 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="对接部门" prop="duijiebumen">
-          <el-input
-            v-model="addForm.duijiebumen"
-            placeholder="请输入对接部门"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="政策内容" prop="fieldChinese" class="autoElform">
-          <quillEditor
-            @content="getcontent"
-            v-bind:content="addForm.fieldChinese"
-            style="height:150px;"
-            v-model="addForm.fieldChinese"
-          >
-          </quillEditor>
-        </el-form-item>
-        <el-form-item label="进度需求" prop="fieldName" class="autoElform">
-           <quillEditor
-            @content="getcontent"
-            v-bind:content="addForm.fieldName"
-            style="height:150px;"
-            v-model="addForm.fieldName"
-          >
-          </quillEditor>
-        </el-form-item>
         <el-form-item class="btnItem">
           <el-button type="primary" @click="submitForm('addForm')"
             >提交</el-button
@@ -115,9 +131,7 @@
           <el-button @click="closeForm('addForm')">取消</el-button>
         </el-form-item>
       </el-form>
-      
     </el-dialog>
-    
   </div>
 </template>
 <script>
@@ -129,6 +143,7 @@
 //   deleteFieldData
 // } from "../../utils/request_grid";
 import "../../assets/css/public.scss";
+import { GetWeekByDate } from "../../utils/validate.js";
 import quillEditor from "../ue";
 export default {
   components: {
@@ -138,6 +153,7 @@ export default {
     return {
       stripe: true,
       title: "新增",
+      nowTime: "2020-03-09",
       typeName: "",
       addIndexVisible: false,
       currentPage1: 1,
@@ -146,7 +162,7 @@ export default {
       searchForm: {
         fieldArr: [],
         fieldChinese: "",
-        monthBud:"",
+        monthBud: "111111",
         zcClass: [
           {
             value: "1",
@@ -603,11 +619,22 @@ export default {
         }
       ],
       loading: false,
-      interfaceId: this.$route.query.id
+      interfaceId: this.$route.query.id,
+      updateFlag: true
     };
   },
   mounted() {
     // this.searchMessage();
+    let newValDate = this.nowTime.split("-").join("");
+    this.nowTimeValue =
+      newValDate.substring(0, 4) +
+      "年" +
+      (newValDate.substring(4, 6) < 10
+        ? newValDate.substring(5, 6)
+        : newValDate.substring(4, 6)) +
+      "月第" +
+      GetWeekByDate(this.nowTime) +
+      "周";
   },
   methods: {
     //分页查询的事件
@@ -694,7 +721,7 @@ export default {
     addIndex() {
       this.addIndexVisible = true;
 
-      this.title = "新增接口字段";
+      this.title = "政策进度申报";
       this.$nextTick(() => {
         this.$refs.addForm.resetFields(); //等弹窗里的form表单的dom渲染完在执行this.$refs.addForm.resetFields()，去除验证
         this.addForm = {
@@ -712,7 +739,7 @@ export default {
     //   修改
     handleEdit(index, row) {
       this.addIndexVisible = true;
-      this.title = "修改接口字段信息";
+      this.title = "政策反馈";
       this.$nextTick(() => {
         this.addForm = {
           id: row.id,
@@ -721,7 +748,8 @@ export default {
           fieldChinese: row.fieldChinese,
           fieldName: row.fieldName,
           unableFlag: row.unableFlag,
-          interfaceId: this.interfaceId
+          interfaceId: this.interfaceId,
+          zcClass: ""
         };
       });
     },
@@ -818,6 +846,11 @@ export default {
     //获取文本编辑器的内容
     getcontent(data) {
       console.log(data);
+    },
+    // 获取当前时间
+    getNowTime(val) {
+      console.log(this.nowTime);
+      console.log(val);
     }
   }
 };

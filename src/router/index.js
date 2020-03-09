@@ -21,6 +21,13 @@ const router = new Router({
 
         },
         {
+            name: 'filesUploadDown', //附件上传及下载
+            path: '/filesUploadDown',
+            meta: { navShow: true, navNone: false },
+            component: () =>
+                import ('../components/progessReport/filesUploadDown.vue')
+        },
+        {
             name: 'policyProfeedback', //政策进度反馈
             path: '/policyProfeedback',
             meta: { navShow: true, navNone: false },
