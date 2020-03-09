@@ -1,12 +1,28 @@
 <template>
-  <div id="policyRequire" class="listPage">
-    <div class="bigtitle">
-      <div class="bigtitleName">
-        政策需求
-      </div>
-      <el-button type="primary" size="small" class="titleBtn" @click="addIndex">
-        任务政策需求</el-button
-      >
+  <div id="policyProfeedback" class="listPage">
+    <div class="queryRow">
+        <el-form :model="searchForm">
+            <el-form-item label="当前时间">
+                <el-select v-model="searchForm.fieldChinese" filterable>
+                    <el-option
+                    v-for="item in searchForm.fieldArr"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.value"
+                    >
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="当月目标">
+                <quillEditor
+                    @content="getcontent"
+                    v-bind:content="searchForm.monthBud"
+                    style="height:150px;"
+                    v-model="searchForm.monthBud"
+                >
+                </quillEditor>
+            </el-form-item>
+        </el-form>
     </div>
     <div class="listBox">
       <div class="tableBox">
@@ -130,6 +146,7 @@ export default {
       searchForm: {
         fieldArr: [],
         fieldChinese: "",
+        monthBud:"",
         zcClass: [
           {
             value: "1",
@@ -810,7 +827,7 @@ export default {
   margin-left: 0 !important;
 }
 
-#policyRequire {
+#policyProfeedback {
   height: calc(100% - 48px);
   .el-row {
     height: 0.4rem;

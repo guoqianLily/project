@@ -21,6 +21,13 @@ const router = new Router({
 
         },
         {
+            name: 'policyProfeedback', //政策进度反馈
+            path: '/policyProfeedback',
+            meta: { navShow: true, navNone: false },
+            component: () =>
+                import ('../components/progessReport/policyProfeedback.vue')
+        },
+        {
             name: 'policyRequire', //政策需求
             path: '/policyRequire',
             meta: { navShow: true, navNone: false },
