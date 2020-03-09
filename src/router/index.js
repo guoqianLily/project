@@ -13,7 +13,7 @@ const router = new Router({
                 import ('../pages/homePage/Root')
         },
         {
-            name: 'taskfeedback', //任务反馈
+            name: 'taskfeedback', //进度反馈
             path: '/taskfeedback',
             meta: { navShow: true, navNone: false },
             component: () =>
@@ -35,19 +35,25 @@ const router = new Router({
                 import ('../components/progessReport/policyRequire.vue')
         },
         {
-            name: 'detail',
+            name: 'detail',//导出页面
             path: '/detail',
             meta: { navShow: true, navNone: false },
             component: () =>
                 import ('../pages/taskFeedback/detail.vue'),
         },
         {
+            name: 'newModification', //政策需求
+            path: '/newModification',
+            meta: { navShow: true, navNone: false },
+            component: () =>
+                import ('../pages/taskFeedback/Newmodification.vue')
+        },
+        {
             name: "login", //登录
             path: '/login',
             meta: { navShow: false, navNone: true },
             component: () =>
-                import ('../pages/loginPage/login.vue'),
-                
+                import ('../pages/loginPage/login.vue'),        
         },
         {
             name: 'manage',

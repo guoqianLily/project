@@ -18,7 +18,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="search()">查询</el-button>
-                    <el-button type="primary" @click="dialogFormVisible = true">新建</el-button>
+                    <el-button type="primary" @click="addnewly()">新建</el-button>
                     <el-button type="primary" @click="derive()">导出</el-button>
                 </el-form-item>
             </el-form>
@@ -131,23 +131,33 @@
             }
         },
         methods: {
+            //导出页面
             declareSth(index, row) {
-                  this.$router.replace('/detail')
-                // this.$router.push({
-                //     path: "detail",
-                //     query: {
-                //         id: row.id,
-                //         // gridCode: row.indicatorCode,
-                //         // gridType: row.indicatorStructure
-                //     }
-                // });
+                  this.$router.push({
+                  name:"detail",
+                  params: {
+                    // id:''
+                  }
+              })
+                //   this.$router.replace('/detail')
             },
             getcontent(data) {
                 this.str = data;
             },
+            //新建
+            addnewly(){
+                 this.$router.push({
+                  name:"newModification",
+                  params: {
+                    id:''
+                  }
+              });
+            },
+            //查询
             search() {
                 console.log("查询事件")
             },
+            //导出
             derive() {
                 console.log("导出事件")
             },

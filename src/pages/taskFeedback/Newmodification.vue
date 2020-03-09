@@ -1,5 +1,5 @@
 <template>
-    <div id="detail">
+    <div id="Newmodification">
         <el-row>
             <div class="returnBtn" @click="returnMonth"><span class="indic-icon el-icon-back"></span>返回</div>
         </el-row>
@@ -9,46 +9,21 @@
         <div id="projectrequirement" class="content">
             <policyRequire></policyRequire>
         </div>
-        <div id="projectTab" class="content">
-            <el-tabs v-model="activeName" @tab-click="handleClick" class="el-tabs">
-                <el-tab-pane label="项目进度反馈" name="first">
-                    <projectprogressfeedback v-if="activeName=='first'"></projectprogressfeedback>
-                </el-tab-pane>
-                <el-tab-pane label="政策进度反馈" name="second">
-                    <policyProfeedback v-if="activeName=='second'"></policyProfeedback>
-                </el-tab-pane>
-                <el-tab-pane label="月度目标" name="third">
-                    <monthlytarget v-if="activeName=='third'"></monthlytarget>
-                </el-tab-pane>
-                <el-tab-pane label="项目回顾" name="four">
-                    <!-- <listofIndicators v-if="activeName=='third'"></listofIndicators> -->
-                </el-tab-pane>
-                <el-tab-pane label="附件" name="five">
-                    <!-- <listofIndicators v-if="activeName=='third'"></listofIndicators> -->
-                </el-tab-pane>
-            </el-tabs>
-        </div>
     </div>
 </template>
 <script>
     import projectDetails from '../../components/Progressdeclaration/projectDetails';
-    import projectprogressfeedback from '../../components/Progressdeclaration/projectprogressfeedback';
-    import policyProfeedback from '../../components/progessReport/policyProfeedback'
     import policyRequire from '../../components/progessReport/policyRequire'
-     import monthlytarget from '../../components/Progressdeclaration/monthlytarget'
     export default {
         components: {
             projectDetails,
-            projectprogressfeedback,
             policyProfeedback,
             policyRequire,
-            monthlytarget
         },
         data() {
             return {
                 activeName: 'first'
             }
-
         },
         methods: {
             handleClick(tab, event) {
@@ -63,7 +38,7 @@
     }
 </script>
 <style lang="scss">
-    #detail {
+    #Newmodification {
         width: 100%;
         height: calc(100% - 53px);
         position: relative;

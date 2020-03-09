@@ -1,46 +1,49 @@
 <template>
     <div class="projectprogressfeedback">
-        <el-row>
-            <div class="bigTitle">{{name}}</div>
-        </el-row>
         <div class="feedbackcontent">
             <el-form :model="detailForm" :rules="rules" ref="ruleForm" label-width="120px">
                 <el-form-item label="当前时间" prop="">
-                    <template v-show="!show"><span>{{detailForm.code}}</span></template>
-                    <el-input v-model="detailForm.code" v-show="show"></el-input>
+                    <!-- <template v-show="!show"><span>{{detailForm.code}}</span></template> -->
+                    <!-- <el-input v-model="detailForm.code" v-show="show"></el-input> -->
+                    <el-date-picker v-model="detailForm.week" type="week" format="yyyy年MM月第WW周" placeholder="选择周">
+                    </el-date-picker>
                 </el-form-item>
                 <el-form-item label="当月目标" prop="">
-                    <quillEditor @content="getcontent" v-bind:content="detailForm.dockingDepartment" style="height:150px;" v-model="detailForm.dockingDepartment">
+                    <quillEditor @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
+                        style="height:150px;">
                     </quillEditor>
                 </el-form-item>
                 <el-form-item label="本周进展" prop="">
-                    <quillEditor @content="getcontent" v-bind:content="detailForm.wayAddcontent"  style="height:150px;" v-model="detailForm.wayAddcontent">
+                    <quillEditor @on-change-cantent="getcontent" :content="detailForm.wayAddcontent"
+                        style="height:150px;">
                     </quillEditor>
                 </el-form-item>
-                 <el-form-item label="项目进展分类" prop="">
-                     <el-select v-model="typeValue" placeholder="请选择">
+                <el-form-item label="项目进展分类" prop="">
+                    <el-select v-model="typeValue" placeholder="请选择">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
-                 </el-form-item>
+                </el-form-item>
+                <el-form-item class="btnItem">
+                    <el-button @click="closeForm('ruleForm')">取消</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
+                </el-form-item>
             </el-form>
         </div>
     </div>
 </template>
 <script>
     import quillEditor from '../ue'
-    import quillEditor2 from '../ue2'
     export default {
         components: {
             quillEditor,
-            quillEditor2
         },
         data() {
             return {
-                typeValue:'',
+                typeValue: '',
                 name: '项目详情',
                 detailForm: {
-                    code: '1-XM01',
+                    week: '2020年03月第W11周',
                     name: '原28家互联工厂升级提效并满负荷',
                     platform: '海尔智家平台(智慧家庭)',
                     time: '2020年9月',
@@ -71,52 +74,63 @@
         methods: {
             //获取文本编辑器的内容
             getcontent(data) {
-                this.str = data;
+                this.detailForm.wayAddcontent = data;
+            },
+            //确定
+            submitForm(formName) {
+                console.log(this.formName)
+                let _that = this;
+                this.$refs[formName].validate(valid => {
+                    if (valid) {
+
+                    } else {
+                        console.log("error submit!!");
+                        return false;
+                    }
+                });
+            },
+            //取消
+            closeForm(formName) {
+                // this.addIndexVisible = false;
+                // this.$refs[formName].resetFields();
             },
         },
-        watch:{
-            detailForm(val, oldVal){
+        watch: {
+            detailForm(val, oldVal) {
                 console.log(val)
             }
-
         }
     }
 </script>
 <style lang="scss">
     .projectprogressfeedback {
         width: 100%;
-        .el-row {
-            width: 100%;
-            height: 35px;
-            line-height: 35px;
-            display: flex;
-
-            .bigTitle {
-                color: #02A7F0;
-                font-size: 14px;
-                float: left;
-                position: relative;
-                width: 95%;
-            }
-
-            .returnBtn {
-                color: #02A7F0;
-                font-size: 14px;
-                float: right;
-            }
-        }
 
         .feedbackcontent {
+            margin-top: 20px;
             width: 100%;
-            height: calc(100% - 35px);
+            height: calc(100% -20px);
+
             .el-form {
                 .el-form-item {
                     position: relative;
                     float: left;
                     width: 100%;
-                    .el-form-item__label{
+
+                    .el-form-item__label {
                         color: #02A7F0;
                     }
+
+                    .el-form-item__content {
+                        /* margin-left: 0 !important; */
+                        width: calc(100% - 120px);
+                        display: flex;
+                        float: left;
+                    }
+                }
+
+                .btnItem {
+                    padding-left: 40%;
                 }
             }
         }
