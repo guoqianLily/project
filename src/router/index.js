@@ -17,8 +17,15 @@ const router = new Router({
             path: '/taskfeedback',
             meta: { navShow: true, navNone: false },
             component: () =>
-                import ('../pages/taskFeedback/index.vue')
+                import ('../pages/taskFeedback/index.vue'),
 
+        },
+        {
+            name: 'detail',
+            path: '/detail',
+            meta: { navShow: true, navNone: false },
+            component: () =>
+                import ('../pages/taskFeedback/detail.vue'),
         },
         {
             name: "login", //登录
@@ -26,6 +33,7 @@ const router = new Router({
             meta: { navShow: false, navNone: true },
             component: () =>
                 import ('../pages/loginPage/login.vue'),
+                
         },
         {
             name: 'manage',

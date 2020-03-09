@@ -33,27 +33,26 @@
                 <el-table-column prop="titleName" label="项目名称" align="center"></el-table-column>
                 <el-table-column prop="actualCompletionTime" label="达成时间" align="center"></el-table-column>
                 <el-table-column label="操作" align="center">
-                    <!-- <template slot-scope="scope"> -->
-                        <span class="btn">申报</span>
-                        <span class="btn">导出</span>
-                        <span class="btn">详情</span>
-                        <span class="btn">修改</span>
-                        <span class="btn">删除</span>
-                    <!-- </template> -->
+                    <template slot-scope="scope">
+                    <span class="btn" @click="declareSth(scope.$index, scope.row)">申报</span>
+                    <span class="btn">导出</span>
+                    <span class="btn">详情</span>
+                    <span class="btn">修改</span>
+                    <span class="btn">删除</span>
+                    </template>
                 </el-table-column>
             </el-table>
             <div class="pagination_footer">
                 <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                     :current-page.sync="currentPage" :page-sizes="[8]" :page-size="pageSize" background
-                    layout=" prev, pager, next" prev-text="<<" next-text=">>"
-                    :total="total">
+                    layout=" prev, pager, next" prev-text="<<" next-text=">>" :total="total">
                 </el-pagination>
             </div>
         </div>
         <el-dialog title="新建" :visible.sync="dialogFormVisible">
             <el-form :model="addform">
-                <el-form-item label="文本编辑" >
-                  <quillEditor @content="getcontent" style="height:200px;"></quillEditor>
+                <el-form-item label="文本编辑">
+                    <quillEditor @content="getcontent" style="height:200px;"></quillEditor>
                 </el-form-item>
                 <el-form-item>
                     <div v-html="str"></div>
@@ -76,7 +75,7 @@
         },
         data() {
             return {
-                str:'',
+                str: '',
                 addform: {
                     name: ''
                 },
@@ -132,8 +131,19 @@
             }
         },
         methods: {
-            getcontent(data){
-                this.str=data;
+            declareSth(index, row) {
+                  this.$router.replace('/detail')
+                // this.$router.push({
+                //     path: "detail",
+                //     query: {
+                //         id: row.id,
+                //         // gridCode: row.indicatorCode,
+                //         // gridType: row.indicatorStructure
+                //     }
+                // });
+            },
+            getcontent(data) {
+                this.str = data;
             },
             search() {
                 console.log("查询事件")
@@ -149,7 +159,7 @@
                 console.log(this)
                 this.search()
             },
-        },    
+        },
 
     }
 </script>
@@ -164,18 +174,19 @@
             width: calc(100% - 20px);
             height: 35px;
             line-height: 35px;
-            padding: 15px 0px 15px 20px;
+            padding: 15px 0px 9px 20px;
 
             .el-form {
                 height: 100%;
                 width: 100%;
+                display: flex;
 
                 .el-form-item {
                     margin: 0 .1rem 0 0;
                     float: left;
 
                     .el-form-item__label {
-                        width: 20%;
+                        text-align: right;
                         height: 35px;
                         line-height: 35px;
                         font-size: 12px;
@@ -187,6 +198,11 @@
                         line-height: 35px;
                         float: left;
                         display: flex;
+
+                        .el-select,
+                        .el-input {
+                            width: 100%;
+                        }
                     }
                 }
             }
@@ -203,17 +219,20 @@
                 font-size: 12px;
                 width: calc(100% - 40px);
                 padding: 2px 0px 0px 20px;
+
                 th {
                     background-color: #409eff !important;
                     color: #fff !important;
                 }
-                .btn{
+
+                .btn {
                     color: #409eff !important;
                     cursor: pointer;
                     padding: 5px;
                 }
-                .btn:hover{
-                     color: #000 !important;
+
+                .btn:hover {
+                    color: #000 !important;
                 }
             }
 
