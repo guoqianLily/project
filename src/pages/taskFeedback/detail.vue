@@ -1,5 +1,8 @@
 <template>
     <div id="detail">
+        <el-row>
+            <div class="returnBtn" @click="returnMonth"><span class="indic-icon el-icon-back"></span>返回</div>
+        </el-row>
         <div id="projectDetails" class="content">
             <projectDetails></projectDetails>
         </div>
@@ -40,7 +43,11 @@
         methods: {
             handleClick(tab, event) {
                 console.log(tab, event);
-            }
+            },
+             //返回
+            returnMonth() {
+                this.$router.replace('/taskfeedback')
+            },
         }
 
     }
@@ -52,6 +59,20 @@
         position: relative;
         float: left;
         overflow: auto;
+
+        .el-row {
+            width: 100%;
+            height: 35px;
+            line-height: 35px;
+            display: flex;
+
+            .returnBtn {
+                color: #02A7F0;
+                font-size: 14px;
+                float: right;
+                    margin-left: 90%;
+            }
+        }
 
         .content {
             position: relative;

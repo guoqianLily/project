@@ -1,41 +1,35 @@
 <template>
-    <div class="projectDetails">
+    <div class="projectprogressfeedback">
         <el-row>
             <div class="bigTitle">{{name}}</div>
         </el-row>
-        <div class="Detailscontent">
+        <div class="feedbackcontent">
             <el-form :model="detailForm" :rules="rules" ref="ruleForm" label-width="120px">
-                <el-form-item label="项目编码" prop="" style="width:50%">
+                <el-form-item label="当前时间" prop="">
                     <template v-show="!show"><span>{{detailForm.code}}</span></template>
                     <el-input v-model="detailForm.code" v-show="show"></el-input>
                 </el-form-item>
-                <el-form-item label="项目名称" prop="" style="width:50%">
-                    <template v-show="!show"><span>{{detailForm.name}}</span></template>
-                    <el-input v-model="detailForm.name" v-show="show"></el-input>
-                </el-form-item>
-                <el-form-item label="所属平台" prop="" style="width:50%">
-                    <template v-show="!show"><span>{{detailForm.platform}}</span></template>
-                    <el-input v-model="detailForm.platform" v-show="show"></el-input>
-                </el-form-item>
-                <el-form-item label="达成时间" prop="" style="width:50%">
-                    <template v-show="!show"><span>{{detailForm.time}}</span></template>
-                    <el-input v-model="detailForm.time" v-show="show"></el-input>
-                </el-form-item>
-                <el-form-item label="对接部门" prop="">
+                <el-form-item label="当月目标" prop="">
                     <quillEditor @content="getcontent" v-bind:content="detailForm.dockingDepartment" style="height:150px;" v-model="detailForm.dockingDepartment">
                     </quillEditor>
                 </el-form-item>
-                <el-form-item label="路径/内容" prop="">
+                <el-form-item label="本周进展" prop="">
                     <quillEditor @content="getcontent" v-bind:content="detailForm.wayAddcontent"  style="height:150px;" v-model="detailForm.wayAddcontent">
                     </quillEditor>
                 </el-form-item>
+                 <el-form-item label="项目进展分类" prop="">
+                     <el-select v-model="typeValue" placeholder="请选择">
+                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                        </el-option>
+                    </el-select>
+                 </el-form-item>
             </el-form>
         </div>
     </div>
 </template>
 <script>
     import quillEditor from '../ue'
-     import quillEditor2 from '../ue2'
+    import quillEditor2 from '../ue2'
     export default {
         components: {
             quillEditor,
@@ -43,6 +37,7 @@
         },
         data() {
             return {
+                typeValue:'',
                 name: '项目详情',
                 detailForm: {
                     code: '1-XM01',
@@ -55,6 +50,22 @@
                 rules: {},
                 str: '',
                 show: false,
+                options: [{
+                    value: '海尔智家平台(智慧家庭)',
+                    label: '海尔智家平台(智慧家庭)'
+                }, {
+                    value: 'COSMO平台(工业互联网平台)',
+                    label: 'COSMO平台(工业互联网平台)'
+                }, {
+                    value: '海纳云平台(智慧社区/园区)',
+                    label: '海纳云平台(智慧社区/园区)'
+                }, {
+                    value: '盈康一生(生命健康/生态健康)',
+                    label: '盈康一生(生命健康/生态健康)'
+                }, {
+                    value: '海创汇平台(创业孵化平台)',
+                    label: '海创汇平台(创业孵化平台)'
+                }]
             }
         },
         methods: {
@@ -72,7 +83,7 @@
     }
 </script>
 <style lang="scss">
-    .projectDetails {
+    .projectprogressfeedback {
         width: 100%;
         .el-row {
             width: 100%;
@@ -95,7 +106,7 @@
             }
         }
 
-        .Detailscontent {
+        .feedbackcontent {
             width: 100%;
             height: calc(100% - 35px);
             .el-form {
