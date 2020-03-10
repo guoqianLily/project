@@ -532,7 +532,7 @@ export default {
   .nowTimeShow {
     height: 100%;
     padding: 0 30px 0 10px;
-    border: 1px solid #dcdfe6;
+    // border: 1px solid #dcdfe6;
     border-radius: 4px;
   }
 

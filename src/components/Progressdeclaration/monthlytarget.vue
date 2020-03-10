@@ -297,7 +297,7 @@
                         float: left;
                         text-align: right;
                         display: flex;
-
+                        justify-content: flex-end;
                         .addBtn {
                             margin-left: 90.5%;
                             height: 26px;
