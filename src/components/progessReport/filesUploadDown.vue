@@ -250,9 +250,9 @@ export default {
         userId: this.$store.state.user.userId,
         fileBusinessId:this.$route.query.id,
       };
+      
       getFileListAllData(searchData)
         .then(res => {
-          console.log(res)
           if (res.result.length > 0) {
             _that.tableData = res.result;
             _that.loading = false;
@@ -264,7 +264,6 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
           _that.loading = false;
         });
     },
@@ -291,7 +290,6 @@ export default {
     },
     //   修改
     handleEdit(index, row) {
-      console.log('进来了')
       this.addIndexVisible = true;
       this.title = "修改信息";
       this.$nextTick(() => {
@@ -351,7 +349,6 @@ export default {
       let _that = this;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          console.log(_that.formType)
           const formData = _that.upLoadObj;
           if (_that.formType == "updateForm") {
             this.$refs.upload.submit();
@@ -399,7 +396,6 @@ export default {
     dealWidthTime(val){
       let time = getLocalTime(val,'yyyy-MM-dd hh:mm:ss');
       return time;
-      console.log(time)
     }
   }
 };
@@ -410,7 +406,6 @@ export default {
 }
 
 #filesUploadDown {
-  padding-top: 10px;
   height: calc(100% - 48px);
   .uplaodFile,
   .downLoadFile {

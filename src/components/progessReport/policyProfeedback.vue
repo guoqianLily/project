@@ -42,7 +42,7 @@
           element-loading-spinner="el-icon-loading"
           :data="tableData"
           border
-          style="width: 95%;margin:0 auto;"
+          style="width: 100%;margin:0 auto;"
         >
           <el-table-column
             prop="policyType"
@@ -138,7 +138,7 @@
           label="本周进展"
           prop="weekContent"
           class="autoElform"
-          label-width="120px"
+          label-width="90px"
         >
           <quillEditor
             @on-change-content="getcontent1"
@@ -151,7 +151,7 @@
         <el-form-item
           label="政策进展分类"
           prop="weekproProgressType"
-          label-width="120px"
+          label-width="90px"
         >
           <el-select v-model="addForm.weekproProgressType" placeholder="请选择" @change="getVal">
             <el-option
@@ -193,6 +193,9 @@ import {
   AddPolicyProfeedbackData,
   getweekProgressClassData
 } from "../../services/policyPage.js";
+import {
+        getMonthMessage,
+    } from '../../services/declaresth'
 import quillEditor from "../ue";
 export default {
   components: {
@@ -212,7 +215,7 @@ export default {
       searchForm: {
         fieldArr: [],
         weekContent: "",
-        monthBud: "111111",
+        monthBud: "",
         weekproProgressType: [],
         unableFlag: ""
       },
@@ -271,7 +274,6 @@ export default {
       type:'policyProgress',
       userId:this.$store.state.user.user
     }).then(res => {
-      console.log(res)
       this.searchForm.weekproProgressType = res.result;
     })
   },
@@ -298,16 +300,21 @@ export default {
     //查询
     searchMessage(type) {
       var _that = this;
-      console.log(this.$store);
       let searchData = {
         userId: this.$store.state.user.userId,
         projectId: this.$route.query.id,
         month:this.monthVal,
         week:this.weekVal
       };
+      
+      //查询当月目标
+      getMonthMessage(this.$store.state.user.userId, this.$route.query.id, this.monthVal).then((res) => {
+          if (res.data.result.length > 0) {
+              searchForm.monthBud = res.data.result[0].projectContext;
+          }
+      });
       getPolicyProfeedbackAllData(searchData)
         .then(res => {
-          console.log(res);
           if (res.result.length > 0) {
             _that.tableData = res.result;
             _that.loading = false;
@@ -318,7 +325,6 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
           _that.loading = false;
         });
     },
@@ -499,8 +505,8 @@ export default {
     },
     // 获取当前时间
     getNowTime(val) {
-      console.log(this.nowTime);
-      console.log(val);
+      // console.log(this.nowTime);
+      // console.log(val);
     },
     getcontent1(){
 

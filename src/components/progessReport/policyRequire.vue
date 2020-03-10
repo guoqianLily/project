@@ -207,7 +207,6 @@ export default {
       type:'policy_type',
       userId:this.$store.state.user.user
     }).then(res => {
-      console.log(res)
       this.searchForm.policyType = res.result;
     })
   },
@@ -234,14 +233,12 @@ export default {
     //查询
     searchMessage(type) {
       var _that = this;
-      console.log(this.$store)
       let searchData = {
         userId:this.$store.state.user.userId,
         projectId:this.$route.query.id
       };
       getpolicyRequireAllData(searchData)
         .then(res => {
-          console.log(res)
           if (res.result.length > 0) {
             _that.tableData = res.result;
             _that.loading = false;
@@ -253,7 +250,6 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
           _that.loading = false;
         });
     },
@@ -338,9 +334,7 @@ export default {
     },
     //新增修改提交事件
     submitForm(formName) {
-      console.log(this.addForm)
       let _that = this;
-      console.log(_that.$refs.content)
       _that.addForm.content = _that.$refs.content.content;
       _that.addForm.deadLine = _that.$refs.deadLine.content;
       _that.addForm.dockingDepartment = _that.$refs.dockingDepartment.content;

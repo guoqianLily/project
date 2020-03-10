@@ -247,7 +247,6 @@
         width: 100%;
 
         .feedbackcontent {
-            margin-top: 20px;
             width: 100%;
             height: calc(100% -20px);
 

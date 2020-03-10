@@ -2,7 +2,7 @@
     <div id="monthlytarget" class="listPage">
         <div class="queryRow">
             <el-form :model="searchForm">
-                <el-form-item>
+                <el-form-item style="margin-bottom:10px;">
                     <el-button v-if="state==1" type="primary" @click="addIndex()" class="addBtn">新增月度目标</el-button>
                 </el-form-item>
             </el-form>
@@ -299,9 +299,10 @@
                         display: flex;
 
                         .addBtn {
-                            margin-left: 88.5%;
-                            height: 30px;
+                            margin-left: 90.5%;
+                            height: 26px;
                             line-height: 7px;
+                            font-size: 12px;
                             padding: 0px 5px 0px 5px;
                         }
 

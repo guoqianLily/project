@@ -53,8 +53,8 @@
        .el-row {
             width: 100%;
             padding: 10px 0% 10px 8%;
-            height: 35px;
-            line-height: 35px;
+            height: 44px;
+            line-height: 44px;
             display: flex;
 
             .bigTitle {
@@ -67,7 +67,7 @@
                 span {
                     width: 2px;
                     height: 34px;
-                    padding: 0px 6px 1px 0px;
+                    padding: 0px 3px 1px 0px;
                     background-color: #409eff;
                     margin-right: 5px;
                 }
