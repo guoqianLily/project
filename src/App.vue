@@ -328,7 +328,8 @@ display: table-cell!important;
 }
 .h-logoBox{
     /* margin:0 40px; */
-    width:25%;
+    // width:25%;
+    width: 28%;
     height: 48px;
     line-height: 48px;
     white-space: nowrap;

@@ -22,7 +22,7 @@
                     <monthlytarget v-if="activeName=='third'"></monthlytarget>
                 </el-tab-pane>
                 <!-- <el-tab-pane label="项目回顾" name="four"> -->
-                    <!-- <listofIndicators v-if="activeName=='third'"></listofIndicators> -->
+                <!-- <listofIndicators v-if="activeName=='third'"></listofIndicators> -->
                 <!-- </el-tab-pane> -->
                 <el-tab-pane label="附件" name="five">
                     <filesUploadDown v-if="activeName=='five'"></filesUploadDown>
@@ -38,6 +38,9 @@
     import policyRequire from '../../components/progessReport/policyRequire'
     import monthlytarget from '../../components/Progressdeclaration/monthlytarget'
     import filesUploadDown from '../../components/progessReport/filesUploadDown'
+    import 'quill/dist/quill.core.css'
+    import 'quill/dist/quill.snow.css'
+    import 'quill/dist/quill.bubble.css'
     export default {
         components: {
             projectDetails,
@@ -75,7 +78,8 @@
         overflow: auto;
 
         .el-row {
-            width: 100%;
+            width: 90%;
+            padding: 10px 0% 10px 8%;
             height: 35px;
             line-height: 35px;
             display: flex;
@@ -85,8 +89,8 @@
                 font-size: 16px;
                 float: left;
                 position: relative;
-                width: 86%;
-                padding-left: 60px;
+                width: 95%;
+                // padding-left: 60px;
                 span {
                     width: 2px;
                     height: 34px;
@@ -100,6 +104,7 @@
                 color: #02A7F0;
                 font-size: 14px;
                 float: right;
+                width: 50px;
 
             }
         }
@@ -117,9 +122,10 @@
                 color: #409EFF !important;
             }
         }
-        .projectDetails{
-            height: 400px;
-        }
+
+        // .projectDetails {
+        //     height: 400px;
+        // }
 
     }
 </style>

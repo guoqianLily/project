@@ -41,6 +41,11 @@ const searchWeekMessage= "/chouChing/BusinessWeekController/searchAllData";
 const addWeekMessage= "/chouChing/BusinessWeekController/saveData";
 //修改周报信息接口
 const upDataWeekMessage= "/chouChing/BusinessWeekController/updateData";
+
+//当月目标修改保存接口
+const upDatamonthlytarget= "/chouChing/BusinessTargetController/updateData";
+//当月目标新增保存接口
+const addmonthlytarget= "/chouChing/BusinessTargetController/saveData";
 export default {
     searchAllData,
     searchBaseMessage,
@@ -48,6 +53,9 @@ export default {
     searchMonthMessage,
     searchWeekMessage,
     addWeekMessage,
-    upDataWeekMessage
+    upDataWeekMessage,
+    upDatamonthlytarget,
+    addmonthlytarget
+
 }
 

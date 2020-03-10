@@ -10,53 +10,47 @@
         <div class="listBox">
             <div class="tableBox">
                 <el-table v-loading="loading" element-loading-text="数据加载..." element-loading-spinner="el-icon-loading"
-                    :data="tableData" border style="width: 100%" height="98%">
+                    :data="tableData" border style="width:100%">
                     <el-table-column label="序号" prop="" width="80">
                         <template slot-scope="scope">
                             <span v-text="getIndex(scope.$index)"> </span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="configType" label="月份">
+                    <el-table-column prop="month" label="月份" width="120">
                     </el-table-column>
-                    <el-table-column prop="configName" label="项目月度目标">
+                    <el-table-column prop="" label="项目月度目标">
+                        <template slot-scope="scope">
+                            <div v-html="scope.row.projectContext">
+                            </div>
+                        </template>
                     </el-table-column>
-                    <el-table-column prop="indicatorTypeName" label="政策月度目标">
+                    <el-table-column prop="" label="政策月度目标">
+                           <template slot-scope="scope">
+                            <div v-html="scope.row.policyContext">
+                              
+                            </div>
+                        </template>
                     </el-table-column>
-                    <el-table-column prop="" label="操作" v-if="state==1">
+                    <el-table-column prop="" label="操作" v-if="state==1" width="120">
                         <template slot-scope="scope">
                             <span @click="handleEdit(scope.$index, scope.row)" class="upBtns">修改</span>
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
-            <div class="pagination">
-                <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                    :current-page="currentPage1" :page-size="pageSize" layout="prev, pager, next" :total="tableTotal"
-                    style="margin-top:5px;">
-                </el-pagination>
-            </div>
         </div>
         <el-dialog :title="title" :visible.sync="addIndexVisible" id='addNewdialog'>
             <el-form :model="addForm" ref="addForm" :rules="rules" label-position="right">
-                <el-form-item class="currenttime" label="月份" prop="configType" label-width="120px">
-                    <el-date-picker v-model="addForm.configType" type="month" format="yyyy年MM月">
+                <el-form-item class="currenttime" label="月份" prop="month" label-width="120px">
+                    <el-date-picker v-model="addForm.month" type="month" format="yyyy年MM月" value-format="yyyy-MM">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item class="currenttime" label="选择" prop="value1" label-width="120px">
-                     <el-select v-model="addForm.value1" placeholder="请选择">
-                        <el-option label="全部" value="1">
-                        </el-option>
-                       <el-option label="阶段1" value="2">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="项目月度目标" prop="configName" label-width="120px">
-                    <quillEditor  ref="childMethod" :content="addForm.configName"  style="height:150px;">
+                <el-form-item label="项目月度目标" prop="projectContext" label-width="120px">
+                    <quillEditor ref="childMethod" :content="addForm.projectContext" style="height:150px;">
                     </quillEditor>
                 </el-form-item>
-                <el-form-item label="政策月度目标" prop="indicatorTypeName" label-width="120px">
-                    <quillEditor  ref="childMethod1" :content="addForm.indicatorTypeName" 
-                        style="height:150px;">
+                <el-form-item label="政策月度目标" prop="policyContext" label-width="120px">
+                    <quillEditor ref="childMethod1" :content="addForm.policyContext" style="height:150px;">
                     </quillEditor>
                 </el-form-item>
                 <el-form-item class="btnItem">
@@ -69,10 +63,16 @@
 </template>
 <script>
     import quillEditor from '../ue'
-       import {
-        getBaseMessage,
+    import {
+        getMonthMessage,
+        getWeek,
+        upDataNewMonthlytarget,
+        addNewMonthlytarget,
         getLocalTime
     } from '../../services/declaresth'
+    import 'quill/dist/quill.core.css'
+    import 'quill/dist/quill.snow.css'
+    import 'quill/dist/quill.bubble.css'
     export default {
         components: {
             quillEditor,
@@ -92,34 +92,26 @@
                 searchForm: {},
                 addForm: {
                     id: '',
-                    value1:'',
-                    currenttime: '',
-                    configType: '',
-                    configName: '',
-                    indicatorTypeName: '',
-                    unableFlag: ''
+                    month: '',
+                    projectContext: '',
+                    policyContext: '',
                 },
                 rules: {
-                    configType: [{
+                    month: [{
                         required: true,
-                        message: '请选择大类名称',
+                        message: '请选择月份',
                         trigger: 'change'
                     }],
-                    indicatorTypeName: [{
+                    projectContext: [{
                         required: true,
-                        message: '请输入分类名称',
+                        message: '请输入项目月度目标',
                         trigger: 'blur'
                     }, ],
-                    value1:[{
+                    policyContext: [{
                         required: true,
-                        message: '请选择大类名称',
-                        trigger: 'change'
+                        message: '政策月度目标',
+                        trigger: 'blur'
                     }],
-                    unableFlag: [{
-                        required: true,
-                        message: '请输入分类名称',
-                        trigger: 'blur'
-                    }, ],
 
                 },
                 tableData: [],
@@ -128,9 +120,25 @@
             }
         },
         mounted() {
-            this.searchMessage()
+            this.searchMessage();
         },
         methods: {
+            //查询
+            searchMessage() {
+                //查询当月目标
+                let userid = this.$store.state.user.userId;
+                let projectId = this.$route.query.id;
+                let month = ""
+                getMonthMessage(userid, projectId, month).then((res) => {
+                    if (res.data.result.length > 0) {
+                        this.tableData = res.data.result;
+                        this.loading = false
+                    }else{
+                        this.tableData = [];
+                         this.loading = false
+                    }
+                });
+            },
             //获取文本编辑器的内容
             getcontent(val) {
                 this.addForm.configName = val;
@@ -154,27 +162,6 @@
                 this.tableData = [];
                 this.searchMessage();
             },
-            //查询
-            searchMessage(type) {
-                console.log(type)
-                this.tableData = [{
-                        configType: '2020年3月',
-                        configName: 'Ⅱ-17：参与标准制定：青岛智慧灯杆、智慧照明系统行业标准制定;Ⅱ-17：承接青岛市数字照明大数据管理平台搭建',
-                        indicatorTypeName: 'Ⅱ-17：参与标准制定：青岛智慧灯杆、智慧照明系统行业标准制定;Ⅱ-17：承接青岛市数字照明大数据管理平台搭建',
-                    },
-                    {
-                        configType: '2020年4月',
-                        configName: 'Ⅱ-17：参与标准制定：青岛智慧灯杆、智慧照明系统行业标准制定;Ⅱ-17：承接青岛市数字照明大数据管理平台搭建',
-                        indicatorTypeName: 'Ⅱ-17：参与标准制定：青岛智慧灯杆、智慧照明系统行业标准制定;Ⅱ-17：承接青岛市数字照明大数据管理平台搭建',
-                    },
-                    {
-                        configType: '2020年5月',
-                        configName: 'Ⅱ-17：参与标准制定：青岛智慧灯杆、智慧照明系统行业标准制定;Ⅱ-17：承接青岛市数字照明大数据管理平台搭建',
-                        indicatorTypeName: 'Ⅱ-17：参与标准制定：青岛智慧灯杆、智慧照明系统行业标准制定;Ⅱ-17：承接青岛市数字照明大数据管理平台搭建',
-                    }
-                ]
-                this.loading = false
-            },
             // //获取表格序号
             getIndex($index) {
                 //表格序号
@@ -186,12 +173,15 @@
                 this.title = "新增月度目标"
                 this.$nextTick(() => {
                     this.$refs.addForm
-                        .resetFields(); //等弹窗里的form表单的dom渲染完在执行this.$refs.addForm.resetFields()，去除验证
+                .resetFields(); //等弹窗里的form表单的dom渲染完在执行this.$refs.addForm.resetFields()，去除验证
                     this.addForm = {
-                        id: '',
-                        configType: '',
-                        configName: '',
-                        indicatorTypeName: '',
+                        id:'',
+                        projectId: this.$route.query.id,
+                        month: '',
+                        userId :this.$store.state.user.userId,
+                        ableFlag:'1',
+                        projectContext: '',
+                        policyContext: '',
                     }
                 });
 
@@ -202,13 +192,15 @@
                 this.title = "修改月度目标";
                 this.$nextTick(() => {
                     this.addForm = {
-                        id: row.id,
-                        configType: row.configType,
-                        configName: row.configName,
-                        indicatorTypeName: row.indicatorTypeName,
+                        id:row.id,
+                        projectId: this.$route.query.id,
+                        month: row.month,
+                        userId :this.$store.state.user.userId,
+                        ableFlag:'1',
+                        projectContext: row.projectContext,
+                        policyContext: row.policyContext,
                     }
                 });
-
             },
             //   删除
             handleDelete(index, row) {
@@ -227,13 +219,53 @@
             },
             //新增修改提交事件
             submitForm(formName) {
-                console.log(this.$refs.childMethod.content)
+                this.addForm.projectContext=this.$refs.childMethod.content;
+                this.addForm.policyContext=this.$refs.childMethod1.content;  
+                // console.log(this.$refs.childMethod.content)
                 let _that = this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         const formData = _that.addForm;
+                        if(_that.addForm.id==""){
+                            addNewMonthlytarget(formData).then((res) => {
+                                // console.log(res)
+                                if (res.data.success) {
+                                    _that.$message({
+                                        type: "success",
+                                        message: "操作成功!"
+                                    });
+                                    this.addIndexVisible =false;
+                                    _that.searchMessage();
+                                } else {
+                                    _that.$message({
+                                        type: "error",
+                                        message: res.data.message
+                                    });
+                                      this.addIndexVisible =false;
+                                    _that.searchMessage();
+                                }
+                            });
 
-
+                        }else{
+                             upDataNewMonthlytarget(formData).then((res) => {
+                                // console.log(res)
+                                if (res.data.success) {
+                                    _that.$message({
+                                        type: "success",
+                                        message: "操作成功!"
+                                    });
+                                    this.addIndexVisible =false;
+                                    _that.searchMessage();
+                                } else {
+                                    _that.$message({
+                                        type: "error",
+                                        message: res.data.message
+                                    });
+                                      this.addIndexVisible =false;
+                                    _that.searchMessage();
+                                }
+                            });
+                        }
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -249,6 +281,9 @@
     }
 </script>
 <style lang="scss">
+.ql-editor .ql-size-huge {
+    font-size: 2.5em !important;
+}
     .el-form-item__content {
         margin-left: 0 !important;
     }
@@ -284,6 +319,7 @@
                         text-decoration: underline;
                     }
                 }
+
                 td {
                     text-align: center;
                 }

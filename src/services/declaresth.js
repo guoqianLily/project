@@ -116,10 +116,42 @@ export function addNewWeekMessage(data) {
             })
     })
 }
+
 export function upDataNewWeekMessage(data) {
     return new Promise((resolve, reject) => {
         http({
                 url: API_dec.upDataWeekMessage,
+                method: 'POST',
+                data: data
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
+export function upDataNewMonthlytarget(data) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.upDatamonthlytarget,
+                method: 'POST',
+                data: data
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+export function addNewMonthlytarget(data) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.addmonthlytarget,
                 method: 'POST',
                 data: data
             })

@@ -1,6 +1,6 @@
 <template>
     <div class="projectDetails">
-        <el-row>
+        <el-row v-if="state==1">
             <div class="query">
                 <el-button type="primary" size="small" class="titleBtn" @click="addIndex" v-if="state==1">
                     提交</el-button>
@@ -10,34 +10,32 @@
             <el-form :model="detailForm" :rules="rules" ref="ruleForm" label-width="80px">
                 <el-form-item label="项目编码" prop="" style="width:50%">
                     <el-input v-if="state==1" v-model="detailForm.projectCode"></el-input>
-                    <template v-else><span>{{detailForm.projectCode}}</span></template>
+                    <template v-else><span v-html="detailForm.projectCode"></span></template>
                 </el-form-item>
                 <el-form-item label="项目名称" prop="" style="width:50%">
                     <el-input v-if="state==1" v-model="detailForm.projectName"></el-input>
-                    <template v-else><span>{{detailForm.projectName}}</span></template>
+                    <template v-else><span v-html="detailForm.projectName"></span></template>
                 </el-form-item>
                 <el-form-item label="所属平台" prop="" style="width:50%">
                     <el-input v-if="state==1" v-model="detailForm.departmantName"></el-input>
-                    <template v-else><span>{{detailForm.departmantName}}</span></template>
+                    <template v-else><span v-html="detailForm.departmantName"></span></template>
                 </el-form-item>
                 <el-form-item label="达成时间" prop="" style="width:50%">
                     <el-input v-if="state==1" v-model="detailForm.deadLine"></el-input>
-                    <template v-else><span>{{detailForm.deadLine}}</span></template>
+                    <template v-else><span v-html="detailForm.deadLine"></span></template>
                 </el-form-item>
                 <el-form-item label="对接部门" prop="">
                     <!-- @on-change-content="getcontent" :content="detailForm.dockingDepartment" -->
                     <quillEditor v-if="state==1" ref="childMethod1" :content="detailForm.dockingDepartment" style="height:150px;" >
                     </quillEditor>
-                    <div v-else class="department" style="height:50px;">
-                        {{detailForm.dockingDepartment}}
+                    <div v-else class="department" style="height:50px;" v-html="detailForm.dockingDepartment">
                     </div>
                 </el-form-item>
                 <el-form-item label="路径/内容" prop="">
                     <!-- @on-change-content="getcontent2" :content="detailForm.wayAddcontent" -->
                     <quillEditor v-if="state==1" ref="childMethod" :content="detailForm.content"  style="height:150px;">
                     </quillEditor>
-                    <div v-else class="ljcontent">
-                        {{detailForm.content}}
+                    <div v-else class="ljcontent" v-html="detailForm.content">
                     </div>
                 </el-form-item>
             </el-form>
@@ -120,7 +118,7 @@
                 let projectId = this.$route.query.id //项目名称
                 getBaseMessage(userid, projectId).then((res) => {
                     if (res.data.result) {
-                        res.data.result.deadLine = getLocalTime(res.data.result.deadLine, 'yyyy-MM')
+                        // res.data.result.deadLine = getLocalTime(res.data.result.deadLine, 'yyyy-MM')
                         this.detailForm = res.data.result;
                     }
                 });

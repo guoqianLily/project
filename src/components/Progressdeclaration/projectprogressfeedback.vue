@@ -8,7 +8,7 @@
                     <!-- <el-date-picker v-if="state==1" v-model="nowTime" @change="getNowTime" type="week"
                         format="yyyy年MM月第WW周" value-format="yyyy-MM-dd" placeholder="选择周">
                     </el-date-picker> -->
-                    <template><span>{{nowTimeValue}}</span></template>
+                    <template><span v-html="nowTimeValue"></span></template>
                 </el-form-item>
                 <el-form-item label="当月目标" prop="">
                     <!-- <quillEditor v-if="state==1" @on-change-content="getcontent" :content="projectdetailForm.dockingDepartment"
@@ -32,9 +32,9 @@
                         </el-option>
                     </el-select>
                     <template v-else>
-                        <span v-if="completionStatus1">Ⅰ已达成</span>
-                        <span v-else-if="completionStatus2">Ⅱ按阶段目标，预实零差</span>
-                        <span v-else-if="completionStatus3">Ⅲ按阶段目标，预实有差</span>
+                        <span v-if="projectdetailForm.proProgressType=='completionStatus1'">Ⅰ已达成</span>
+                        <span v-else-if="projectdetailForm.proProgressType=='completionStatus2'">Ⅱ按阶段目标，预实零差</span>
+                        <span v-else-if="projectdetailForm.proProgressType=='completionStatus3'">Ⅲ按阶段目标，预实有差</span>
                     </template>
                 </el-form-item>
                 <el-form-item class="btnItem" v-if="state==1">
@@ -71,14 +71,11 @@
                 weekData: {},
                 weekId: '',
                 projectdetailForm: {
-                    week: '2020年03月第W11周',
-                    projectContext: '原28家互联工厂升级提效并满负荷',
-                    content: '海尔智家平台(智慧家庭)',
+                    week: '',
+                    projectContext: '',
+                    content: '',
                     proProgressType: '',
-                    time: '2020年9月',
-                    dockingDepartment: 'dddddd',
-                    wayAddcontent: 'ttttt',
-                    typeValue: '海尔智家平台(智慧家庭)',
+                    time: '',
                 },
                 rules: {},
                 state: this.$route.query.state,
@@ -106,7 +103,7 @@
         },
         methods: {
             getVal(){
-                this.projectdetailForm.content=this.$refs.childMethod.content;
+                this.projectdetailForm.content=this.$refs.childMethod.content
             },
             //获取文本编辑器的内容
             getcontent(data) {

@@ -50,19 +50,20 @@
         position: relative;
         float: left;
         overflow: auto;
-        .el-row {
-            width: 100%;
-            height: 45px;
-            line-height: 45px;
+       .el-row {
+            width: 90%;
+            padding: 10px 0% 10px 8%;
+            height: 35px;
+            line-height: 35px;
             display: flex;
 
-             .bigTitle {
+            .bigTitle {
                 color: #02A7F0;
                 font-size: 16px;
                 float: left;
                 position: relative;
-                width: 86%;
-                padding-left: 60px;
+                width: 95%;
+                // padding-left: 60px;
                 span {
                     width: 2px;
                     height: 34px;
@@ -76,6 +77,7 @@
                 color: #02A7F0;
                 font-size: 14px;
                 float: right;
+                width: 50px;
 
             }
         }

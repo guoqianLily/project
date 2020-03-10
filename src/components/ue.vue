@@ -1,7 +1,7 @@
 <template>
   <div class="zdyeditor" style="">
     <!-- <el-card style="height: 100%;width:100%"> -->
-    <quill-editor v-model="content" ref="myQuillEditor" style="height:100%;width:100%" :options="editorOption">
+    <quill-editor v-model="content" ref="myQuillEditor"  @change="onEditorChange($event)" style="height:100%;width:100%" :options="editorOption">
       <!-- 自定义toolar -->
 
     </quill-editor>
@@ -18,19 +18,6 @@
   import 'quill/dist/quill.core.css'
   import 'quill/dist/quill.snow.css'
   import 'quill/dist/quill.bubble.css'
-  //引入font.css 
-  import '../assets/css/font.css'
-  // let Size = Quill.import('attributors/style/size')
-  // Size.whitelist = ['10px', '12px', '14px', '16px', '18px', '20px']
-  // Quill.register(Size, true)
-
-  // // 自定义字体类型
-  // var fonts = ['SimSun', 'SimHei', 'Microsoft-YaHei', 'KaiTi', 'FangSong', 'Arial', 'Times-New-Roman', 'sans-serif',
-  //   '宋体', '黑体'
-  // ]
-  // var Font = Quill.import('formats/font')
-  // Font.whitelist = fonts
-  // Quill.register(Font, true)
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
     ["blockquote", "code-block"], // 引用  代码块
@@ -55,9 +42,10 @@
       indent: "+1"
     }], // 缩进
     // [{'direction': 'rtl'}],                         // 文本方向
-    [{
-      size: ['10px', '12px', '14px', '16px', '18px', '20px']
-    }], // 字体大小
+    // [{
+    //   size: ['10px', '12px', '14px', '16px', '18px', '20px']
+    // }], // 字体大小
+    [{'size': ['small', false, 'large', 'huge']}], // custom dropdown
     [{
       header: [1, 2, 3, 4, 5, 6, false]
     }], // 标题
@@ -107,7 +95,23 @@
       },
       onEditorBlur() {}, // 失去焦点事件
       onEditorFocus() {}, // 获得焦点事件
-      onEditorChange() {}, // 内容改变事件
+      onEditorChange({editor, html, text}) {
+        var val=html
+        var newval = val;
+        if (val.split("strong").length > 1) {
+          newval = val.slice(0, val.split("strong")[0].length + 6) + ' style="font-weight: bold !important"' + val
+            .slice(val.split("strong")[0].length + 6)
+          val = newval;
+        }
+        if (val.split("em").length > 1) {
+          newval = val.slice(0, val.split("em")[0].length + 2) + ' style="font-style: italic !important"' + val.slice(
+          val.split("em")[0].length + 2)
+          val = newval;
+        }
+         this.content = val;
+         console.log( this.content)
+        
+      }, // 内容改变事件
       // 转码
       escapeStringHTML(str) {
         str = str.replace(/&lt;/g, '<');
@@ -120,31 +124,10 @@
         return this.$refs.myQuillEditor.quill;
         console.log(this.$refs.myQuillEditor.quill)
       },
-      // content: {
-      //   get() {
-      //     return this.content;
-      //   },
-      //   set(val) {
-      //     var newval = val;
-      //     if (val.split("strong").length > 1) {
-      //       newval = val.slice(0, val.split("strong")[0].length + 6) + ' style="font-weight: bold !important"' + val
-      //         .slice(val.split("strong")[0].length + 6)
-      //       val = newval;
-      //     }
-      //     if (val.split("em").length > 1) {
-      //       newval = val.slice(0, val.split("em")[0].length + 2) + ' style="font-style: italic !important"' + val
-      //         .slice(
-      //           val.split("em")[0].length + 2)
-      //       val = newval;
-      //     }
-      //     //grants_改变由父组件控制
-      //     this.$emit("on-change-cantent", val);
-      //   }
-      // }
     },
     mounted() {
-      let content = ''; // 请求后台返回的内容字符串
-      this.str = this.escapeStringHTML(content);
+      // this.content = val; // 请求后台返回的内容字符串
+      // this.str = this.escapeStringHTML(content);
     },
     watch: {
       content(val, oldVal) {
@@ -156,10 +139,10 @@
         }
         if (val.split("em").length > 1) {
           newval = val.slice(0, val.split("em")[0].length + 2) + ' style="font-style: italic !important"' + val.slice(
-            val.split("em")[0].length + 2)
+          val.split("em")[0].length + 2)
           val = newval;
         }
-         this.content=val;
+        // this.content=val;
         // console.log(newval);
         // console.log(val)
         //  this.$emit("on-change-content", val);
@@ -277,6 +260,23 @@
   .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before {
     content: '20px';
   }
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: '14px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
+  content: '12px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=large]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before {
+  content: '16px';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=huge]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before {
+  content: '18px';
+}
+
 
   .ql-snow .ql-picker.ql-header .ql-picker-label::before,
   .ql-snow .ql-picker.ql-header .ql-picker-item::before {
