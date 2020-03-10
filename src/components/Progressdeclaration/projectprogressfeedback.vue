@@ -105,9 +105,9 @@
                 let userid = this.$store.state.user.userId;
                 let currentTime = getLocalTime(new Date(), 'yyyy-MM-dd') //项目名称
                 getWeek(userid, currentTime).then((res) => {
-                    if (res.data.result) {
-                        this.weekobj=res.data.result;
-                        let newdata=res.data.result;
+                    if (res.data.result.length) {
+                        this.weekobj=res.data.result[0];
+                        let newdata=res.data.result[0];
                         let newValDate = this.nowTime.split("-").join("");
                         this.nowTimeValue =
                             newdata.year +
