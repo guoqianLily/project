@@ -158,7 +158,7 @@
                     margin-bottom: 5px;
 
                     .el-form-item__label {
-                        color: #02A7F0;
+                        color: #409eff;
                     }
 
                     .el-form-item__content {

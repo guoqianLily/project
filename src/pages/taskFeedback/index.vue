@@ -28,7 +28,7 @@
         <div class="listBox">
             <div class="tableBox table_search">
                 <el-table ref="searchMulTable" v-loading="loading" element-loading-text="数据加载..." :data="tableData"
-                    element-loading-spinner="el-icon-loading" border style="width: 100%">
+                    element-loading-spinner="el-icon-loading" border style="width:100%;" height="98%">
                     <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
                     <el-table-column prop="id" label="id" align="center" v-if='show'></el-table-column>
                     <el-table-column prop="departmantName" label="平台" align="center"></el-table-column>
@@ -156,7 +156,7 @@
                     name: "detail",
                     query: {
                         state: '1', //1可编辑,
-                        id:row.id
+                        id: row.id
                     }
                 })
                 //   this.$router.replace('/detail')
@@ -167,7 +167,7 @@
                     name: "detail",
                     query: {
                         state: '0', //1可编辑,
-                        id:row.id
+                        id: row.id
 
                     }
                 })
@@ -182,7 +182,7 @@
                     query: {
                         state: '1', //1可编辑,
                         type: 'add' //新增，还是修改up
-                       
+
                     }
                 });
             },
@@ -192,8 +192,8 @@
                     name: "newModification",
                     query: {
                         state: '1', //1可编辑,
-                        type: 'updata' ,//新增，还是修改up
-                        id:row.id
+                        type: 'updata', //新增，还是修改up
+                        id: row.id
                     }
                 });
 
@@ -234,10 +234,13 @@
     .el-table th.gutter {
         display: table-cell !important;
     }
-
     .el-button--primary {
         height: 34px;
         line-height: 10px;
+    }
+    .el-input__inne {
+        height: 34px !important;
+        line-height: 34px !important;
     }
 
     #taskFeedback {
@@ -249,7 +252,6 @@
         overflow: hidden;
         width: 100%;
         box-sizing: border-box;
-
         .search_content {
             width: calc(100% - 20px);
             height: 35px;
@@ -260,13 +262,11 @@
                 height: 100%;
                 width: 100%;
                 display: flex;
-
                 .el-form-item {
                     margin: 0 .1rem 0 0;
                     float: left;
                     display: flex;
                     padding-left: 0%;
-
                     .el-form-item__label {
                         width: 62px;
                         text-align: right;
@@ -274,7 +274,6 @@
                         line-height: 35px;
                         font-size: 12px;
                     }
-
                     .el-form-item__content {
                         // width: 80%;
                         height: 35px;
@@ -282,15 +281,10 @@
                         float: left;
                         display: flex;
                         margin-left: 0px !important;
-
                         .el-select,
                         .el-input {
                             width: 100%;
 
-                            .el-input__inne {
-                                height: 34px;
-                                line-height: 34px;
-                            }
                         }
                     }
                 }

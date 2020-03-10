@@ -85,7 +85,7 @@
             display: flex;
 
             .bigTitle {
-                color: #02A7F0;
+                color: #409eff;
                 font-size: 16px;
                 float: left;
                 position: relative;
@@ -95,13 +95,13 @@
                     width: 2px;
                     height: 34px;
                     padding: 0px 6px 1px 0px;
-                    background-color: #02A7F0;
+                    background-color: #409eff;
                     margin-right: 5px;
                 }
             }
 
             .returnBtn {
-                color: #02A7F0;
+                color: #409eff;
                 font-size: 14px;
                 float: right;
                 width: 50px;
