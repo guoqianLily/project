@@ -58,7 +58,79 @@ export function getWeek(userId, currentTime) {
     })
 }
 
+export function getMonthMessage(userId, projectId,month) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.searchMonthMessage,
+                method: 'POST',
+                data: {
+                    userId: userId,
+                    projectId: projectId,
+                    month:month
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
 
+export function getWeekMessage(userId, businessId,businessType,month,week) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.searchWeekMessage,
+                method: 'POST',
+                data: {
+                    userId: userId,
+                    businessId: businessId,
+                    businessType:businessType,
+                    month:month,
+                    week:week
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+// addWeekMessage,
+//     upDataWeekMessage
+export function addNewWeekMessage(data) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.addWeekMessage,
+                method: 'POST',
+                data: data
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+export function upDataNewWeekMessage(data) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.upDataWeekMessage,
+                method: 'POST',
+                data: data
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
 
 //时间戳转时间格式
 export function getLocalTime(time, fmt) {

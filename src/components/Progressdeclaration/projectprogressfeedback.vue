@@ -1,35 +1,44 @@
 <template>
     <div class="projectprogressfeedback">
         <div class="feedbackcontent">
-            <el-form :model="detailForm" :rules="rules" ref="ruleForm" label-width="120px">
+            <el-form :model="projectdetailForm" :rules="rules" ref="ruleForm" label-width="120px">
                 <el-form-item label="当前时间" prop="">
-                    <!-- <template v-show="!show"><span>{{detailForm.code}}</span></template> -->
-                    <!-- <el-input v-model="detailForm.code" v-show="show"></el-input> -->
+                    <!-- <template v-show="!show"><span>{{projectdetailForm.code}}</span></template> -->
+                    <!-- <el-input v-model="projectdetailForm.code" v-show="show"></el-input> -->
                     <!-- <el-date-picker v-if="state==1" v-model="nowTime" @change="getNowTime" type="week"
                         format="yyyy年MM月第WW周" value-format="yyyy-MM-dd" placeholder="选择周">
                     </el-date-picker> -->
                     <template><span>{{nowTimeValue}}</span></template>
                 </el-form-item>
                 <el-form-item label="当月目标" prop="">
-                    <!-- <quillEditor v-if="state==1" @on-change-content="getcontent" :content="detailForm.dockingDepartment"
+                    <!-- <quillEditor v-if="state==1" @on-change-content="getcontent" :content="projectdetailForm.dockingDepartment"
                         style="height:150px;">
                     </quillEditor> -->
-                    <div class="department" v-html="detailForm.dockingDepartment"></div>
+                    <div class="department" v-html="projectdetailForm.projectContext"></div>
                 </el-form-item>
                 <el-form-item label="本周进展" prop="">
-                    <quillEditor v-if="state==1" ref="childMethod" style="height:150px;">
+                    <quillEditor v-if="state==1" ref="childMethod" :content="projectdetailForm.content" 
+                        style="height:150px;">
                     </quillEditor>
-                    <div class="department" v-else v-html="detailForm.wayAddcontent"></div>
+                    <div class="department" v-else v-html="projectdetailForm.content"></div>
                 </el-form-item>
                 <el-form-item label="项目进展分类" prop="">
-                    <el-select v-if="state==1" v-model="detailForm.typeValue" placeholder="请选择">
-                        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                    <el-select v-if="state==1" v-model="projectdetailForm.proProgressType"  @change="getVal" placeholder="请选择">
+                        <el-option key="completionStatus1" label="Ⅰ已达成" value="completionStatus1">
+                        </el-option>
+                        <el-option key="completionStatus2" label="Ⅱ按阶段目标，预实零差" value="completionStatus2">
+                        </el-option>
+                        <el-option key="completionStatus3" label="Ⅲ按阶段目标，预实有差" value="completionStatus3">
                         </el-option>
                     </el-select>
-                    <template v-else><span>{{detailForm.typeValue}}</span></template>
+                    <template v-else>
+                        <span v-if="completionStatus1">Ⅰ已达成</span>
+                        <span v-else-if="completionStatus2">Ⅱ按阶段目标，预实零差</span>
+                        <span v-else-if="completionStatus3">Ⅲ按阶段目标，预实有差</span>
+                    </template>
                 </el-form-item>
                 <el-form-item class="btnItem" v-if="state==1">
-                    <el-button @click="closeForm('ruleForm')">取消</el-button>
+                    <!-- <el-button @click="closeForm('ruleForm')">取消</el-button> -->
                     <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
                 </el-form-item>
             </el-form>
@@ -43,6 +52,10 @@
     } from "../../utils/validate.js"
     import {
         getWeek,
+        getMonthMessage,
+        getWeekMessage,
+        addNewWeekMessage,
+        upDataNewWeekMessage,
         getLocalTime
     } from '../../services/declaresth'
     export default {
@@ -54,11 +67,14 @@
                 nowTime: '2020-03-09',
                 nowTimeValue: '',
                 name: '项目详情',
-                weekobj:'',
-                detailForm: {
+                weekobj: '',
+                weekData: {},
+                weekId: '',
+                projectdetailForm: {
                     week: '2020年03月第W11周',
-                    name: '原28家互联工厂升级提效并满负荷',
-                    platform: '海尔智家平台(智慧家庭)',
+                    projectContext: '原28家互联工厂升级提效并满负荷',
+                    content: '海尔智家平台(智慧家庭)',
+                    proProgressType: '',
                     time: '2020年9月',
                     dockingDepartment: 'dddddd',
                     wayAddcontent: 'ttttt',
@@ -89,12 +105,15 @@
             this.getweek()
         },
         methods: {
+            getVal(){
+                this.projectdetailForm.content=this.$refs.childMethod.content;
+            },
             //获取文本编辑器的内容
             getcontent(data) {
-                this.detailForm.dockingDepartment = data;
+                this.projectdetailForm.projectContext = data;
             },
             getcontent2(data) {
-                this.detailForm.wayAddcontent = data;
+                this.projectdetailForm.content = data;
             },
             getNowTime(val) {
                 console.log(this.nowTime);
@@ -106,26 +125,108 @@
                 let currentTime = getLocalTime(new Date(), 'yyyy-MM-dd') //项目名称
                 getWeek(userid, currentTime).then((res) => {
                     if (res.data.result.length) {
-                        this.weekobj=res.data.result[0];
-                        let newdata=res.data.result[0];
+                        this.weekobj = res.data.result[0];
+                        let newdata = res.data.result[0];
                         let newValDate = this.nowTime.split("-").join("");
                         this.nowTimeValue =
                             newdata.year +
                             "年" +
-                            (newdata.month< 10 ?"0"+newdata.month :newdata.month) +
+                            (newdata.month < 10 ? "0" + newdata.month : newdata.month) +
                             "月第" +
                             newdata.week +
                             "周";
+                        let time = newdata.year +
+                            "-" +
+                            (newdata.month < 10 ? "0" + newdata.month : newdata.month);
+                        this.getMonthData(userid, time);
+                        this.getWeekData(userid, time, newdata.week);
                     }
                 });
 
             },
+            //查询当月目标
+            getMonthData(userId, month) {
+                let projectId = this.$route.query.id;
+                getMonthMessage(userId, projectId, month).then((res) => {
+                    if (res.data.result.length > 0) {
+                        this.projectdetailForm.projectContext = res.data.result[0].projectContext
+                        // console.log(res.data)
+                    }
+                });
+            },
+            //查询当前周目标
+            getWeekData(userId, month, week) {
+                let businessId = this.$route.query.id;
+                let businessType = "project";
+                getWeekMessage(userId, businessId, businessType, month, week).then((res) => {
+                    if (res.data.result.length > 0) {
+                        this.weekData = res.data.result[0];
+                        this.projectdetailForm.content = res.data.result[0].content;
+                        this.projectdetailForm.proProgressType = res.data.result[0].proProgressType;
+                        this.weekId = res.data.result[0].id
+                        // console.log(res.data)
+                    }
+                });
+            },
             //确定
             submitForm(formName) {
                 console.log(this.formName)
+                let searchData = {
+                    userId: this.$store.state.user.userId,
+                    businessId: this.$route.query.id,
+                    businessType: "project",
+                    month: this.weekData.month,
+                    week: this.weekData.week,
+                    content: this.$refs.childMethod.content,
+                    proProgressType: this.projectdetailForm.proProgressType,
+                    status: '1',
+                    ableFlag: '1',
+                    id: this.weekId
+                }
                 let _that = this;
                 this.$refs[formName].validate(valid => {
-                    if (valid) {} else {
+                    if (valid) {
+                        if (_that.weekId) {
+                            upDataNewWeekMessage(searchData).then((res) => {
+                                // console.log(res)
+                                if (res.data.success) {
+                                    this.$message({
+                                        type: "success",
+                                        message: "操作成功!"
+                                    });
+                                    _that.getWeekData(searchData.userId, searchData.month, searchData
+                                        .week)
+                                } else {
+                                    this.$message({
+                                        type: "error",
+                                        message: res.data.message
+                                    });
+                                    _that.getWeekData(searchData.userId, searchData.month, searchData
+                                        .week)
+                                }
+                            });
+
+                        } else {
+                             addNewWeekMessage(searchData).then((res) => {
+                                // console.log(res)
+                                if (res.data.success) {
+                                    this.$message({
+                                        type: "success",
+                                        message: "操作成功!"
+                                    });
+                                    _that.getWeekData(searchData.userId, searchData.month, searchData.week)
+                                } else {
+                                    this.$message({
+                                        type: "error",
+                                        message: res.data.message
+                                    });
+                                    _that.getWeekData(searchData.userId, searchData.month, searchData
+                                        .week)
+                                }
+                            });
+
+                        }
+                    } else {
                         console.log("error submit!!");
                         return false;
                     }
@@ -138,7 +239,7 @@
             },
         },
         watch: {
-            detailForm(val, oldVal) {
+            projectdetailForm(val, oldVal) {
                 console.log(val)
             }
         }
