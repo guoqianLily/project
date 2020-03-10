@@ -4,6 +4,8 @@
             <el-form :model="formInline">
                 <el-form-item label="平台">
                     <el-select v-model="formInline.terraceValue" placeholder="请选择">
+                        <el-option label="全部" value="1">
+                        </el-option>
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
@@ -11,9 +13,9 @@
                 <el-form-item label="项目">
                     <el-input v-model="formInline.projectName" placeholder="请输入内容"></el-input>
                 </el-form-item>
-                <el-form-item label="达成时间"  label-width="80px">
-                    <el-date-picker v-model="value1" type="daterange" range-separator="至" start-placeholder="开始日期"
-                        end-placeholder="结束日期">
+                <el-form-item label="达成时间" label-width="80px">
+                    <el-date-picker v-model="formInline.date" type="daterange" range-separator="至" format="yyyy-MM"
+                        start-placeholder="开始日期" end-placeholder="结束日期">
                     </el-date-picker>
                 </el-form-item>
                 <el-form-item>
@@ -29,10 +31,15 @@
                     element-loading-spinner="el-icon-loading" border style="width: 100%">
                     <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
                     <el-table-column prop="id" label="id" align="center" v-if='show'></el-table-column>
-                    <el-table-column prop="orgName" label="平台" align="center"></el-table-column>
-                    <el-table-column prop="projectCode" label="编号" align="center"></el-table-column>
+                    <el-table-column prop="departmantName" label="平台" align="center"></el-table-column>
+                    <el-table-column prop="projectCode" label="编号" align="center" width="120"></el-table-column>
                     <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
-                    <el-table-column prop="deadLine" label="达成时间" align="center"></el-table-column>
+                    <el-table-column prop="deadLine" label="达成时间" align="center" width="120">
+                        <!-- <template slot-scope="scope">
+                            <span>{{getLocalTime(scope.row.deadLine,"yyyy-MM")}}
+                            </span>
+                        </template> -->
+                    </el-table-column>
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
                             <span class="btn" @click="declareSth(scope.$index, scope.row)">申报</span>
@@ -73,8 +80,9 @@
 
 <script>
     import quillEditor from '../../components/ue'
-        import {
+    import {
         getAlldeclaresthData,
+        getLocalTime
     } from '../../services/declaresth'
     export default {
         components: {
@@ -114,23 +122,24 @@
                 },
                 value1: '',
                 formInline: {
+                    date: '',
                     terraceValue: '',
                     projectName: ''
                 },
                 options: [{
-                    value: '1',
+                    value: '0',
                     label: '海尔智家平台(智慧家庭)'
                 }, {
-                    value: '1',
+                    value: '2',
                     label: 'COSMO平台(工业互联网平台)'
                 }, {
-                    value: '1)',
+                    value: '3)',
                     label: '海纳云平台(智慧社区/园区)'
                 }, {
-                    value: '1',
+                    value: '4',
                     label: '盈康一生(生命健康/生态健康)'
                 }, {
-                    value: '1',
+                    value: '5',
                     label: '海创汇平台(创业孵化平台)'
                 }],
                 terraceValue: '',
@@ -138,6 +147,7 @@
             }
         },
         mounted() {
+            this.search();
         },
         methods: {
             //申报页面
@@ -146,6 +156,7 @@
                     name: "detail",
                     query: {
                         state: '1', //1可编辑,
+                        id:row.id
                     }
                 })
                 //   this.$router.replace('/detail')
@@ -156,6 +167,7 @@
                     name: "/detail",
                     query: {
                         state: '0', //1可编辑,
+                        id:row.id
 
                     }
                 })
@@ -170,6 +182,7 @@
                     query: {
                         state: '1', //1可编辑,
                         type: 'add' //新增，还是修改up
+                       
                     }
                 });
             },
@@ -179,19 +192,25 @@
                     name: "newModification",
                     params: {
                         state: '1', //1可编辑,
-                        type: 'updata' //新增，还是修改up
+                        type: 'updata' ,//新增，还是修改up
+                        id:row.id
                     }
                 });
 
             },
             //查询
             search() {
-                let  userid=this.$store.state.user.userId;
-                let orgId=this.formInline.terraceValue;
+                let userid = this.$store.state.user.userId;
+                let orgId = 1;
                 // let projectCode='';//项目编码
-                let projectName=this.formInline.projectName//项目名称
-                getAlldeclaresthData(userid,orgId,projectName).then((res) => {
-                    this.tableData=res.result;
+                let projectName = this.formInline.projectName //项目名称
+                getAlldeclaresthData(userid, orgId, projectName).then((res) => {
+                    if (res.data.result.length > 0) {
+                        for (var i = 0; i < res.data.result.length; i++) {
+                            res.data.result[i].deadLine = getLocalTime(res.data.result[0].deadLine, 'yyyy-MM')
+                        }
+                        this.tableData = res.data.result;
+                    }
                     // this.transferUserdata = data.data.result.filter(item => item.userName != "").filter(item =>
                     //     item.userName != null);
                     // this.getRolesGjuserid(id);
@@ -220,6 +239,11 @@
         display: table-cell !important;
     }
 
+    .el-button--primary {
+        height: 34px;
+        line-height: 10px;
+    }
+
     #taskFeedback {
         position: relative;
         float: left;
@@ -245,14 +269,16 @@
                     margin: 0 .1rem 0 0;
                     float: left;
                     display: flex;
+                    padding-left: 0%;
+
                     .el-form-item__label {
                         width: 62px;
                         text-align: right;
                         height: 35px;
                         line-height: 35px;
                         font-size: 12px;
-                        padding-left: 0%;
                     }
+
                     .el-form-item__content {
                         // width: 80%;
                         height: 35px;
@@ -260,9 +286,15 @@
                         float: left;
                         display: flex;
                         margin-left: 0px !important;
+
                         .el-select,
                         .el-input {
                             width: 100%;
+
+                            .el-input__inne {
+                                height: 34px;
+                                line-height: 34px;
+                            }
                         }
                     }
                 }
@@ -276,6 +308,7 @@
             float: left;
             width: 100%;
             margin-top: 30px;
+
             .tableBox {
                 max-height: calc(100% - 63px);
                 width: 100%;

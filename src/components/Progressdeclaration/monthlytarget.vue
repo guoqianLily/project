@@ -42,6 +42,14 @@
                     <el-date-picker v-model="addForm.configType" type="month" format="yyyy年MM月">
                     </el-date-picker>
                 </el-form-item>
+                <el-form-item class="currenttime" label="选择" prop="value1" label-width="120px">
+                     <el-select v-model="addForm.value1" placeholder="请选择">
+                        <el-option label="全部" value="1">
+                        </el-option>
+                       <el-option label="阶段1" value="2">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="项目月度目标" prop="configName" label-width="120px">
                     <quillEditor @on-change-content="getcontent" :content="addForm.configName" style="height:150px;">
                     </quillEditor>
@@ -80,6 +88,7 @@
                 searchForm: {},
                 addForm: {
                     id: '',
+                    value1:'',
                     currenttime: '',
                     configType: '',
                     configName: '',
@@ -97,6 +106,11 @@
                         message: '请输入分类名称',
                         trigger: 'blur'
                     }, ],
+                    value1:[{
+                        required: true,
+                        message: '请选择大类名称',
+                        trigger: 'change'
+                    }],
                     unableFlag: [{
                         required: true,
                         message: '请输入分类名称',
@@ -115,10 +129,10 @@
         methods: {
             //获取文本编辑器的内容
             getcontent(val) {
-                this.addForm.indicatorTypeName = val;
+                this.addForm.configName = val;
             },
             getcontent2(val) {
-                this.addForm.unableFlag = val;
+                this.addForm.indicatorTypeName = val;
             },
             //分页查询的事件
             // 分页功能
