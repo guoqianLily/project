@@ -7,7 +7,7 @@
         <div id="projectDetails" class="content">
             <projectDetails></projectDetails>
         </div>
-        <div id="projectrequirement" class="content" style="height:600px">
+        <div id="projectrequirement" class="content">
             <policyRequire></policyRequire>
         </div>
     </div>
@@ -51,7 +51,7 @@
         float: left;
         overflow: auto;
        .el-row {
-            width: 90%;
+            width: 100%;
             padding: 10px 0% 10px 8%;
             height: 35px;
             line-height: 35px;

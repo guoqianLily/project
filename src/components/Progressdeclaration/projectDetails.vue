@@ -1,6 +1,6 @@
 <template>
     <div class="projectDetails">
-        <el-row v-if="state==1">
+        <el-row v-if="state==1"  style="width: 95%; height: 50px;">
             <div class="query">
                 <el-button type="primary" size="small" class="titleBtn" @click="addIndex" v-if="state==1">
                     提交</el-button>
@@ -132,7 +132,7 @@
         width: 100%;
 
         .el-row {
-            width: 100%;
+            width: 89%;
             height: 45px;
             line-height: 45px;
             display: flex;
@@ -142,7 +142,7 @@
                 font-size: 12px;
                 float: right;
                 text-align: right;
-                margin-right: 42px;
+                // margin-right: 42px;
             }
         }
 
