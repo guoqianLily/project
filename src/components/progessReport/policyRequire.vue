@@ -18,7 +18,7 @@
           border
           style="width: 100%"
         >
-          <el-table-column prop="policyType" label="政策分类" width="180px" align='center'>
+          <el-table-column prop="policyTypeName" label="政策分类" width="180px" align='center'>
           </el-table-column>
           <el-table-column prop="deadLine" label="政策内容">
                <template slot-scope="scope">
@@ -80,7 +80,7 @@
               v-for="item in searchForm.policyType"
               :key="item.id"
               :label="item.value"
-              :value="item.value"
+              :value="item.key"
             >
             </el-option>
           </el-select>

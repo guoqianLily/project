@@ -45,7 +45,7 @@
           style="width: 100%;margin:0 auto;"
         >
           <el-table-column
-            prop="policyType"
+            prop="policyTypeName"
             label="政策分类"
             width="180px"
             align="center"
@@ -70,7 +70,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            prop="weekproProgressType"
+            prop="proPolicyTypeName"
             label="政策进展分类"
             width="200px"
           >
@@ -138,7 +138,7 @@
           label="本周进展"
           prop="weekContent"
           class="autoElform"
-          label-width="90px"
+          label-width="120px"
         >
           <quillEditor
             @on-change-content="getcontent1"
@@ -151,14 +151,14 @@
         <el-form-item
           label="政策进展分类"
           prop="weekproProgressType"
-          label-width="90px"
+          label-width="120px"
         >
           <el-select v-model="addForm.weekproProgressType" placeholder="请选择" @change="getVal">
             <el-option
               v-for="item in searchForm.weekproProgressType"
               :key="item.id"
               :label="item.value"
-              :value="item.value"
+              :value="item.key"
             >
             </el-option>
           </el-select>
@@ -531,7 +531,7 @@ export default {
   }
   .nowTimeShow {
     height: 100%;
-    padding: 0 30px 0 10px;
+    padding: 0 30px 0 0;
     // border: 1px solid #dcdfe6;
     border-radius: 4px;
   }
