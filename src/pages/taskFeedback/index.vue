@@ -4,8 +4,6 @@
             <el-form :model="formInline">
                 <el-form-item label="平台">
                     <el-select v-model="formInline.terraceValue" placeholder="请选择">
-                        <el-option label="全部" value="1">
-                        </el-option>
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
@@ -31,10 +29,10 @@
                     element-loading-spinner="el-icon-loading" border style="width:100%;" height="98%">
                     <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
                     <el-table-column prop="id" label="id" align="center" v-if='show'></el-table-column>
-                    <el-table-column prop="departmantName" label="平台" align="center"></el-table-column>
+                    <el-table-column prop="departmantName" label="平台" align="center"  width="120"></el-table-column>
                     <el-table-column prop="projectCode" label="编号" align="center" width="120"></el-table-column>
                     <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
-                    <el-table-column prop="deadLine" label="达成时间" align="center" width="120">
+                    <el-table-column prop="deadLine" label="达成时间" align="center" width="200">
                         <!-- <template slot-scope="scope">
                             <span>{{getLocalTime(scope.row.deadLine,"yyyy-MM")}}
                             </span>
@@ -82,6 +80,7 @@
     import quillEditor from '../../components/ue'
     import {
         getAlldeclaresthData,
+        getOrgData,
         getLocalTime
     } from '../../services/declaresth'
     export default {
@@ -147,7 +146,24 @@
             }
         },
         mounted() {
-            this.search();
+            this.options = [];
+            let userid = this.$store.state.user.userId;
+            getOrgData(userid).then((res) => {
+                if (res.data.result.length > 0) {
+                    for (var i = 0; i < res.data.result.length; i++) {
+
+                        this.options.push({
+                            value: res.data.result[i].id,
+                            label: res.data.result[i].departmantName,
+                        })
+
+                    }
+                    this.formInline.terraceValue = res.data.result[0].id;
+                    // this.options = res.data.result;
+                }
+                this.search();
+            });
+
         },
         methods: {
             //申报页面
@@ -201,7 +217,7 @@
             //查询
             search() {
                 let userid = this.$store.state.user.userId;
-                let orgId = 1;
+                let orgId = this.formInline.terraceValue;
                 // let projectCode='';//项目编码
                 let projectName = this.formInline.projectName //项目名称
                 getAlldeclaresthData(userid, orgId, projectName).then((res) => {
@@ -234,11 +250,13 @@
     .el-table th.gutter {
         display: table-cell !important;
     }
+
     .el-button--primary {
-        height: 34px;
-        line-height: 10px;
+        height: 35px;
+        line-height: 12px;
     }
-    .el-input__inne {
+
+    .el-input__inner {
         height: 34px !important;
         line-height: 34px !important;
     }
@@ -252,6 +270,7 @@
         overflow: hidden;
         width: 100%;
         box-sizing: border-box;
+
         .search_content {
             width: calc(100% - 20px);
             height: 35px;
@@ -262,11 +281,13 @@
                 height: 100%;
                 width: 100%;
                 display: flex;
+
                 .el-form-item {
                     margin: 0 .1rem 0 0;
                     float: left;
                     display: flex;
                     padding-left: 0%;
+
                     .el-form-item__label {
                         width: 62px;
                         text-align: right;
@@ -274,6 +295,7 @@
                         line-height: 35px;
                         font-size: 12px;
                     }
+
                     .el-form-item__content {
                         // width: 80%;
                         height: 35px;
@@ -281,6 +303,7 @@
                         float: left;
                         display: flex;
                         margin-left: 0px !important;
+
                         .el-select,
                         .el-input {
                             width: 100%;
@@ -297,7 +320,7 @@
             position: relative;
             float: left;
             width: 100%;
-            margin-top: 30px;
+           margin-top: 19px;
 
             .tableBox {
                 // max-height: calc(100% - 63px);

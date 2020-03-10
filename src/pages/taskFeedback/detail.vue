@@ -21,9 +21,9 @@
                 <el-tab-pane label="月度目标" name="third">
                     <monthlytarget v-if="activeName=='third'"></monthlytarget>
                 </el-tab-pane>
-                <!-- <el-tab-pane label="项目回顾" name="four"> -->
-                <!-- <listofIndicators v-if="activeName=='third'"></listofIndicators> -->
-                <!-- </el-tab-pane> -->
+                <el-tab-pane label="项目回顾" name="four">
+                <projectReview v-if="activeName=='four'"></projectReview>
+                </el-tab-pane>
                 <el-tab-pane label="附件" name="five">
                     <filesUploadDown v-if="activeName=='five'"></filesUploadDown>
                 </el-tab-pane>
@@ -38,6 +38,7 @@
     import policyRequire from '../../components/progessReport/policyRequire'
     import monthlytarget from '../../components/Progressdeclaration/monthlytarget'
     import filesUploadDown from '../../components/progessReport/filesUploadDown'
+    import projectReview from'../../components/Progressdeclaration/projectReview.vue'
     import 'quill/dist/quill.core.css'
     import 'quill/dist/quill.snow.css'
     import 'quill/dist/quill.bubble.css'
@@ -48,7 +49,8 @@
             policyProfeedback,
             policyRequire,
             monthlytarget,
-            filesUploadDown
+            filesUploadDown,
+            projectReview
         },
         data() {
             return {
