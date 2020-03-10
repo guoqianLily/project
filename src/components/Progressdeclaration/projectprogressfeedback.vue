@@ -5,16 +5,16 @@
                 <el-form-item label="当前时间" prop="">
                     <!-- <template v-show="!show"><span>{{detailForm.code}}</span></template> -->
                     <!-- <el-input v-model="detailForm.code" v-show="show"></el-input> -->
-                    <el-date-picker v-if="state==1" v-model="nowTime" @change="getNowTime" type="week"
+                    <!-- <el-date-picker v-if="state==1" v-model="nowTime" @change="getNowTime" type="week"
                         format="yyyy年MM月第WW周" value-format="yyyy-MM-dd" placeholder="选择周">
-                    </el-date-picker>
-                    <template v-else><span>{{nowTimeValue}}</span></template>
+                    </el-date-picker> -->
+                    <template><span>{{nowTimeValue}}</span></template>
                 </el-form-item>
                 <el-form-item label="当月目标" prop="">
-                    <quillEditor v-if="state==1" @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
+                    <!-- <quillEditor v-if="state==1" @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
                         style="height:150px;">
-                    </quillEditor>
-                    <div class="department" v-else v-html="detailForm.dockingDepartment"></div>
+                    </quillEditor> -->
+                    <div class="department" v-html="detailForm.dockingDepartment"></div>
                 </el-form-item>
                 <el-form-item label="本周进展" prop="">
                     <quillEditor v-if="state==1" @on-change-cantent="getcontent2" :content="detailForm.wayAddcontent"
@@ -59,8 +59,8 @@
                     typeValue: '海尔智家平台(智慧家庭)',
                 },
                 rules: {},
-                state: this.$route.params.state,
-                type: this.$route.params.type,
+                state: this.$route.query.state,
+                type: this.$route.query.type,
                 options: [{
                     value: '海尔智家平台(智慧家庭)',
                     label: '海尔智家平台(智慧家庭)'
@@ -80,6 +80,7 @@
             }
         },
         mounted() {
+            
             let newValDate = this.nowTime.split("-").join("");
             this.nowTimeValue =
                 newValDate.substring(0, 4) +

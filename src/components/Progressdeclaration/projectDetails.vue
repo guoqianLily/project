@@ -69,6 +69,7 @@
             }
         },
         mounted() {
+            console.log(this.$store.state.user.userId);
             if (this.type == "add" || this.type == "updata") {
                 this.state = 1
             } else {

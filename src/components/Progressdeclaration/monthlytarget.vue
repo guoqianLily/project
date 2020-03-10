@@ -38,7 +38,7 @@
         </div>
         <el-dialog :title="title" :visible.sync="addIndexVisible" id='addNewdialog'>
             <el-form :model="addForm" ref="addForm" :rules="rules" label-position="right">
-                <el-form-item class="currenttime" label="当前时间" prop="configType" label-width="120px">
+                <el-form-item class="currenttime" label="月份" prop="configType" label-width="120px">
                     <el-date-picker v-model="addForm.configType" type="month" format="yyyy年MM月">
                     </el-date-picker>
                 </el-form-item>
@@ -67,8 +67,8 @@
         },
         data() {
             return {
-                state: this.$route.params.state,
-                type: this.$route.params.type,
+                state: this.$route.query.state,
+                type: this.$route.query.type,
                 currenttime: '',
                 stripe: true,
                 title: '新增',

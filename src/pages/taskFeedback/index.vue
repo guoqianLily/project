@@ -2,16 +2,16 @@
     <div class="frame taskfeedback listPage" id="taskFeedback">
         <div class="queryRow search_content">
             <el-form :model="formInline">
-                <el-form-item label="平台" >
+                <el-form-item label="平台">
                     <el-select v-model="formInline.terraceValue" placeholder="请选择">
                         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="项目" >
+                <el-form-item label="项目">
                     <el-input v-model="formInline.itemValue" placeholder="请输入内容"></el-input>
                 </el-form-item>
-                <el-form-item label="达成时间">
+                <el-form-item label="达成时间"  label-width="80px">
                     <el-date-picker v-model="value1" type="daterange" range-separator="至" start-placeholder="开始日期"
                         end-placeholder="结束日期">
                     </el-date-picker>
@@ -79,7 +79,7 @@
         },
         data() {
             return {
-                loading:false,
+                loading: false,
                 str: '',
                 addform: {
                     name: ''
@@ -132,18 +132,16 @@
                 }],
                 terraceValue: '',
                 itemValue: ''
-
             }
         },
-        mounted(){
-
+        mounted() {
         },
         methods: {
             //申报页面
             declareSth(index, row) {
                 this.$router.push({
                     name: "detail",
-                    params: {
+                    query: {
                         state: '1', //1可编辑,
                     }
                 })
@@ -152,8 +150,8 @@
             //详情页面查看
             datailQuery(index, row) {
                 this.$router.push({
-                    name: "detail",
-                    params: {
+                    name: "/detail",
+                    query: {
                         state: '0', //1可编辑,
 
                     }
@@ -166,7 +164,7 @@
             addnewly() {
                 this.$router.push({
                     name: "newModification",
-                    params: {
+                    query: {
                         state: '1', //1可编辑,
                         type: 'add' //新增，还是修改up
                     }
@@ -233,19 +231,23 @@
                     margin: 0 .1rem 0 0;
                     float: left;
                     display: flex;
+
                     .el-form-item__label {
                         width: 62px;
                         text-align: right;
                         height: 35px;
                         line-height: 35px;
                         font-size: 12px;
+                        padding-left: 0%;
                     }
+
                     .el-form-item__content {
                         // width: 80%;
                         height: 35px;
                         line-height: 35px;
                         float: left;
                         display: flex;
+
                         .el-select,
                         .el-input {
                             width: 100%;
@@ -257,11 +259,11 @@
 
         .listBox {
             // padding: 2px 16px 0px 16px;
-            height: calc(100% - 35px);
+            height: calc(100% - 65px);
             position: relative;
             float: left;
             width: 100%;
-
+            margin-top: 30px;
             .tableBox {
                 max-height: calc(100% - 63px);
                 width: 100%;

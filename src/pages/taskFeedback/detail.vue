@@ -12,10 +12,10 @@
         </div>
         <div id="projectTab" class="content">
             <el-tabs v-model="activeName" @tab-click="handleClick" class="el-tabs">
-                <el-tab-pane label="项目进度反馈" name="first">
+                <el-tab-pane label="项目进度申报" name="first">
                     <projectprogressfeedback v-if="activeName=='first'"></projectprogressfeedback>
                 </el-tab-pane>
-                <el-tab-pane label="政策进度反馈" name="second">
+                <el-tab-pane label="政策进度申报" name="second">
                     <policyProfeedback v-if="activeName=='second'" class="projectDetails"></policyProfeedback>
                 </el-tab-pane>
                 <el-tab-pane label="月度目标" name="third">

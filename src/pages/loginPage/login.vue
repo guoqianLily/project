@@ -3,14 +3,14 @@
         <div class="loginBanner">
             <div class="logoTitle">
                 <span class="logo"><img src="../../assets/logo.svg" /></span>
-                <span class="logo2">集团标志性项目</span>
+                <span class="logo2">2020年集团级关键项目平台</span>
             </div>
             <!-- <div class="loginText">
                 <p class="p1">责任，自律，专注，服务</p>
                 <p class="p2">让建设资金发挥最大投资效益</p>
             </div> -->
             <div class="login-container">
-               <p class="Formtitle">集团标志性项目</p>
+               <p class="Formtitle">2020年集团级关键项目平台</p>
                 <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
                     <el-form-item prop="username">
                         <span class="icon-container el-icon-user">
