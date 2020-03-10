@@ -14,10 +14,13 @@ projectId	项目ID
 projectCode	项目编码
  */
 const searchBaseMessage= "/chouChing/BusinessProjectController/selectByPrimaryKey";
+//根据日期查询周次
+const searchWeek= "/chouChing/weekNoController/searchAllData";
 
 export default {
     searchAllData,
-    searchBaseMessage
+    searchBaseMessage,
+    searchWeek
 
 }
 

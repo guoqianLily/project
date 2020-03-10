@@ -69,6 +69,10 @@
 </template>
 <script>
     import quillEditor from '../ue'
+       import {
+        getBaseMessage,
+        getLocalTime
+    } from '../../services/declaresth'
     export default {
         components: {
             quillEditor,

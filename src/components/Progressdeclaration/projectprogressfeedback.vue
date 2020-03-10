@@ -17,8 +17,7 @@
                     <div class="department" v-html="detailForm.dockingDepartment"></div>
                 </el-form-item>
                 <el-form-item label="本周进展" prop="">
-                    <quillEditor v-if="state==1"  ref="childMethod"
-                        style="height:150px;">
+                    <quillEditor v-if="state==1" ref="childMethod" style="height:150px;">
                     </quillEditor>
                     <div class="department" v-else v-html="detailForm.wayAddcontent"></div>
                 </el-form-item>
@@ -39,7 +38,13 @@
 </template>
 <script>
     import quillEditor from '../ue'
-    import { GetWeekByDate } from "../../utils/validate.js"
+    import {
+        GetWeekByDate
+    } from "../../utils/validate.js"
+    import {
+        getWeek,
+        getLocalTime
+    } from '../../services/declaresth'
     export default {
         components: {
             quillEditor,
@@ -47,8 +52,9 @@
         data() {
             return {
                 nowTime: '2020-03-09',
-                nowTimeValue:'',
+                nowTimeValue: '',
                 name: '项目详情',
+                weekobj:'',
                 detailForm: {
                     week: '2020年03月第W11周',
                     name: '原28家互联工厂升级提效并满负荷',
@@ -80,17 +86,7 @@
             }
         },
         mounted() {
-            
-            let newValDate = this.nowTime.split("-").join("");
-            this.nowTimeValue =
-                newValDate.substring(0, 4) +
-                "年" +
-                (newValDate.substring(4, 6) < 10 ?
-                    newValDate.substring(5, 6) :
-                    newValDate.substring(4, 6)) +
-                "月第" +
-                GetWeekByDate(this.nowTime) +
-                "周";
+            this.getweek()
         },
         methods: {
             //获取文本编辑器的内容
@@ -103,6 +99,26 @@
             getNowTime(val) {
                 console.log(this.nowTime);
                 console.log(val);
+            },
+            //默认查询周次
+            getweek() {
+                let userid = this.$store.state.user.userId;
+                let currentTime = getLocalTime(new Date(), 'yyyy-MM-dd') //项目名称
+                getWeek(userid, currentTime).then((res) => {
+                    if (res.data.result) {
+                        this.weekobj=res.data.result;
+                        let newdata=res.data.result;
+                        let newValDate = this.nowTime.split("-").join("");
+                        this.nowTimeValue =
+                            newdata.year +
+                            "年" +
+                            (newdata.month< 10 ?"0"+newdata.month :newdata.month) +
+                            "月第" +
+                            newdata.week +
+                            "周";
+                    }
+                });
+
             },
             //确定
             submitForm(formName) {

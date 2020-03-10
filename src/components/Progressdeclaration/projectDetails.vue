@@ -26,7 +26,7 @@
                 </el-form-item>
                 <el-form-item label="对接部门" prop="">
                     <!-- @on-change-content="getcontent" :content="detailForm.dockingDepartment" -->
-                    <quillEditor v-if="state==1" ref="childMethod1" style="height:150px;">
+                    <quillEditor v-if="state==1" ref="childMethod1" :content="detailForm.dockingDepartment" style="height:150px;" >
                     </quillEditor>
                     <div v-else class="department" style="height:50px;">
                         {{detailForm.dockingDepartment}}
@@ -34,7 +34,7 @@
                 </el-form-item>
                 <el-form-item label="路径/内容" prop="">
                     <!-- @on-change-content="getcontent2" :content="detailForm.wayAddcontent" -->
-                    <quillEditor v-if="state==1" ref="childMethod" style="height:150px;">
+                    <quillEditor v-if="state==1" ref="childMethod" :content="detailForm.content"  style="height:150px;">
                     </quillEditor>
                     <div v-else class="ljcontent">
                         {{detailForm.content}}
@@ -120,9 +120,9 @@
                 let projectId = this.$route.query.id //项目名称
                 getBaseMessage(userid, projectId).then((res) => {
                     if (res.data.result) {
+                        res.data.result.deadLine = getLocalTime(res.data.result.deadLine, 'yyyy-MM')
                         this.detailForm = res.data.result;
                     }
-
                 });
 
             }
