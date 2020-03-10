@@ -11,13 +11,13 @@
                     <template><span>{{nowTimeValue}}</span></template>
                 </el-form-item>
                 <el-form-item label="当月目标" prop="">
-                    <!-- <quillEditor v-if="state==1" @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
+                    <!-- <quillEditor v-if="state==1" @on-change-content="getcontent" :content="detailForm.dockingDepartment"
                         style="height:150px;">
                     </quillEditor> -->
                     <div class="department" v-html="detailForm.dockingDepartment"></div>
                 </el-form-item>
                 <el-form-item label="本周进展" prop="">
-                    <quillEditor v-if="state==1" @on-change-cantent="getcontent2" :content="detailForm.wayAddcontent"
+                    <quillEditor v-if="state==1" @on-change-content="getcontent2" :content="detailForm.wayAddcontent"
                         style="height:150px;">
                     </quillEditor>
                     <div class="department" v-else v-html="detailForm.wayAddcontent"></div>

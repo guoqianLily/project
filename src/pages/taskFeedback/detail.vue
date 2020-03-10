@@ -7,7 +7,7 @@
         <div id="projectDetails" class="content">
             <projectDetails></projectDetails>
         </div>
-        <div id="projectrequirement" class="content"  style="height:600px">
+        <div id="projectrequirement" class="content">
             <policyRequire></policyRequire>
         </div>
         <div id="projectTab" class="content">

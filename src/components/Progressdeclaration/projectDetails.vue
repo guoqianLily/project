@@ -25,7 +25,7 @@
                     <template v-else><span>{{detailForm.time}}</span></template>
                 </el-form-item>
                 <el-form-item label="对接部门" prop="">
-                    <quillEditor v-if="state==1" @on-change-cantent="getcontent" :content="detailForm.dockingDepartment"
+                    <quillEditor v-if="state==1" @on-change-content="getcontent" :content="detailForm.dockingDepartment"
                         style="height:150px;">
                     </quillEditor>
                     <div v-else class="department">
@@ -33,7 +33,7 @@
                     </div>
                 </el-form-item>
                 <el-form-item label="路径/内容" prop="">
-                    <quillEditor v-if="state==1" @on-change-cantent="getcontent2" :content="detailForm.wayAddcontent"
+                    <quillEditor v-if="state==1" @on-change-content="getcontent2" :content="detailForm.wayAddcontent"
                         style="height:150px;">
                     </quillEditor>
                     <div v-else class="ljcontent">
@@ -64,8 +64,8 @@
                 rules: {},
                 str: '',
                 show: false,
-                state: this.$route.params.state,
-                type: this.$route.params.type
+                state: this.$route.query.state,
+                type: this.$route.query.type
             }
         },
         mounted() {

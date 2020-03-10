@@ -11,9 +11,9 @@ export default function http({ url, method, data }) {
         // timeout: 2000,
         withCredentials: false,
     };
-    // if(getToken()){
-    //     options.headers = {Authorization:getToken()}
-    // }
+    if(getToken()){
+        options.headers = {Authorization:getToken()}
+    }
     if (method == 'GET') {
         options.params = data;
     } else if (method == "POST") {

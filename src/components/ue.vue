@@ -161,7 +161,7 @@
         }
         // console.log(newval);
         // console.log(val)
-         this.$emit("on-change-cantent", val);
+         this.$emit("on-change-content", val);
       },
     }
   }

@@ -6,7 +6,7 @@
                 <div class="h-logo fl">
                 </div>
                 <div class="h-logoName fl">
-                    <span>集团标志性项目</span>
+                    <span>2020年集团级关键项目平台</span>
                 </div>
             </div>
         <ul class="userInfo-box">

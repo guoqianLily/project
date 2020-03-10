@@ -9,7 +9,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="项目">
-                    <el-input v-model="formInline.itemValue" placeholder="请输入内容"></el-input>
+                    <el-input v-model="formInline.projectName" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <el-form-item label="达成时间"  label-width="80px">
                     <el-date-picker v-model="value1" type="daterange" range-separator="至" start-placeholder="开始日期"
@@ -29,10 +29,10 @@
                     element-loading-spinner="el-icon-loading" border style="width: 100%">
                     <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
                     <el-table-column prop="id" label="id" align="center" v-if='show'></el-table-column>
-                    <el-table-column prop="engineerName" label="平台" align="center"></el-table-column>
-                    <el-table-column prop="departmantName" label="编号" align="center"></el-table-column>
-                    <el-table-column prop="titleName" label="项目名称" align="center"></el-table-column>
-                    <el-table-column prop="actualCompletionTime" label="达成时间" align="center"></el-table-column>
+                    <el-table-column prop="orgName" label="平台" align="center"></el-table-column>
+                    <el-table-column prop="projectCode" label="编号" align="center"></el-table-column>
+                    <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
+                    <el-table-column prop="deadLine" label="达成时间" align="center"></el-table-column>
                     <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
                             <span class="btn" @click="declareSth(scope.$index, scope.row)">申报</span>
@@ -73,6 +73,9 @@
 
 <script>
     import quillEditor from '../../components/ue'
+        import {
+        getAlldeclaresthData,
+    } from '../../services/declaresth'
     export default {
         components: {
             quillEditor
@@ -112,22 +115,22 @@
                 value1: '',
                 formInline: {
                     terraceValue: '',
-                    itemValue: ''
+                    projectName: ''
                 },
                 options: [{
-                    value: '海尔智家平台(智慧家庭)',
+                    value: '1',
                     label: '海尔智家平台(智慧家庭)'
                 }, {
-                    value: 'COSMO平台(工业互联网平台)',
+                    value: '1',
                     label: 'COSMO平台(工业互联网平台)'
                 }, {
-                    value: '海纳云平台(智慧社区/园区)',
+                    value: '1)',
                     label: '海纳云平台(智慧社区/园区)'
                 }, {
-                    value: '盈康一生(生命健康/生态健康)',
+                    value: '1',
                     label: '盈康一生(生命健康/生态健康)'
                 }, {
-                    value: '海创汇平台(创业孵化平台)',
+                    value: '1',
                     label: '海创汇平台(创业孵化平台)'
                 }],
                 terraceValue: '',
@@ -183,6 +186,17 @@
             },
             //查询
             search() {
+                let  userid=this.$store.state.user.userId;
+                let orgId=this.formInline.terraceValue;
+                // let projectCode='';//项目编码
+                let projectName=this.formInline.projectName//项目名称
+                getAlldeclaresthData(userid,orgId,projectName).then((res) => {
+                    this.tableData=res.result;
+                    // this.transferUserdata = data.data.result.filter(item => item.userName != "").filter(item =>
+                    //     item.userName != null);
+                    // this.getRolesGjuserid(id);
+
+                });
                 console.log("查询事件")
             },
             //导出
@@ -231,7 +245,6 @@
                     margin: 0 .1rem 0 0;
                     float: left;
                     display: flex;
-
                     .el-form-item__label {
                         width: 62px;
                         text-align: right;
@@ -240,14 +253,13 @@
                         font-size: 12px;
                         padding-left: 0%;
                     }
-
                     .el-form-item__content {
                         // width: 80%;
                         height: 35px;
                         line-height: 35px;
                         float: left;
                         display: flex;
-
+                        margin-left: 0px !important;
                         .el-select,
                         .el-input {
                             width: 100%;
