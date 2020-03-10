@@ -51,11 +51,11 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="项目月度目标" prop="configName" label-width="120px">
-                    <quillEditor @on-change-content="getcontent" :content="addForm.configName" style="height:150px;">
+                    <quillEditor  ref="childMethod" style="height:150px;">
                     </quillEditor>
                 </el-form-item>
                 <el-form-item label="政策月度目标" prop="indicatorTypeName" label-width="120px">
-                    <quillEditor @on-change-content="getcontent2" :content="addForm.indicatorTypeName"
+                    <quillEditor  ref="childMethod1"
                         style="height:150px;">
                     </quillEditor>
                 </el-form-item>

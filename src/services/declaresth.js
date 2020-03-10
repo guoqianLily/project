@@ -21,6 +21,25 @@ export function getAlldeclaresthData(userId,orgId,projectName) {
             })
     })
 }
+export function getBaseMessage(userId,projectId) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.searchBaseMessage,
+                method: 'POST',
+                data: { 
+                    userId:userId,
+                    projectId:projectId,
+                 }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
 
 //时间戳转时间格式
 export function getLocalTime(time, fmt) {

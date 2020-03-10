@@ -20,17 +20,6 @@
   import 'quill/dist/quill.bubble.css'
   //引入font.css 
   import '../assets/css/font.css'
-  // let Size = Quill.import('attributors/style/size')
-  // Size.whitelist = ['10px', '12px', '14px', '16px', '18px', '20px']
-  // Quill.register(Size, true)
-
-  // // 自定义字体类型
-  // var fonts = ['SimSun', 'SimHei', 'Microsoft-YaHei', 'KaiTi', 'FangSong', 'Arial', 'Times-New-Roman', 'sans-serif',
-  //   '宋体', '黑体'
-  // ]
-  // var Font = Quill.import('formats/font')
-  // Font.whitelist = fonts
-  // Quill.register(Font, true)
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
     ["blockquote", "code-block"], // 引用  代码块
@@ -81,16 +70,17 @@
     components: {
       quillEditor
     },
-    props: {
-      content: {
-        type: String,
-        default:{
-          return:'',
-        }
-      }
-    },
+    // props: {
+    //   content: {
+    //     type: String,
+    //     default:{
+    //       return:'',
+    //     }
+    //   }
+    // },
     data() {
       return {
+        content:'',
         editorOption: {
           placeholder: "请输入",
           theme: "snow", // or 'bubble' 
@@ -159,9 +149,10 @@
             val.split("em")[0].length + 2)
           val = newval;
         }
+        this.content=val
         // console.log(newval);
         // console.log(val)
-         this.$emit("on-change-content", val);
+        //  this.$emit("on-change-content", val);
       },
     }
   }

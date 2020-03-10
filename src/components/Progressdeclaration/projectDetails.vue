@@ -25,7 +25,8 @@
                     <template v-else><span>{{detailForm.time}}</span></template>
                 </el-form-item>
                 <el-form-item label="对接部门" prop="">
-                    <quillEditor v-if="state==1" @on-change-content="getcontent" :content="detailForm.dockingDepartment"
+                    <!-- @on-change-content="getcontent" :content="detailForm.dockingDepartment" -->
+                    <quillEditor v-if="state==1"   ref="childMethod1"
                         style="height:150px;">
                     </quillEditor>
                     <div v-else class="department">
@@ -33,7 +34,8 @@
                     </div>
                 </el-form-item>
                 <el-form-item label="路径/内容" prop="">
-                    <quillEditor v-if="state==1" @on-change-content="getcontent2" :content="detailForm.wayAddcontent"
+                <!-- @on-change-content="getcontent2" :content="detailForm.wayAddcontent" -->
+                    <quillEditor v-if="state==1"  ref="childMethod"
                         style="height:150px;">
                     </quillEditor>
                     <div v-else class="ljcontent">
@@ -46,6 +48,10 @@
 </template>
 <script>
     import quillEditor from '../ue'
+      import {
+        getBaseMessage,
+        getLocalTime
+    } from '../../services/declaresth'
     export default {
         components: {
             quillEditor,
@@ -69,13 +75,7 @@
             }
         },
         mounted() {
-            console.log(this.$store.state.user.userId);
-            if (this.type == "add" || this.type == "updata") {
-                this.state = 1
-            } else {
-                this.state = 0
-            }
-            if(this.type=="add"){
+             if(this.type=="add"){
                 this.detailForm= {
                     code: '',
                     name: '',
@@ -85,6 +85,17 @@
                     wayAddcontent: '',
                 }
             }
+            console.log(this.$store.state.user.userId);
+            if (this.type == "add" || this.type == "updata") {
+                this.state = 1
+            } else {
+                this.state = 0
+            }
+           if(this.state==0){
+               this.searchBaseMessage()
+           }
+           
+
         },
         methods: {
             //获取文本编辑器的内容
@@ -95,7 +106,11 @@
                 this.detailForm.wayAddcontent = val;
             },
             addIndex() {
-                console(this.detailForm);
+                console(this.$refs.childMethod);
+            },
+            //查询基本信息
+            searchBaseMessage(){
+
             }
         },
     }

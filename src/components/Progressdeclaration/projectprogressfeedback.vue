@@ -17,7 +17,7 @@
                     <div class="department" v-html="detailForm.dockingDepartment"></div>
                 </el-form-item>
                 <el-form-item label="本周进展" prop="">
-                    <quillEditor v-if="state==1" @on-change-content="getcontent2" :content="detailForm.wayAddcontent"
+                    <quillEditor v-if="state==1"  ref="childMethod"
                         style="height:150px;">
                     </quillEditor>
                     <div class="department" v-else v-html="detailForm.wayAddcontent"></div>
