@@ -163,6 +163,23 @@ export function addNewMonthlytarget(data) {
             })
     })
 }
+export function getOrgData(userId) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.searchOrgId,
+                method: 'POST',
+                data: {
+                    userId:userId
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
 
 //时间戳转时间格式
 export function getLocalTime(time, fmt) {

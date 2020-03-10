@@ -46,6 +46,10 @@ const upDataWeekMessage= "/chouChing/BusinessWeekController/updateData";
 const upDatamonthlytarget= "/chouChing/BusinessTargetController/updateData";
 //当月目标新增保存接口
 const addmonthlytarget= "/chouChing/BusinessTargetController/saveData";
+
+//根据用户ID查询用户拥有的组织权限
+const searchOrgId= "/chouChing/sysDepartmantController/searchTreeAllDataByUserId";
+
 export default {
     searchAllData,
     searchBaseMessage,
@@ -55,7 +59,8 @@ export default {
     addWeekMessage,
     upDataWeekMessage,
     upDatamonthlytarget,
-    addmonthlytarget
+    addmonthlytarget,
+    searchOrgId
 
 }
 
