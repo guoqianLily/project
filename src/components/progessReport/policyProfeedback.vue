@@ -42,12 +42,12 @@
           element-loading-spinner="el-icon-loading"
           :data="tableData"
           border
-          style="width: 100%;margin:0 auto;"
+          style="width: 91.5%;margin:0 0 0 52px;"
         >
           <el-table-column
             prop="policyTypeName"
             label="政策分类"
-            width="180px"
+            width="100px"
             align="center"
           >
           </el-table-column>
@@ -72,18 +72,18 @@
           <el-table-column
             prop="proPolicyTypeName"
             label="政策进展分类"
-            width="200px"
+            width="100px"
           >
             <template slot-scope="scope">
               <div
                 :style="
-                  scope.row.weekproProgressType ? '' : 'text-align:center;'
+                  scope.row.proPolicyTypeName ? '' : 'text-align:center;'
                 "
               >
                 <span
                   v-html="
-                    scope.row.weekproProgressType
-                      ? scope.row.weekproProgressType
+                    scope.row.proPolicyTypeName
+                      ? scope.row.proPolicyTypeName
                       : '/'
                   "
                 ></span>
@@ -274,6 +274,7 @@ export default {
       type:'policyProgress',
       userId:this.$store.state.user.user
     }).then(res => {
+      console.log(res)
       this.searchForm.weekproProgressType = res.result;
     })
   },
@@ -309,8 +310,9 @@ export default {
       
       //查询当月目标
       getMonthMessage(this.$store.state.user.userId, this.$route.query.id, this.monthVal).then((res) => {
+        console.log(res)
           if (res.data.result.length > 0) {
-              searchForm.monthBud = res.data.result[0].projectContext;
+              this.searchForm.monthBud = res.data.result[0].policyContext;
           }
       });
       getPolicyProfeedbackAllData(searchData)
@@ -351,7 +353,7 @@ export default {
     //   修改
     handleEdit(index, row) {
       this.addIndexVisible = true;
-      this.title = "政策反馈";
+      this.title = "政策进展申报";
       this.$nextTick(() => {
         this.addForm = {
           userId:this.$store.state.user.userId,

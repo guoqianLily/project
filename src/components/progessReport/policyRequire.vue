@@ -27,14 +27,14 @@
                     </div>
                 </template>
           </el-table-column>
-          <el-table-column prop="fieldxuqiu" label="进度需求">
+          <el-table-column prop="fieldxuqiu" label="进度需求" width="160px">
               <template slot-scope="scope">
                     <div :style="(scope.row.deadLine ? '' : 'text-align:center;')">
                         <span v-html="(scope.row.deadLine ? scope.row.deadLine : '/')"></span>
                     </div>
                 </template>
           </el-table-column>
-          <el-table-column prop="fieldxuqiu" label="对接部门" width="200px">
+          <el-table-column prop="fieldxuqiu" label="对接部门" width="140px">
               <template slot-scope="scope">
                     <div :style="(scope.row.dockingDepartment ? '' : 'text-align:center;')">
                         <span v-html="(scope.row.dockingDepartment ? scope.row.dockingDepartment : '/')"></span>

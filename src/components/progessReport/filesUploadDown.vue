@@ -117,9 +117,9 @@
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :on-success="handleSuccess"
+            :on-change="handleChange"
             multiple
-            :limit="1"
-            :on-exceed="handleExceed"
+            :limit="2"
             :file-list="fileList"
             :data="upLoadObj"
             :auto-upload="false"
@@ -274,8 +274,8 @@ export default {
     },
     // 新增
     addIndex() {
+      this.fileList = [];
       this.addIndexVisible = true;
-
       this.title = "上传附件";
       this.$nextTick(() => {
         this.$refs.upLoadObj.resetFields(); //等弹窗里的form表单的dom渲染完在执行this.$refs.addForm.resetFields()，去除验证
@@ -290,8 +290,15 @@ export default {
     },
     //   修改
     handleEdit(index, row) {
-      this.addIndexVisible = true;
-      this.title = "修改信息";
+      this.fileList = []
+      this.fileList = [{
+        name:row.fileName,
+        url:row.fileUrl
+      }]
+      setTimeout(() =>{
+        this.addIndexVisible = true;
+      },400)
+      this.title = "修改附件";
       this.$nextTick(() => {
         this.upLoadObj = {
           fileBusinessId:this.$route.query.id,
@@ -301,7 +308,6 @@ export default {
           id:row.id,
         }
         this.formType = "updateForm";
-        this.fileList = []
         this.uploadUrl = 'http://10.138.25.189:8088/chouChing/businessFileController/updateData'
       });
       
@@ -387,7 +393,8 @@ export default {
       console.log(data);
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      console.log(fileList);
+      // this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
     },
     handleSuccess(){
       this.addIndexVisible = false;
@@ -396,6 +403,9 @@ export default {
     dealWidthTime(val){
       let time = getLocalTime(val,'yyyy-MM-dd hh:mm:ss');
       return time;
+    },
+    handleChange(file, fileList){
+      this.fileList = fileList.slice(-1);
     }
   }
 };
@@ -435,4 +445,9 @@ export default {
     }
   }
 }
+</style>
+<style lang="scss">
+  .el-upload-list__item{
+    transition:none !important;
+  }
 </style>
