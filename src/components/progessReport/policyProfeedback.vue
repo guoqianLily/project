@@ -3,36 +3,38 @@
     <div class="queryRow">
       <el-form :model="searchForm">
         <el-form-item label="当前时间">
-          <el-date-picker
+          <!-- <el-date-picker
             v-model="nowTime"
             type="week"
             placeholder="选择日期"
             @change="getNowTime"
             format="yyyy年M月份第W周"
             value-format="yyyy-MM-dd"
-            v-if="updateFlag"
+            v-if="updateFlag == '1'"
           >
-          </el-date-picker>
-          <el-input v-model="nowTimeValue" v-else> </el-input>
+          </el-date-picker> -->
+          <!-- <el-input v-model="nowTimeValue" :disabled="true" v-else> </el-input> -->
+          <div class="nowTimeShow">
+            <span v-html="nowTimeValue"></span>
+          </div>
         </el-form-item>
         <el-form-item label="当月目标" class="autoElform">
-          <quillEditor
+          <!-- <quillEditor
             @content="getcontent"
             v-bind:content="searchForm.monthBud"
             style="height:150px;"
             v-model="searchForm.monthBud"
-            v-if="updateFlag"
+            v-if="updateFlag == '1'"
           >
-          </quillEditor>
+          </quillEditor> -->
           <div
-            style="width:100%;height:150px;border:1px solid #ccc;border-radius:10px;"
-            v-else
+            style="width:100%;height:150px;border:1px solid #ccc;border-radius:10px;padding-left:10px;"
             v-html="searchForm.monthBud"
           ></div>
         </el-form-item>
       </el-form>
     </div>
-    <div class="listBox" style="height:68%;">
+    <div class="listBox" style="height:63%;">
       <div class="tableBox" style="height:100%;">
         <el-table
           v-loading="loading"
@@ -40,27 +42,60 @@
           element-loading-spinner="el-icon-loading"
           :data="tableData"
           border
-          style="width: 90%;margin:0 auto;"
-          height="100%"
+          style="width: 95%;margin:0 auto;"
         >
           <el-table-column
-            prop="fieldChinese"
+            prop="policyType"
             label="政策分类"
             width="180px"
             align="center"
           >
           </el-table-column>
-          <el-table-column prop="fieldName" label="政策内容"> </el-table-column>
-          <el-table-column prop="fieldxuqiu" label="进度需求" width="260px">
+          <el-table-column prop="deadLine" label="政策内容">
+            <template slot-scope="scope">
+              <div :style="scope.row.content ? '' : 'text-align:center;'">
+                <span
+                  v-html="scope.row.content ? scope.row.content : '/'"
+                ></span>
+              </div>
+            </template>
           </el-table-column>
-          <el-table-column prop="" label="对接部门" width="100px">
+          <el-table-column prop="weekContent" label="本周进展">
+            <template slot-scope="scope">
+              <div :style="scope.row.weekContent ? '' : 'text-align:center;'">
+                <span
+                  v-html="scope.row.weekContent ? scope.row.weekContent : '/'"
+                ></span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="weekproProgressType"
+            label="政策进展分类"
+            width="200px"
+          >
+            <template slot-scope="scope">
+              <div
+                :style="
+                  scope.row.weekproProgressType ? '' : 'text-align:center;'
+                "
+              >
+                <span
+                  v-html="
+                    scope.row.weekproProgressType
+                      ? scope.row.weekproProgressType
+                      : '/'
+                  "
+                ></span>
+              </div>
+            </template>
           </el-table-column>
           <el-table-column
             prop=""
             label="操作"
             width="80px"
             align="center"
-            v-if="updateFlag"
+            v-if="updateFlag == '1'"
           >
             <template slot-scope="scope">
               <span
@@ -101,24 +136,28 @@
       >
         <el-form-item
           label="本周进展"
-          prop="fieldChinese"
+          prop="weekContent"
           class="autoElform"
           label-width="120px"
         >
           <quillEditor
-            @content="getcontent"
-            v-bind:content="addForm.fieldChinese"
-            style="height:150px;"
-            v-model="addForm.fieldChinese"
+            @on-change-content="getcontent1"
+            :content="addForm.weekContent"
+            style="height:120px;"
+            ref="weekContent"
           >
           </quillEditor>
         </el-form-item>
-        <el-form-item label="政策进展分类" prop="zcClass" label-width="120px">
-          <el-select v-model="addForm.zcClass" placeholder="请选择">
+        <el-form-item
+          label="政策进展分类"
+          prop="weekproProgressType"
+          label-width="120px"
+        >
+          <el-select v-model="addForm.weekproProgressType" placeholder="请选择" @change="getVal">
             <el-option
-              v-for="item in searchForm.zcClass"
+              v-for="item in searchForm.weekproProgressType"
               :key="item.id"
-              :label="item.label"
+              :label="item.value"
               :value="item.value"
             >
             </el-option>
@@ -144,6 +183,16 @@
 // } from "../../utils/request_grid";
 import "../../assets/css/public.scss";
 import { GetWeekByDate } from "../../utils/validate.js";
+import { getLocalTime } from "../../services/declaresth";
+import {
+  getpolicyRequireAllData,
+  addpolicyRequireData,
+  updatepolicyRequireData,
+  getPolicyProfeedbackAllData,
+  updatePolicyProfeedbackData,
+  AddPolicyProfeedbackData,
+  getweekProgressClassData
+} from "../../services/policyPage.js";
 import quillEditor from "../ue";
 export default {
   components: {
@@ -155,476 +204,55 @@ export default {
       title: "新增",
       nowTime: "2020-03-09",
       typeName: "",
+      nowTimeValue: "",
       addIndexVisible: false,
       currentPage1: 1,
       tableTotal: 0,
       pageSize: 8,
       searchForm: {
         fieldArr: [],
-        fieldChinese: "",
+        weekContent: "",
         monthBud: "111111",
-        zcClass: [
-          {
-            value: "1",
-            label: "Ⅰ类市重大项目（12项）"
-          },
-          {
-            value: "2",
-            label: "2类市场景政策（14项）"
-          },
-          {
-            value: "2",
-            label: "3类土地政策（12项）"
-          }
-        ],
+        weekproProgressType: [],
         unableFlag: ""
       },
       addForm: {
-        zcClass: "",
-        duijiebumen: "",
-        id: "",
-        userId: "",
-        companyId: "",
-        fieldChinese: "",
-        fieldName: "111",
-        unableFlag: ""
+        policyType: "", //政策分类
+        content: "", // 政策内容
+        deadLine: "", //进度需求
+        dockingDepartment: "", // 对接部门
+        ableFlag: "1",
+        weekContent: "", //本周进展内容
+        weekproProgressType: "" //政策进展分类
       },
       rules: {
-        zcClass: [
+        weekproProgressType: [
           {
             required: true,
             message: "请选择政策分类",
             trigger: "change"
           }
         ],
-        duijiebumen: [
-          {
-            required: true,
-            message: "请输入对接部门",
-            trigger: "blur"
-          }
-        ],
-        fieldChinese: [
+        weekContent: [
           {
             required: true,
             message: "请输入字段名称",
             trigger: "blur"
           }
-        ],
-        fieldName: [
-          {
-            required: true,
-            message: "请输入字段取值",
-            trigger: "blur"
-          }
-        ],
-        unableFlag: [
-          {
-            required: true,
-            message: "请选择是否有效",
-            trigger: "change"
-          }
         ]
       },
-      tableData: [
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        },
-        {
-          fieldChinese: "Ⅰ类市重大项目（12项）",
-          fieldName:
-            "Ⅰ-4：入选政府采购目录：支持海纳云参与住建局2020年数字照明系统项目计划目录中的新建项目建设和老旧项目改造",
-          fieldxuqiu: "3月给到项目计划目录；5月政策出台；7月启动"
-        }
-      ],
+      tableData: [],
       loading: false,
       interfaceId: this.$route.query.id,
-      updateFlag: true
+      updateFlag: this.$route.query.state,
+      monthVal:'',
+      weekVal:'',
+      weekContent:'',
+      weekproProgressType:'',
     };
   },
   mounted() {
-    // this.searchMessage();
+    this.nowTime = getLocalTime(new Date(), "yyyy-MM-dd");
     let newValDate = this.nowTime.split("-").join("");
     this.nowTimeValue =
       newValDate.substring(0, 4) +
@@ -635,6 +263,17 @@ export default {
       "月第" +
       GetWeekByDate(this.nowTime) +
       "周";
+    this.monthVal = newValDate.substring(0, 4) + '-' + newValDate.substring(4, 6);
+    this.weekVal = GetWeekByDate(this.nowTime);
+    this.searchMessage();
+    // 获取申报政策进展分类得下拉框值
+    getweekProgressClassData({
+      type:'policyProgress',
+      userId:this.$store.state.user.user
+    }).then(res => {
+      console.log(res)
+      this.searchForm.weekproProgressType = res.result;
+    })
   },
   methods: {
     //分页查询的事件
@@ -659,48 +298,19 @@ export default {
     //查询
     searchMessage(type) {
       var _that = this;
-      if (type && type == "1") {
-        _that.currentPage1 = 1;
-      }
+      console.log(this.$store);
       let searchData = {
-        userId: sessionStorage.getItem("userId"),
-        companyId: sessionStorage.getItem("companyId"),
-        pageNo: _that.currentPage1,
-        pageSize: _that.pageSize,
-        fieldChinese: _that.searchForm.fieldChinese,
-        unableFlag: _that.searchForm.unableFlag,
-        interfaceId: this.interfaceId
+        userId: this.$store.state.user.userId,
+        projectId: this.$route.query.id,
+        month:this.monthVal,
+        week:this.weekVal
       };
-      getFieldPageData(searchData)
+      getPolicyProfeedbackAllData(searchData)
         .then(res => {
-          if (res.data.result.length > 0) {
-            _that.tableData = res.data.result;
-            _that.tableTotal = res.data.rowCount;
+          console.log(res);
+          if (res.result.length > 0) {
+            _that.tableData = res.result;
             _that.loading = false;
-            let allsearchData = {
-              userId: sessionStorage.getItem("userId"),
-              companyId: sessionStorage.getItem("companyId"),
-              pageNo: _that.currentPage1,
-              pageSize: _that.pageSize,
-              interfaceId: _that.interfaceId
-            };
-            getFieldAllData(allsearchData).then(data => {
-              let arr = data.data.result;
-              _that.searchForm.fieldArr = [
-                {
-                  id: "",
-                  value: "",
-                  label: "全部"
-                }
-              ];
-              for (let i = 0; i < arr.length; i++) {
-                _that.searchForm.fieldArr.push({
-                  id: arr[i].id,
-                  value: arr[i].fieldChinese,
-                  label: arr[i].fieldChinese
-                });
-              }
-            });
           } else {
             _that.tableData = [];
             _that.tableTotal = 0;
@@ -725,14 +335,10 @@ export default {
       this.$nextTick(() => {
         this.$refs.addForm.resetFields(); //等弹窗里的form表单的dom渲染完在执行this.$refs.addForm.resetFields()，去除验证
         this.addForm = {
-          zcClass: "",
-          id: "",
+          weekproProgressType: "",
           userId: sessionStorage.getItem("userId"),
-          companyId: sessionStorage.getItem("companyId"),
-          fieldChinese: "",
-          fieldName: "1111",
-          unableFlag: "",
-          interfaceId: this.interfaceId
+          weekContent: "",
+          
         };
       });
     },
@@ -742,15 +348,18 @@ export default {
       this.title = "政策反馈";
       this.$nextTick(() => {
         this.addForm = {
-          id: row.id,
-          userId: sessionStorage.getItem("userId"),
-          companyId: sessionStorage.getItem("companyId"),
-          fieldChinese: row.fieldChinese,
-          fieldName: row.fieldName,
-          unableFlag: row.unableFlag,
-          interfaceId: this.interfaceId,
-          zcClass: ""
+          userId:this.$store.state.user.userId,
+          businessId: row.id,
+          weekId: row.weekId,
+          businessType: "policy",
+          ableFlag:'1',
+          month:this.monthVal,
+          week:this.weekVal,
+          weekContent:(row.weekContent ? row.weekContent : ''), //本周进展内容
+          weekproProgressType: (row.weekproProgressType ? row.weekproProgressType : " "), //政策进展分类
+          weekId:row.weekId,
         };
+        this.FormType = "updateForm";
       });
     },
     //   删除
@@ -794,30 +403,71 @@ export default {
     //新增修改提交事件
     submitForm(formName) {
       let _that = this;
+      this.addForm.weekContent = this.$refs.weekContent.content;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          const formData = _that.addForm;
-          if (_that.addForm.id != "") {
-            updateFieldData(formData).then(res => {
-              if (res.data.success) {
-                this.$message({
-                  type: "success",
-                  message: "操作成功!"
-                });
-                this.addIndexVisible = false;
-                this.searchMessage();
-              } else {
-                this.$message({
-                  type: "error",
-                  message: "操作失败!"
-                });
-                this.addIndexVisible = false;
-                this.searchMessage();
+          if (_that.FormType == "updateForm") {
+            if (this.addForm.weekId) {
+              let data = {
+                userId:this.$store.state.user.userId,
+                businessId: this.addForm.businessId,
+                id: this.addForm.weekId,
+                businessType: "policy",
+                ableFlag:'1',
+                month:this.monthVal,
+                week:this.weekVal,
+                content:(this.addForm.weekContent ? this.addForm.weekContent : ''), //本周进展内容
+                proProgressType: (this.addForm.weekproProgressType ? this.addForm.weekproProgressType :''), //政策进展分类
               }
-            });
+              updatePolicyProfeedbackData(data).then(res => {
+                if (res.success) {
+                  this.$message({
+                    type: "success",
+                    message: "操作成功!"
+                  });
+                  this.addIndexVisible = false;
+                  this.searchMessage();
+                } else {
+                  this.$message({
+                    type: "error",
+                    message: "操作失败!"
+                  });
+                  this.addIndexVisible = false;
+                  this.searchMessage();
+                }
+              });
+            } else {
+              let data = {
+                userId:this.$store.state.user.userId,
+                businessId: this.addForm.businessId,
+                businessType: "policy",
+                ableFlag:'1',
+                month:this.monthVal,
+                week:this.weekVal,
+                content:(this.addForm.weekContent ? this.addForm.weekContent : ''), //本周进展内容
+                proProgressType: (this.addForm.weekproProgressType ? this.addForm.weekproProgressType :''), //政策进展分类
+              }
+              AddPolicyProfeedbackData(data).then(res => {
+                if (res.success) {
+                  this.$message({
+                    type: "success",
+                    message: "操作成功!"
+                  });
+                  this.addIndexVisible = false;
+                  this.searchMessage();
+                } else {
+                  this.$message({
+                    type: "error",
+                    message: "操作失败!"
+                  });
+                  this.addIndexVisible = false;
+                  this.searchMessage();
+                }
+              });
+            }
           } else {
             addFieldData(formData).then(res => {
-              if (res.data.success) {
+              if (res.success) {
                 this.$message({
                   type: "success",
                   message: "操作成功!"
@@ -851,6 +501,14 @@ export default {
     getNowTime(val) {
       console.log(this.nowTime);
       console.log(val);
+    },
+    getcontent1(){
+
+    },
+    getVal() {
+      console.log(111111)
+      console.log(this.$refs.weekContent.content)
+      this.addForm.weekContent = this.$refs.weekContent.content;  
     }
   }
 };
@@ -864,6 +522,12 @@ export default {
   height: calc(100% - 48px);
   .el-row {
     height: 0.4rem;
+  }
+  .nowTimeShow {
+    height: 100%;
+    padding: 0 30px 0 10px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
   }
 
   #addNewdialog {

@@ -87,6 +87,7 @@
     }
 
     .el-menu.el-menu--horizontal {
+        display: block;
         border-bottom: none;
         height: 48px;
         background-color: transparent !important;

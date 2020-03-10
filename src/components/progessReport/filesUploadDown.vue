@@ -1,13 +1,12 @@
 <!--  -->
 <template>
   <div id="filesUploadDown" class="listPage">
-    <div class="bigtitle" v-if="upDateFlag">
+    <div class="bigtitle" v-if="upDateFlag == '1'">
       <el-button
         type="primary"
         size="small"
         class="titleBtn"
         @click="addIndex"
-        v-if="upDateFlag"
       >
         新增</el-button
       >
@@ -30,31 +29,42 @@
             width="180px"
             align="center"
           >
+            <template slot-scope="scope">
+                <span v-html="dealWidthTime(scope.row.updateTime)"></span>
+            </template>
           </el-table-column>
-          <el-table-column prop="fieldName" label="文件名">
+          <el-table-column
+            prop="fileDescription"
+            label="文件说明"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column prop="fileName" label="文件名">
             <template slot-scope="scope">
               <div
                 :style="
-                  scope.row.fieldName
+                  scope.row.fileName
                     ? 'text-align:center;'
                     : 'text-align:center;'
                 "
               >
-              <a :href="scope.row.url" target="_blank">{{scope.row.fieldName}}</a>
+                <a :href="scope.row.fileUrl" target="_blank">{{
+                  scope.row.fileName
+                }}</a>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="fieldxuqiu" label="提交人">
+          <el-table-column prop="userName" label="提交人" width="180px">
             <template slot-scope="scope">
               <div
                 :style="
-                  scope.row.fieldxuqiu
+                  scope.row.userName
                     ? 'text-align:center;'
                     : 'text-align:center;'
                 "
               >
                 <span
-                  v-html="scope.row.fieldxuqiu ? scope.row.fieldxuqiu : '/'"
+                  v-html="scope.row.userName ? scope.row.userName : '/'"
                 ></span>
               </div>
             </template>
@@ -64,7 +74,7 @@
             label="操作"
             width="100px"
             align="center"
-            v-if="upDateFlag"
+            v-if="upDateFlag == 1"
           >
             <template slot-scope="scope">
               <span
@@ -88,28 +98,42 @@
       id="addNewdialog"
       width="50%"
     >
-      <div class="files_content">
-        <el-upload
-          class="upload-demo"
-          ref="upload"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          :auto-upload="false"
-        >
-          <el-button slot="trigger" size="small" type="primary"
-            >选取文件</el-button
+      <el-form
+        :model="upLoadObj"
+        ref="upLoadObj"
+        :rules="rules"
+        label-position="right"
+      >
+        <el-form-item label="文件说明" prop="fileDescription">
+          <el-input
+            v-model="upLoadObj.fileDescription"
+            placeholder="请输入文件说明"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="文件" class="autoElform">
+          <el-upload
+            :action="uploadUrl"
+            ref="upload"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :on-success="handleSuccess"
+            multiple
+            :limit="1"
+            :on-exceed="handleExceed"
+            :file-list="fileList"
+            :data="upLoadObj"
+            :auto-upload="false"
           >
-          <el-button
-            style="margin-left: 10px;"
-            size="small"
-            type="success"
-            @click="submitUpload"
-            >上传到服务器</el-button
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
+        <el-form-item class="btnItem">
+          <el-button type="primary" @click="submitForm('upLoadObj')"
+            >提交</el-button
           >
-        </el-upload>
-      </div>
+          <el-button @click="closeForm('upLoadObj')">取消</el-button>
+        </el-form-item>
+      </el-form>
     </el-dialog>
 
     <!-- <div class="downLoadFile">下载附件：</div>
@@ -122,22 +146,17 @@
 </template>
 
 <script>
+import {
+  getFileListAllData,
+  deleteFileListData,
+  updateFileListData
+} from '../../services/policyPage.js'
 import "../../assets/css/public.scss";
+import { getLocalTime } from "../../services/declaresth";
 export default {
   data() {
     return {
-      fileList: [
-        {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        },
-        {
-          name: "food2.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        }
-      ],
+      fileList: [],
       stripe: true,
       title: "新增",
       typeName: "",
@@ -165,77 +184,39 @@ export default {
         unableFlag: ""
       },
       addForm: {
-        zcClass: "",
-        duijiebumen: "",
-        id: "",
-        userId: "",
-        companyId: "",
-        fieldChinese: "",
-        fieldName: "111",
-        unableFlag: ""
+        fileDescription:''
       },
       rules: {
-        zcClass: [
+        fileDescription: [
           {
             required: true,
-            message: "请选择政策分类",
-            trigger: "change"
-          }
-        ],
-        duijiebumen: [
-          {
-            required: true,
-            message: "请输入对接部门",
+            message: "请输入文件说明",
             trigger: "blur"
           }
         ],
-        fieldChinese: [
-          {
-            required: true,
-            message: "请输入字段名称",
-            trigger: "blur"
-          }
-        ],
-        fieldName: [
-          {
-            required: true,
-            message: "请输入字段取值",
-            trigger: "blur"
-          }
-        ],
-        unableFlag: [
-          {
-            required: true,
-            message: "请选择是否有效",
-            trigger: "change"
-          }
-        ]
       },
-      tableData: [
-        {
-          fieldChinese: "2020-03-09",
-          fieldName: "xxx.png",
-          fieldxuqiu: "张三",
-          url:"https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        },
-        {
-          fieldChinese: "2020-03-09",
-          fieldName: "xxx.xlsx",
-          fieldxuqiu: "李四",
-          url:"https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        }
-      ],
+      tableData: [],
       loading: false,
       interfaceId: this.$route.query.id,
-      upDateFlag: true
+      upDateFlag:this.$route.query.state,
+      upLoadObj:{
+        fileBusinessId:this.$route.query.id,
+        fileDescription:'',
+        userId:this.$store.state.user.userId
+      },
+      uploadUrl:'http://10.138.25.189:8088/chouChing/businessFileController/saveData',
+      formType:''
     };
+  },
+  created() {
+    this.searchMessage();
   },
   methods: {
     submitUpload() {
-      this.$refs.upload.submit();
-      setTimeout(() => {
-        this.fileList = [];
-      }, 1000);
+      // this.$refs.upload.submit();
+      // setTimeout(() => {
+      //   this.fileList = [];
+      // }, 1000);
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -265,48 +246,17 @@ export default {
     //查询
     searchMessage(type) {
       var _that = this;
-      if (type && type == "1") {
-        _that.currentPage1 = 1;
-      }
       let searchData = {
-        userId: sessionStorage.getItem("userId"),
-        companyId: sessionStorage.getItem("companyId"),
-        pageNo: _that.currentPage1,
-        pageSize: _that.pageSize,
-        fieldChinese: _that.searchForm.fieldChinese,
-        unableFlag: _that.searchForm.unableFlag,
-        interfaceId: this.interfaceId
+        userId: this.$store.state.user.userId,
+        fileBusinessId:this.$route.query.id,
       };
-      getFieldPageData(searchData)
+      getFileListAllData(searchData)
         .then(res => {
-          if (res.data.result.length > 0) {
-            _that.tableData = res.data.result;
-            _that.tableTotal = res.data.rowCount;
+          console.log(res)
+          if (res.result.length > 0) {
+            _that.tableData = res.result;
             _that.loading = false;
-            let allsearchData = {
-              userId: sessionStorage.getItem("userId"),
-              companyId: sessionStorage.getItem("companyId"),
-              pageNo: _that.currentPage1,
-              pageSize: _that.pageSize,
-              interfaceId: _that.interfaceId
-            };
-            getFieldAllData(allsearchData).then(data => {
-              let arr = data.data.result;
-              _that.searchForm.fieldArr = [
-                {
-                  id: "",
-                  value: "",
-                  label: "全部"
-                }
-              ];
-              for (let i = 0; i < arr.length; i++) {
-                _that.searchForm.fieldArr.push({
-                  id: arr[i].id,
-                  value: arr[i].fieldChinese,
-                  label: arr[i].fieldChinese
-                });
-              }
-            });
+           
           } else {
             _that.tableData = [];
             _that.tableTotal = 0;
@@ -329,34 +279,34 @@ export default {
 
       this.title = "上传附件";
       this.$nextTick(() => {
-        this.$refs.addForm.resetFields(); //等弹窗里的form表单的dom渲染完在执行this.$refs.addForm.resetFields()，去除验证
-        this.addForm = {
-          zcClass: "",
-          id: "",
-          userId: sessionStorage.getItem("userId"),
-          companyId: sessionStorage.getItem("companyId"),
-          fieldChinese: "",
-          fieldName: "1111",
-          unableFlag: "",
-          interfaceId: this.interfaceId
-        };
+        this.$refs.upLoadObj.resetFields(); //等弹窗里的form表单的dom渲染完在执行this.$refs.addForm.resetFields()，去除验证
+        this.upLoadObj = {
+          fileBusinessId:this.$route.query.id,
+          fileDescription:' ',
+          userId:this.$store.state.user.userId
+        }
+        this.formType = "addForm" 
+        this.uploadUrl = 'http://10.138.25.189:8088/chouChing/businessFileController/saveData'
       });
     },
     //   修改
     handleEdit(index, row) {
+      console.log('进来了')
       this.addIndexVisible = true;
       this.title = "修改信息";
       this.$nextTick(() => {
-        this.addForm = {
-          id: row.id,
-          userId: sessionStorage.getItem("userId"),
-          companyId: sessionStorage.getItem("companyId"),
-          fieldChinese: row.fieldChinese,
-          fieldName: row.fieldName,
-          unableFlag: row.unableFlag,
-          interfaceId: this.interfaceId
-        };
+        this.upLoadObj = {
+          fileBusinessId:this.$route.query.id,
+          fileDescription:row.fileDescription,
+          userId:this.$store.state.user.userId,
+          ableFlag:'1',
+          id:row.id,
+        }
+        this.formType = "updateForm";
+        this.fileList = []
+        this.uploadUrl = 'http://10.138.25.189:8088/chouChing/businessFileController/updateData'
       });
+      
     },
     //   删除
     handleDelete(index, row) {
@@ -368,11 +318,10 @@ export default {
         .then(() => {
           const deleteData = {
             userId: sessionStorage.getItem("userId"),
-            companyId: sessionStorage.getItem("companyId"),
             id: row.id
           };
-          deleteFieldData(deleteData).then(res => {
-            if (res.data.success) {
+          deleteFileListData(deleteData).then(res => {
+            if (res.success) {
               this.$message({
                 type: "success",
                 message: "操作成功!"
@@ -398,46 +347,34 @@ export default {
     },
     //新增修改提交事件
     submitForm(formName) {
+      
       let _that = this;
       this.$refs[formName].validate(valid => {
         if (valid) {
-          const formData = _that.addForm;
-          if (_that.addForm.id != "") {
-            updateFieldData(formData).then(res => {
-              if (res.data.success) {
-                this.$message({
-                  type: "success",
-                  message: "操作成功!"
-                });
-                this.addIndexVisible = false;
-                this.searchMessage();
-              } else {
-                this.$message({
-                  type: "error",
-                  message: "操作失败!"
-                });
-                this.addIndexVisible = false;
-                this.searchMessage();
-              }
-            });
-          } else {
-            addFieldData(formData).then(res => {
-              if (res.data.success) {
-                this.$message({
-                  type: "success",
-                  message: "操作成功!"
-                });
-                this.addIndexVisible = false;
-                this.searchMessage();
-              } else {
-                this.$message({
-                  type: "error",
-                  message: "操作失败!"
-                });
-                this.addIndexVisible = false;
-                this.searchMessage();
-              }
-            });
+          console.log(_that.formType)
+          const formData = _that.upLoadObj;
+          if (_that.formType == "updateForm") {
+            this.$refs.upload.submit();
+            // updateFileListData(formData).then(res => {
+            //   if (res.data.success) {
+            //     this.$message({
+            //       type: "success",
+            //       message: "操作成功!"
+            //     });
+            //     this.addIndexVisible = false;
+            //     this.searchMessage();
+            //   } else {
+            //     this.$message({
+            //       type: "error",
+            //       message: "操作失败!"
+            //     });
+            //     this.addIndexVisible = false;
+            //     this.searchMessage();
+            //   }
+            // });
+          } else if (_that.formType == "addForm"){
+            this.$refs.upload.submit();
+            // this.addIndexVisible = false;
           }
         } else {
           return false;
@@ -451,6 +388,18 @@ export default {
     //获取文本编辑器的内容
     getcontent(data) {
       console.log(data);
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    },
+    handleSuccess(){
+      this.addIndexVisible = false;
+      this.searchMessage();
+    },
+    dealWidthTime(val){
+      let time = getLocalTime(val,'yyyy-MM-dd hh:mm:ss');
+      return time;
+      console.log(time)
     }
   }
 };

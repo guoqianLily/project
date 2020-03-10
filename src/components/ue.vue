@@ -149,7 +149,7 @@
             val.split("em")[0].length + 2)
           val = newval;
         }
-        this.content=val
+        // this.content=val
         // console.log(newval);
         // console.log(val)
         //  this.$emit("on-change-content", val);
