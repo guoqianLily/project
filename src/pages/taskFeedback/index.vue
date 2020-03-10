@@ -13,11 +13,11 @@
                 <el-form-item label="项目">
                     <el-input v-model="formInline.projectName" placeholder="请输入内容"></el-input>
                 </el-form-item>
-                <el-form-item label="达成时间" label-width="80px">
+                <!-- <el-form-item label="达成时间" label-width="80px">
                     <el-date-picker v-model="formInline.date" type="daterange" range-separator="至" format="yyyy-MM"
                         start-placeholder="开始日期" end-placeholder="结束日期">
                     </el-date-picker>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item>
                     <el-button type="primary" @click="search()">查询</el-button>
                     <el-button type="primary" @click="addnewly()">新建</el-button>
@@ -51,12 +51,12 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <div class="pagination">
+            <!-- <div class="pagination">
                 <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                     :current-page="currentPage" :page-size="pageSize" layout="prev, pager, next" :total="tableTotal"
                     style="margin-top:5px;">
                 </el-pagination>
-            </div>
+            </div> -->
 
         </div>
 
@@ -164,7 +164,7 @@
             //详情页面查看
             datailQuery(index, row) {
                 this.$router.push({
-                    name: "/detail",
+                    name: "detail",
                     query: {
                         state: '0', //1可编辑,
                         id:row.id
@@ -190,7 +190,7 @@
             revise(index, row) {
                 this.$router.push({
                     name: "newModification",
-                    params: {
+                    query: {
                         state: '1', //1可编辑,
                         type: 'updata' ,//新增，还是修改up
                         id:row.id
@@ -206,17 +206,13 @@
                 let projectName = this.formInline.projectName //项目名称
                 getAlldeclaresthData(userid, orgId, projectName).then((res) => {
                     if (res.data.result.length > 0) {
-                        for (var i = 0; i < res.data.result.length; i++) {
-                            res.data.result[i].deadLine = getLocalTime(res.data.result[0].deadLine, 'yyyy-MM')
-                        }
+                        // for (var i = 0; i < res.data.result.length; i++) {
+                        //     res.data.result[i].deadLine = getLocalTime(res.data.result[0].deadLine, 'yyyy-MM')
+                        // }
                         this.tableData = res.data.result;
                     }
-                    // this.transferUserdata = data.data.result.filter(item => item.userName != "").filter(item =>
-                    //     item.userName != null);
-                    // this.getRolesGjuserid(id);
-
                 });
-                console.log("查询事件")
+                // console.log("查询事件")
             },
             //导出
             derive() {
@@ -310,7 +306,8 @@
             margin-top: 30px;
 
             .tableBox {
-                max-height: calc(100% - 63px);
+                // max-height: calc(100% - 63px);
+                height: 98%;
                 width: 100%;
 
                 .el-table {

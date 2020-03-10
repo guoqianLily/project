@@ -1,7 +1,7 @@
 <template>
   <div  class="zdyeditor2" style="">
     <!-- <el-card style="height: 100%;width:100%"> -->
-    <quill-editor v-model="content" ref="myQuillEditor2" style="height:100%;width:100%" :options="editorOption">
+    <quill-editor v-model="content" ref="myQuillEditor2"  @change="onEditorChange($event)" style="height:100%;width:100%" :options="editorOption">
       <!-- 自定义toolar -->
       <div  class="toolbar" slot="toolbar">
         <!-- Add a bold button -->
@@ -76,6 +76,14 @@
     components: {
       quillEditor
     },
+    props: {
+      content: {
+        type: String,
+        default:{
+          return:'',
+        }
+      }
+    },
     data() {
       return {
         content: '',
@@ -95,7 +103,23 @@
       },
       onEditorBlur() {}, // 失去焦点事件
       onEditorFocus() {}, // 获得焦点事件
-      onEditorChange() {}, // 内容改变事件
+           onEditorChange({editor, html, text}) {
+        var val=html
+        var newval = val;
+        if (val.split("strong").length > 1) {
+          newval = val.slice(0, val.split("strong")[0].length + 6) + ' style="font-weight: bold !important"' + val
+            .slice(val.split("strong")[0].length + 6)
+          val = newval;
+        }
+        if (val.split("em").length > 1) {
+          newval = val.slice(0, val.split("em")[0].length + 2) + ' style="font-style: italic !important"' + val.slice(
+          val.split("em")[0].length + 2)
+          val = newval;
+        }
+         this.content = val;
+         console.log( this.content)
+        
+      }, // 内容改变事件
       // 转码
       escapeStringHTML(str) {
         str = str.replace(/&lt;/g, '<');
@@ -124,9 +148,9 @@
           newval=val.slice(0,val.split("em")[0].length+2)+' style="font-style: italic !important"'+val.slice(val.split("em")[0].length+2)
           val=newval;
         }
-        console.log(newval);
-        console.log(val)
-         this.$emit('content',val)
+        // console.log(newval);
+        // console.log(val)
+        //  this.$emit('content',val)
       },
     }
   }
