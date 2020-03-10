@@ -9,37 +9,35 @@
         <div class="Detailscontent">
             <el-form :model="detailForm" :rules="rules" ref="ruleForm" label-width="80px">
                 <el-form-item label="项目编码" prop="" style="width:50%">
-                    <el-input v-if="state==1" v-model="detailForm.code"></el-input>
-                    <template v-else><span>{{detailForm.code}}</span></template>
+                    <el-input v-if="state==1" v-model="detailForm.projectCode"></el-input>
+                    <template v-else><span>{{detailForm.projectCode}}</span></template>
                 </el-form-item>
                 <el-form-item label="项目名称" prop="" style="width:50%">
-                    <el-input v-if="state==1" v-model="detailForm.name"></el-input>
-                    <template v-else><span>{{detailForm.name}}</span></template>
+                    <el-input v-if="state==1" v-model="detailForm.projectName"></el-input>
+                    <template v-else><span>{{detailForm.projectName}}</span></template>
                 </el-form-item>
                 <el-form-item label="所属平台" prop="" style="width:50%">
-                    <el-input v-if="state==1" v-model="detailForm.platform"></el-input>
-                    <template v-else><span>{{detailForm.platform}}</span></template>
+                    <el-input v-if="state==1" v-model="detailForm.departmantName"></el-input>
+                    <template v-else><span>{{detailForm.departmantName}}</span></template>
                 </el-form-item>
                 <el-form-item label="达成时间" prop="" style="width:50%">
-                    <el-input v-if="state==1" v-model="detailForm.time"></el-input>
-                    <template v-else><span>{{detailForm.time}}</span></template>
+                    <el-input v-if="state==1" v-model="detailForm.deadLine"></el-input>
+                    <template v-else><span>{{detailForm.deadLine}}</span></template>
                 </el-form-item>
                 <el-form-item label="对接部门" prop="">
                     <!-- @on-change-content="getcontent" :content="detailForm.dockingDepartment" -->
-                    <quillEditor v-if="state==1"   ref="childMethod1"
-                        style="height:150px;">
+                    <quillEditor v-if="state==1" ref="childMethod1" style="height:150px;">
                     </quillEditor>
-                    <div v-else class="department">
+                    <div v-else class="department" style="height:50px;">
                         {{detailForm.dockingDepartment}}
                     </div>
                 </el-form-item>
                 <el-form-item label="路径/内容" prop="">
-                <!-- @on-change-content="getcontent2" :content="detailForm.wayAddcontent" -->
-                    <quillEditor v-if="state==1"  ref="childMethod"
-                        style="height:150px;">
+                    <!-- @on-change-content="getcontent2" :content="detailForm.wayAddcontent" -->
+                    <quillEditor v-if="state==1" ref="childMethod" style="height:150px;">
                     </quillEditor>
                     <div v-else class="ljcontent">
-                        {{detailForm.wayAddcontent}}
+                        {{detailForm.content}}
                     </div>
                 </el-form-item>
             </el-form>
@@ -48,7 +46,7 @@
 </template>
 <script>
     import quillEditor from '../ue'
-      import {
+    import {
         getBaseMessage,
         getLocalTime
     } from '../../services/declaresth'
@@ -60,12 +58,20 @@
             return {
                 name: '项目详情',
                 detailForm: {
-                    code: '1-XM01',
-                    name: '原28家互联工厂升级提效并满负荷',
-                    platform: '海尔智家平台(智慧家庭)',
-                    time: '2020年9月',
+                    projectCode: '1-XM01',
+                    projectName: '原28家互联工厂升级提效并满负荷',
+                    departmantName: '海尔智家平台(智慧家庭)',
+                    deadLine: '2020-09',
                     dockingDepartment: 'DDD',
-                    wayAddcontent: 'AAAAAA',
+                    content: 'AAAAAA',
+                },
+                newdetailForm: {
+                    projectCode: '1-XM01',
+                    projectName: '原28家互联工厂升级提效并满负荷',
+                    departmantName: '海尔智家平台(智慧家庭)',
+                    deadLine: '2020-09',
+                    dockingDepartment: 'DDD',
+                    content: 'AAAAAA',
                 },
                 rules: {},
                 str: '',
@@ -75,8 +81,8 @@
             }
         },
         mounted() {
-             if(this.type=="add"){
-                this.detailForm= {
+            if (this.type == "add") {
+                this.detailForm = {
                     code: '',
                     name: '',
                     platform: '',
@@ -91,10 +97,10 @@
             } else {
                 this.state = 0
             }
-           if(this.state==0){
-               this.searchBaseMessage()
-           }
-           
+            if (this.state == 0) {
+                this.searchBaseMessage()
+            }
+
 
         },
         methods: {
@@ -109,7 +115,15 @@
                 console(this.$refs.childMethod);
             },
             //查询基本信息
-            searchBaseMessage(){
+            searchBaseMessage() {
+                let userid = this.$store.state.user.userId;
+                let projectId = this.$route.query.id //项目名称
+                getBaseMessage(userid, projectId).then((res) => {
+                    if (res.data.result) {
+                        this.detailForm = res.data.result;
+                    }
+
+                });
 
             }
         },
@@ -118,6 +132,7 @@
 <style lang="scss">
     .projectDetails {
         width: 100%;
+
         .el-row {
             width: 100%;
             height: 45px;
@@ -157,6 +172,7 @@
                         .department,
                         .ljcontent {
                             height: 150px;
+                            line-height: 20px;
                             overflow: auto;
                             width: 100%;
                             border-radius: 10px;

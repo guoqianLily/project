@@ -70,17 +70,17 @@
     components: {
       quillEditor
     },
-    // props: {
-    //   content: {
-    //     type: String,
-    //     default:{
-    //       return:'',
-    //     }
-    //   }
-    // },
+    props: {
+      content: {
+        type: String,
+        default:{
+          return:'',
+        }
+      }
+    },
     data() {
       return {
-        content:'',
+        // content:'',
         editorOption: {
           placeholder: "请输入",
           theme: "snow", // or 'bubble' 

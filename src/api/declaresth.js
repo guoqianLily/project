@@ -13,7 +13,7 @@ projectId	项目ID
 
 projectCode	项目编码
  */
-const searchBaseMessage= "/chouChing/businessPolicyController/searchAllData";
+const searchBaseMessage= "/chouChing/BusinessProjectController/selectByPrimaryKey";
 
 export default {
     searchAllData,

@@ -51,11 +51,11 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="项目月度目标" prop="configName" label-width="120px">
-                    <quillEditor  ref="childMethod" style="height:150px;">
+                    <quillEditor  ref="childMethod" :content="addForm.configName"  style="height:150px;">
                     </quillEditor>
                 </el-form-item>
                 <el-form-item label="政策月度目标" prop="indicatorTypeName" label-width="120px">
-                    <quillEditor  ref="childMethod1"
+                    <quillEditor  ref="childMethod1" :content="addForm.indicatorTypeName" 
                         style="height:150px;">
                     </quillEditor>
                 </el-form-item>
@@ -223,6 +223,7 @@
             },
             //新增修改提交事件
             submitForm(formName) {
+                console.log(this.$refs.childMethod.content)
                 let _that = this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {

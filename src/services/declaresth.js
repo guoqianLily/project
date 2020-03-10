@@ -28,7 +28,7 @@ export function getBaseMessage(userId,projectId) {
                 method: 'POST',
                 data: { 
                     userId:userId,
-                    projectId:projectId,
+                    id:projectId,
                  }
             })
             .then((data, status) => {
