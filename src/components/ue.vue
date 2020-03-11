@@ -1,7 +1,7 @@
 <template>
   <div class="zdyeditor" style="">
     <!-- <el-card style="height: 100%;width:100%"> -->
-    <quill-editor v-model="newContent" ref="myQuillEditor"  @change="onEditorChange($event)" style="height:100%;width:100%" :options="editorOption">
+    <quill-editor v-model="newContent" ref="myQuillEditor"  @blur="onEditorChange($event)" style="height:100%;width:100%" :options="editorOption">
       <!-- 自定义toolar -->
 
     </quill-editor>
@@ -133,17 +133,17 @@
     watch: {
       content(val, oldVal) {
         this.newContent = val;
-        var newval = val;
-        if (val.split("strong").length > 1) {
-          newval = val.slice(0, val.split("strong")[0].length + 6) + ' style="font-weight: bold !important"' + val
-            .slice(val.split("strong")[0].length + 6)
-          val = newval;
-        }
-        if (val.split("em").length > 1) {
-          newval = val.slice(0, val.split("em")[0].length + 2) + ' style="font-style: italic !important"' + val.slice(
-          val.split("em")[0].length + 2)
-          val = newval;
-        }
+        // var newval = val;
+        // if (val.split("strong").length > 1) {
+        //   newval = val.slice(0, val.split("strong")[0].length + 6) + ' style="font-weight: bold !important"' + val
+        //     .slice(val.split("strong")[0].length + 6)
+        //   val = newval;
+        // }
+        // if (val.split("em").length > 1) {
+        //   newval = val.slice(0, val.split("em")[0].length + 2) + ' style="font-style: italic !important"' + val.slice(
+        //   val.split("em")[0].length + 2)
+        //   val = newval;
+        // }
         // this.content=val;
         // console.log(newval);
         // console.log(val)
