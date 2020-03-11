@@ -53,6 +53,12 @@ const searchOrgId= "/chouChing/sysDepartmantController/searchTreeAllDataByUserId
 //
 const deleteWeekEvolve= "/chouChing/BusinessWeekController/deleteData";
 
+//新增项目信息
+const AddprojectInfo="/chouChing/BusinessProjectController/saveData"
+//修改项目信息
+const updataprojectInfo="/chouChing/BusinessProjectController/updateData"
+
+
 export default {
     searchAllData,
     searchBaseMessage,
@@ -64,7 +70,9 @@ export default {
     upDatamonthlytarget,
     addmonthlytarget,
     searchOrgId,
-    deleteWeekEvolve
+    deleteWeekEvolve,
+    AddprojectInfo,
+    updataprojectInfo
 
 }
 

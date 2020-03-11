@@ -18,7 +18,7 @@
                 <el-tab-pane label="政策进度申报" name="second">
                     <policyProfeedback v-if="activeName=='second'" class="projectDetails"></policyProfeedback>
                 </el-tab-pane>
-                <el-tab-pane label="月度目标" name="third">
+                <el-tab-pane label="当周预算" name="third">
                     <monthlytarget v-if="activeName=='third'"></monthlytarget>
                 </el-tab-pane>
                 <el-tab-pane label="项目回顾" name="four">
@@ -60,8 +60,7 @@
             }
 
         },
-        mounted() {
-        },
+        mounted() {},
         methods: {
             handleClick(tab, event) {
                 //   console.log(tab, event);
@@ -73,8 +72,8 @@
         },
         watch: {
             '$route': function (to, from) {
-                window.scrollTo(0,0);
-                document.getElementById('detail').scrollTop =0
+                window.scrollTo(0, 0);
+                document.getElementById('detail').scrollTop = 0
                 document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
             }
@@ -119,14 +118,15 @@
                 font-size: 14px;
                 float: right;
                 width: 50px;
-
+                cursor: pointer;
             }
         }
 
         .content {
             // position: relative;
             // float: left;
-            min-height: 240px;
+            // min-height: 240px;
+            overflow: hidden;
             width: 84%;
             margin-bottom: 10px;
             padding: 10px 8% 10px 8%;

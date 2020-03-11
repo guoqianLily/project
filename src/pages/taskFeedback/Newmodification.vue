@@ -80,14 +80,14 @@
                 font-size: 14px;
                 float: right;
                 width: 50px;
-
+                cursor: pointer;
             }
         }
 
         .content {
-            position: relative;
-            float: left;
-            min-height: 240px;
+            // position: relative;
+            // float: left;
+            // min-height: 240px;
             width: 84%;
             margin-bottom: 10px;
             padding: 10px 8% 10px 8%;

@@ -195,6 +195,7 @@
          */
         // let muneid= $attrs.data.id;
         this.$store.dispatch('getZmuneID', $attrs.data.id);
+        
         let key = $attrs.data.menuName
         let tabs = this.editableTabs; //标签栏数据
         let activeName = this.editableTabsValue; //默认进来标签

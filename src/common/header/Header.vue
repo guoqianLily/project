@@ -3,12 +3,15 @@
         <template v-for="navMenu in navMenus">
             <!-- 最后一级菜单 -->
             <el-menu-item v-if="!navMenu.childrenList && navMenu" :key="navMenu.id" :data="navMenu"
-                :index="navMenu.route" class="oneMenu">
+                :index="navMenu.route" 
+                 @click="handleSelect"
+                class="oneMenu">
                 <i :class="navMenu.icon"></i>
                 <span slot="title">{{navMenu.menuName}}</span>
             </el-menu-item>
             <!-- 此菜单下还有子菜单 -->
-            <el-submenu v-if="navMenu.childrenList && navMenu" :key="navMenu.id" :data="navMenu" :index="navMenu.route">
+            <el-submenu v-if="navMenu.childrenList && navMenu" :key="navMenu.id" :data="navMenu" 
+            :index="navMenu.route"  @click="handleSelect">
                 <template slot="title">
                     <i :class="navMenu.icon"></i>
                     <span> {{navMenu.menuName}}</span>
@@ -42,7 +45,14 @@
 
             };
         },
-        methods: {},
+        methods: {
+            handleSelect(id, keyPath) {
+                console.log(keyPath)
+                this.$store.dispatch('getZmuneID',id.$attrs.data.id);
+                // this.$router.push({path:id.$attrs.data.route})
+
+            }
+        },
         created() {}
     }
 </script>

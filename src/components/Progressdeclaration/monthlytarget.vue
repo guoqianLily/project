@@ -1,12 +1,12 @@
 <template>
     <div id="monthlytarget" class="listPage">
-        <div class="queryRow">
+        <!-- <div class="queryRow">
             <el-form :model="searchForm">
                 <el-form-item style="margin-bottom:10px;">
                     <el-button v-if="state==1" type="primary" @click="addIndex()" class="addBtn">新增月度目标</el-button>
                 </el-form-item>
             </el-form>
-        </div>
+        </div> -->
         <div class="listBox">
             <div class="tableBox">
                 <el-table v-loading="loading" element-loading-text="数据加载..." element-loading-spinner="el-icon-loading"
@@ -16,39 +16,39 @@
                             <span v-text="getIndex(scope.$index)"> </span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="month" label="月份" width="120">
+                    <el-table-column prop="month" label="周次" width="200">
                     </el-table-column>
-                    <el-table-column prop="" label="项目月度目标">
+                    <el-table-column prop="" label="项目周度目标">
                         <template slot-scope="scope">
                             <div v-html="scope.row.projectContext">
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="" label="政策月度目标">
+                    <el-table-column prop="" label="政策周度目标">
                            <template slot-scope="scope">
                             <div v-html="scope.row.policyContext">
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="" label="操作" v-if="state==1" width="120">
+                    <!-- <el-table-column prop="" label="操作" v-if="state==1" width="120">
                         <template slot-scope="scope">
                             <span @click="handleEdit(scope.$index, scope.row)" class="upBtns">修改</span>
                         </template>
-                    </el-table-column>
+                    </el-table-column> -->
                 </el-table>
             </div>
         </div>
         <el-dialog :title="title" :visible.sync="addIndexVisible" id='addNewdialog'>
             <el-form :model="addForm" ref="addForm" :rules="rules" label-position="right">
-                <el-form-item class="currenttime" label="月份" prop="month" label-width="120px">
+                <el-form-item class="currenttime" label="周次" prop="month" label-width="120px">
                     <el-date-picker v-model="addForm.month" type="month" format="yyyy年MM月" value-format="yyyy-MM">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="项目月度目标" prop="projectContext" label-width="120px">
+                <el-form-item label="项目周度目标" prop="projectContext" label-width="120px">
                     <quillEditor ref="childMethod" :content="addForm.projectContext" style="height:150px;">
                     </quillEditor>
                 </el-form-item>
-                <el-form-item label="政策月度目标" prop="policyContext" label-width="120px">
+                <el-form-item label="政策周度目标" prop="policyContext" label-width="120px">
                     <quillEditor ref="childMethod1" :content="addForm.policyContext" style="height:150px;">
                     </quillEditor>
                 </el-form-item>
@@ -115,23 +115,60 @@
                 },
                 tableData: [],
                 layout: 'menuPage',
-                loading: true
+                loading: true,
+                weekobj:{},
+                nowTimeValue:'',
             }
         },
         mounted() {
-             
             // document.getElementById('detail').scrollTop = 0; // 父级容器
-            this.searchMessage();
+             this.getweek() 
+          
         },
         methods: {
+                  //默认查询周次
+            getweek() {
+                let userid = this.$store.state.user.userId;
+                let currentTime = getLocalTime(new Date(), 'yyyy-MM-dd') //项目名称
+                getWeek(userid, currentTime).then((res) => {
+                    if (res.data.result.length) {
+                        this.weekobj = res.data.result;
+                        let newdata = res.data.result[0];
+                        // let newValDate = this.nowTime.split("-").join("");
+                        this.nowTimeValue =
+                            newdata.year +
+                            "年" +
+                            (newdata.month < 10 ? "0" + newdata.month : newdata.month) +
+                            "月第" +
+                            newdata.week +
+                            "周";
+                        let time = newdata.year +
+                            "-" +
+                            (newdata.month < 10 ? "0" + newdata.month : newdata.month);
+                        this.searchMessage(time,newdata.week);
+                        // this.getMonthData(userid, time,newdata.week);
+                        // this.getWeekData(userid, time, newdata.week);
+                    }
+                });
+            },
             //查询
-            searchMessage() {
+            searchMessage(month,week) {
                 //查询当月目标
                 let userid = this.$store.state.user.userId;
                 let projectId = this.$route.query.id;
-                let month = "";
-                getMonthMessage(userid, projectId, month).then((res) => {
+                getMonthMessage(userid, projectId, month,week).then((res) => {
                     if (res.data.result.length > 0) {
+                        let datalist=res.data.result;
+                        for(var i=0;i<datalist.length;i++){
+                            this.nowTimeValue =
+                            datalist[i].month.split("-")[0] +
+                            "年" +
+                            (datalist[i].month.split("-")[1]) +
+                            "月第" +
+                            datalist[i].week +
+                            "周";
+                            res.data.result[i].month=this.nowTimeValue;
+                        }
                         this.tableData = res.data.result;
                         this.loading = false
                     }else{
