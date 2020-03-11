@@ -18,6 +18,7 @@ export default new Vuex.Store({
         },
         perBtns: [],
         muneId: '',
+        
     },
     getters: {
         get_id: state => state.department.treeid,

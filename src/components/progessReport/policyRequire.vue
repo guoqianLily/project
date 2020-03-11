@@ -4,7 +4,8 @@
       <div class="bigtitleName">
         政策需求
       </div>
-      <el-button type="primary" size="small" class="titleBtn" @click="addIndex" v-if="upDateFlag == '1'">
+      <el-button v-show="qxdata.newpolicydemand" type="primary" size="small" class="titleBtn" @click="addIndex"
+        v-if="upDateFlag == '1'">
         新增政策需求</el-button>
     </div>
     <div class="listBox">
@@ -36,7 +37,7 @@
           </el-table-column>
           <el-table-column prop="" label="操作" width="100px" align='center' v-if="upDateFlag == '1'">
             <template slot-scope="scope">
-              <span class="hanleBtns" @click="handleEdit(scope.$index, scope.row)">优化</span>
+              <span class="hanleBtns" @click="handleEdit(scope.$index, scope.row)" v-show="qxdata.optimize">优化</span>
             </template>
           </el-table-column>
         </el-table>
@@ -100,6 +101,9 @@
     getweekProgressClassData
   } from '../../services/policyPage.js'
   import {
+    getBtnsPermissionsData
+  } from '../../services/Manage/postManage.js'
+  import {
     getUserId
   } from '@/utils/auth'
   import "../../assets/css/public.scss";
@@ -156,6 +160,11 @@
         loading: false,
         upDateFlag: this.$route.query.state,
         FormType: '',
+        qxdata: {
+          newpolicydemand: false,
+          optimize: false,
+          report:false,
+        }
       };
     },
     mounted() {
@@ -170,8 +179,34 @@
       }).then(res => {
         this.searchForm.policyType = res.result;
       })
+      this.getqx();
     },
     methods: {
+      //按钮权限
+      getqx() {
+        let userId = this.$store.state.user.userId;
+        // console.log(this.$store.state)
+         let id = this.$route.query.muneId;
+        getBtnsPermissionsData(id, userId).then((data) => {
+          if (data.result.length > 0) {
+            console.log(data.result);
+            let result = data.result;
+            for (var i = 0; i < result.length; i++) {
+              if (result[i] == "business:report:newpolicydemand") {
+                this.qxdata.newpolicydemand = true;
+              } else if (result[i] == "business:report:optimize") {
+                this.qxdata.optimize = true;
+              }
+               else if (result[i] == "business:report:policyprogressreport:report") {
+                this.qxdata.optimize = true;
+              }
+              
+            }
+          }
+
+          //console.log(this.formData)
+        });
+      },
       //分页查询的事件
       // 分页功能
       // 每页显示的条数

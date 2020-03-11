@@ -18,8 +18,8 @@
                 </el-form-item> -->
                 <el-form-item>
                     <el-button type="primary" @click="search()">查询</el-button>
-                    <el-button type="primary" @click="addnewly()">新建</el-button>
-                    <el-button type="primary" @click="derive()">导出</el-button>
+                    <el-button type="primary" @click="addnewly()" v-show="qxdata.new">新建</el-button>
+                    <el-button type="primary" @click="derive()" v-show="qxdata.exportall">导出</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -29,7 +29,7 @@
                     element-loading-spinner="el-icon-loading" border style="width:100%;" height="98%">
                     <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
                     <el-table-column prop="id" label="id" align="center" v-if='show'></el-table-column>
-                    <el-table-column prop="departmantName" label="平台" align="center"  width="120"></el-table-column>
+                    <el-table-column prop="departmantName" label="平台" align="center" width="120"></el-table-column>
                     <el-table-column prop="projectCode" label="编号" align="center" width="120"></el-table-column>
                     <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
                     <el-table-column prop="deadLine" label="达成时间" align="center">
@@ -40,11 +40,12 @@
                     </el-table-column>
                     <el-table-column label="操作" align="center" width="220">
                         <template slot-scope="scope">
-                            <span class="btn" @click="declareSth(scope.$index, scope.row)">申报</span>
-                            <span class="btn">导出</span>
-                            <span class="btn" @click="datailQuery(scope.$index, scope.row)">详情</span>
-                            <span class="btn" @click="revise(scope.$index, scope.row)">修改</span>
-                            <span class="btn">删除</span>
+                             <!-- v-show="qxdata.report" -->
+                            <span class="btn" @click="declareSth(scope.$index, scope.row)" v-show="qxdata.report"> 申报</span>
+                            <span class="btn" v-show="qxdata.export">导出</span>
+                            <span class="btn" @click="datailQuery(scope.$index, scope.row)" v-show="qxdata.detail">详情</span>
+                            <span class="btn" @click="revise(scope.$index, scope.row)"  v-show="qxdata.update">修改</span>
+                            <span class="btn"   v-show="qxdata.delete">删除</span>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -83,6 +84,9 @@
         getOrgData,
         getLocalTime
     } from '../../services/declaresth'
+    import {
+        getBtnsPermissionsData
+    } from '../../services/Manage/postManage.js'
     export default {
         components: {
             quillEditor
@@ -121,37 +125,85 @@
                 },
                 options: [],
                 terraceValue: '',
-                itemValue: ''
+                itemValue: '',
+                qxdata: {
+                    new: false,
+                    exportall: false,
+                    report: false,
+                    export: false,
+                    detail: false,
+                    update: false,
+                    delete: false,
+                },
+                muneId:'',
+
             }
         },
         mounted() {
             this.options = [];
             let userid = this.$store.state.user.userId;
+            this.getqx()
             getOrgData(userid).then((res) => {
                 if (res.data.result.length > 0) {
                     for (var i = 0; i < res.data.result.length; i++) {
-
                         this.options.push({
                             value: res.data.result[i].id,
                             label: res.data.result[i].departmantName,
                         })
-
                     }
                     this.formInline.terraceValue = res.data.result[0].id;
                     // this.options = res.data.result;
                 }
                 this.search();
+               
             });
+              
 
         },
         methods: {
+            //按钮权限
+            getqx() {
+                let userId = this.$store.state.user.userId;
+                // console.log(this.$store.state)
+                let id = this.$store.state.muneId;
+                this.muneId=id;
+                getBtnsPermissionsData(id, userId).then((data) => {
+                    if (data.result.length > 0) {
+                        console.log(data.result);
+                        let result = data.result;
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i] == "business:progressreport:new") {
+                                this.qxdata.new = true;
+                            } else if (result[i] == "business:progressreport:exportall") {
+                                this.qxdata.exportall = true;
+                            } else if (result[i] == "business:progressreport:report") {
+                                this.qxdata.report = true;
+                            } else if (result[i] == "business:progressreport:export") {
+                                this.qxdata.export = true;
+                            }
+                            else if (result[i] == "business:progressreport:detail") {
+                                this.qxdata.detail = true;
+                            }
+                              else if (result[i] == "business:progressreport:update") {
+                                this.qxdata.update = true;
+                            }
+                              else if (result[i] == "business:progressreport:delete") {
+                                this.qxdata.delete = true;
+                            }
+                        }
+                    }
+
+                    //console.log(this.formData)
+                });
+            },
             //申报页面
             declareSth(index, row) {
                 this.$router.push({
                     name: "detail",
                     query: {
                         state: '1', //1可编辑,
-                        id: row.id
+                        id: row.id,
+                        muneId:this.muneId
                     }
                 })
                 //   this.$router.replace('/detail')
@@ -162,7 +214,8 @@
                     name: "detail",
                     query: {
                         state: '0', //1可编辑,
-                        id: row.id
+                        id: row.id,
+                        muneId:this.muneId
 
                     }
                 })
@@ -176,8 +229,8 @@
                     name: "newModification",
                     query: {
                         state: '1', //1可编辑,
-                        type: 'add' //新增，还是修改up
-
+                        type:'add',//新增，还是修改up
+                        muneId:this.muneId
                     }
                 });
             },
@@ -188,10 +241,10 @@
                     query: {
                         state: '1', //1可编辑,
                         type: 'updata', //新增，还是修改up
-                        id: row.id
+                        id: row.id,
+                        muneId:this.muneId
                     }
                 });
-
             },
             //查询
             search() {
@@ -233,7 +286,7 @@
     .el-button--primary {
         height: 35px;
         line-height: 12px;
-            margin-left: 10px;
+        margin-left: 10px;
     }
 
     .el-input__inner {
@@ -300,7 +353,7 @@
             position: relative;
             float: left;
             width: 100%;
-           margin-top: 19px;
+            margin-top: 19px;
 
             .tableBox {
                 // max-height: calc(100% - 63px);

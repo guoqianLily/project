@@ -95,12 +95,13 @@
             label="操作"
             width="80px"
             align="center"
+            v-show="qxdata.report"
             v-if="updateFlag == '1'"
           >
             <template slot-scope="scope">
               <span
                 class="hanleBtns"
-                @click="handleEdit(scope.$index, scope.row)"
+                @click="handleEdit(scope.$index, scope.row)" 
                 >申报</span
               >
             </template>
@@ -193,6 +194,9 @@ import {
   AddPolicyProfeedbackData,
   getweekProgressClassData
 } from "../../services/policyPage.js";
+  import {
+    getBtnsPermissionsData
+  } from '../../services/Manage/postManage.js'
 import {
         getMonthMessage,
     } from '../../services/declaresth'
@@ -252,9 +256,13 @@ export default {
       weekVal:'',
       weekContent:'',
       weekproProgressType:'',
+      qxdata: {
+          report:false,
+        }
     };
   },
   mounted() {
+    this.getqx();
     this.nowTime = getLocalTime(new Date(), "yyyy-MM-dd");
     let newValDate = this.nowTime.split("-").join("");
     this.nowTimeValue =
@@ -279,6 +287,26 @@ export default {
     })
   },
   methods: {
+      //按钮权限
+      getqx() {
+        let userId = this.$store.state.user.userId;
+        // console.log(this.$store.state)
+         let id = this.$route.query.muneId;
+        getBtnsPermissionsData(id, userId).then((data) => {
+          if (data.result.length > 0) {
+            console.log(data.result);
+            let result = data.result;
+            for (var i = 0; i < result.length; i++) {
+             if (result[i] == "business:report:policyprogressreport:report") {
+                this.qxdata.report = true;
+              }
+              
+            }
+          }
+
+          //console.log(this.formData)
+        });
+      },
     //分页查询的事件
     // 分页功能
     // 每页显示的条数

@@ -10,7 +10,7 @@
                     </el-date-picker> -->
                     <template><span v-html="nowTimeValue"></span></template>
                 </el-form-item>
-                <el-form-item label="当月目标" prop="">
+                <el-form-item label="当周目标" prop="">
                     <!-- <quillEditor v-if="state==1" @on-change-content="getcontent" :content="projectdetailForm.dockingDepartment"
                         style="height:150px;">
                     </quillEditor> -->
@@ -25,8 +25,7 @@
                 <el-form-item label="项目进展分类" prop="">
                     <el-select v-if="state==1" v-model="projectdetailForm.proProgressType" @change="getVal"
                         placeholder="请选择">
-                        <el-option v-for="item in options " :key="item.id" :label="item.value"
-                            :value="item.key">
+                        <el-option v-for="item in options " :key="item.id" :label="item.value" :value="item.key">
                         </el-option>
                         <!-- <el-option key="completionStatus1" label="Ⅰ已达成" value="completionStatus1">
                         </el-option>
@@ -42,8 +41,8 @@
                     </template>
                 </el-form-item>
                 <el-form-item class="btnItem" v-if="state==1">
-                    <el-button type="primary clear" @click="closeForm('ruleForm')">取消</el-button>
-                    <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
+                    <el-button type="primary clear" @click="closeForm('ruleForm')" v-show="qxdata.cancel">取消</el-button>
+                    <el-button type="primary" @click="submitForm('ruleForm')" v-show="qxdata.sure">确定</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -54,6 +53,9 @@
     import {
         GetWeekByDate
     } from "../../utils/validate.js"
+    import {
+        getBtnsPermissionsData
+    } from '../../services/Manage/postManage.js'
     import {
         getWeek,
         getMonthMessage,
@@ -89,7 +91,11 @@
                 state: this.$route.query.state,
                 type: this.$route.query.type,
                 searchData: {},
-                options: []
+                options: [],
+                qxdata: {
+                    sure: false,
+                    cancel: false,
+                }
             }
         },
         mounted() {
@@ -102,9 +108,29 @@
                 // console.log(res)
                 this.options = res.result;
             })
-            this.getweek()
+            this.getqx();
+            this.getweek();
         },
         methods: {
+            //按钮权限
+            getqx() {
+                let userId = this.$store.state.user.userId;
+                  let id = this.$route.query.muneId;
+                getBtnsPermissionsData(id, userId).then((data) => {
+                    if (data.result.length > 0) {
+                        console.log(data.result);
+                        let result = data.result;
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i] == "business:report:projectprogressreport:sure") {
+                                this.qxdata.sure = true;
+                            } else if (result[i] == "business:report:projectprogressreport:cancel ") {
+                                this.qxdata.cancel = true;
+                            }
+                        }
+                    }
+                    //console.log(this.formData)
+                });
+            },
             getVal() {
                 this.projectdetailForm.content = this.$refs.childMethod.newContent
             },
@@ -337,8 +363,9 @@
 
                 .btnItem {
                     padding-left: 40%;
-                    .clear{
-                        background-color:#fff;
+
+                    .clear {
+                        background-color: #fff;
                         color: #409eff;
                     }
                 }
