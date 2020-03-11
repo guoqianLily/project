@@ -110,6 +110,7 @@
             })
             this.getqx();
             this.getweek();
+            this.scrollM()
         },
         methods: {
             //按钮权限
@@ -128,6 +129,7 @@
                             }
                         }
                     }
+                    this.scrollM()
                     //console.log(this.formData)
                 });
             },
@@ -177,11 +179,10 @@
                     if (res.data.result.length > 0) {
                         this.projectdetailForm.projectContext = res.data.result[0].projectContext
                         // console.log(res.data)
-                        window.scrollTo(0, 0);
-                        document.body.scrollTop = 0
-                        document.documentElement.scrollTop = 0
+                       this.scrollM()
                     } else {
                         this.projectdetailForm.projectContext = '';
+                        this.scrollM()
                     }
                 });
             },
@@ -190,20 +191,20 @@
                 let businessId = this.$route.query.id;
                 let businessType = "project";
                 getWeekMessage(userId, businessId, businessType, month, week).then((res) => {
-                    window.scrollTo(0, 0);
-                    document.body.scrollTop = 0
-                    document.documentElement.scrollTop = 0
+               
                     if (res.data.result.length > 0) {
                         this.weekData = res.data.result[0];
                         this.projectdetailForm.content = res.data.result[0].content; //.replace("&nbsp;"," ");
                         this.projectdetailForm.proProgressType = res.data.result[0].proProgressType;
                         this.weekId = res.data.result[0].id
                         // console.log(res.data)
+                        this.scrollM()
                     } else {
                         this.weekData = [];
                         this.projectdetailForm.content = ''; //.replace("&nbsp;"," ");
                         this.projectdetailForm.proProgressType = '';
                         this.weekId = ''
+                        this.scrollM()
                     }
                 });
             },
@@ -317,6 +318,12 @@
                     }
                 });
             },
+            //返回到顶部 this.scrollM()
+            scrollM(){
+                 window.scrollTo(0, 0);
+                    document.body.scrollTop = 0
+                    document.documentElement.scrollTop = 0
+            }
         },
         watch: {
             projectdetailForm(val, oldVal) {

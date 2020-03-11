@@ -172,7 +172,9 @@
                                 query: {
                                     state: '1', //1可编辑,
                                     type: 'updata', //新增，还是修改up
-                                    id: res.data.result
+                                    id: res.data.result,
+                                    muneId:this.muneId
+
                                 }
                             });
                         } else {
