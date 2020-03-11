@@ -281,6 +281,7 @@ export default {
     handleEdit(index, row) {
       this.addIndexVisible = true;
       this.title = "优化政策需求";
+      console.log(row)
       this.$nextTick(() => {
         this.addForm = {
           userId:this.$store.state.user.userId,
@@ -335,9 +336,9 @@ export default {
     //新增修改提交事件
     submitForm(formName) {
       let _that = this;
-      _that.addForm.content = _that.$refs.content.content;
-      _that.addForm.deadLine = _that.$refs.deadLine.content;
-      _that.addForm.dockingDepartment = _that.$refs.dockingDepartment.content;
+      _that.addForm.content = _that.$refs.content.newContent;
+      _that.addForm.deadLine = _that.$refs.deadLine.newContent;
+      _that.addForm.dockingDepartment = _that.$refs.dockingDepartment.newContent;
       this.$refs[formName].validate(valid => {
         if (valid) {
           
@@ -399,9 +400,9 @@ export default {
       this.addForm.dockingDepartment = val;
     },
     getVal(){
-      this.addForm.content = this.$refs.content.content
-      this.addForm.deadLine = this.$refs.deadLine.content;
-      this.addForm.dockingDepartment = this.$refs.dockingDepartment.content; 
+      this.addForm.content = this.$refs.content.newContent
+      this.addForm.deadLine = this.$refs.deadLine.newContent;
+      this.addForm.dockingDepartment = this.$refs.dockingDepartment.newContent; 
     }
   }
 };

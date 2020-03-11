@@ -411,7 +411,7 @@ export default {
     //新增修改提交事件
     submitForm(formName) {
       let _that = this;
-      this.addForm.weekContent = this.$refs.weekContent.content;
+      this.addForm.weekContent = this.$refs.weekContent.newContent;
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (_that.FormType == "updateForm") {
@@ -514,9 +514,7 @@ export default {
 
     },
     getVal() {
-      console.log(111111)
-      console.log(this.$refs.weekContent.content)
-      this.addForm.weekContent = this.$refs.weekContent.content;  
+      this.addForm.weekContent = this.$refs.weekContent.newContent;  
     }
   }
 };
