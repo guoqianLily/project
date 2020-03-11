@@ -21,7 +21,6 @@ body,div,ul,li,ol,h1,h2,h3,h4,h5,h6,input,textarea,select,p,dl,dt,dd,a,img,butto
 aside, details,figcaption,figure,footer,header,hgroup, menu,nav,section{margin:0; padding:0; border:none;}
 body{font: normal 14px/1.5 Tahoma,"Lucida Grande",Verdana,"Microsoft Yahei",STXihei,hei;}
 i{font-style:normal;}
-strong{font-weight: normal;}
 .clearfix:after{content:""; display:block; visibility:hidden; height:0; clear:both;}
 .clearfix{zoom:1;}
 a{text-decoration:none; color:#969696;}
