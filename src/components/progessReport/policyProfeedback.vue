@@ -53,6 +53,13 @@
               </div>
             </template>
           </el-table-column>
+           <el-table-column prop="nextPolicyContext" label="下周预算">
+            <template slot-scope="scope">
+              <div :style="scope.row.nextPolicyContext ? '' : 'text-align:center;'">
+                <span v-html="scope.row.nextPolicyContext ? scope.row.nextPolicyContext : '/'"></span>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column prop="proPolicyTypeName" label="进展分类" width="80px">
             <template slot-scope="scope">
               <div :style="
