@@ -272,7 +272,7 @@
                         width: calc(100% - 120px);
                         display: flex;
                         float: left;
-                        line-height: 20px;
+                        // line-height: 20px;
 
                         .department,
                         .ljcontent {

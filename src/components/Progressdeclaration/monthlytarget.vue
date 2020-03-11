@@ -16,7 +16,7 @@
                             <span v-text="getIndex(scope.$index)"> </span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="month" label="周次" width="120">
+                    <el-table-column prop="month" label="周次" width="200">
                     </el-table-column>
                     <el-table-column prop="" label="项目周度目标">
                         <template slot-scope="scope">
@@ -116,21 +116,59 @@
                 tableData: [],
                 layout: 'menuPage',
                 loading: true,
+                weekobj:{},
+                nowTimeValue:'',
             }
         },
         mounted() {
             // document.getElementById('detail').scrollTop = 0; // 父级容器
-            this.searchMessage();
+             this.getweek() 
+          
         },
         methods: {
+                  //默认查询周次
+            getweek() {
+                let userid = this.$store.state.user.userId;
+                let currentTime = getLocalTime(new Date(), 'yyyy-MM-dd') //项目名称
+                getWeek(userid, currentTime).then((res) => {
+                    if (res.data.result.length) {
+                        this.weekobj = res.data.result;
+                        let newdata = res.data.result[0];
+                        // let newValDate = this.nowTime.split("-").join("");
+                        this.nowTimeValue =
+                            newdata.year +
+                            "年" +
+                            (newdata.month < 10 ? "0" + newdata.month : newdata.month) +
+                            "月第" +
+                            newdata.week +
+                            "周";
+                        let time = newdata.year +
+                            "-" +
+                            (newdata.month < 10 ? "0" + newdata.month : newdata.month);
+                        this.searchMessage(time,newdata.week);
+                        // this.getMonthData(userid, time,newdata.week);
+                        // this.getWeekData(userid, time, newdata.week);
+                    }
+                });
+            },
             //查询
-            searchMessage() {
+            searchMessage(month,week) {
                 //查询当月目标
                 let userid = this.$store.state.user.userId;
                 let projectId = this.$route.query.id;
-                let month = "";
-                getMonthMessage(userid, projectId, month).then((res) => {
+                getMonthMessage(userid, projectId, month,week).then((res) => {
                     if (res.data.result.length > 0) {
+                        let datalist=res.data.result;
+                        for(var i=0;i<datalist.length;i++){
+                            this.nowTimeValue =
+                            datalist[i].month.split("-")[0] +
+                            "年" +
+                            (datalist[i].month.split("-")[1]) +
+                            "月第" +
+                            datalist[i].week +
+                            "周";
+                            res.data.result[i].month=this.nowTimeValue;
+                        }
                         this.tableData = res.data.result;
                         this.loading = false
                     }else{

@@ -58,7 +58,7 @@ export function getWeek(userId, currentTime) {
     })
 }
 
-export function getMonthMessage(userId, projectId,month) {
+export function getMonthMessage(userId, projectId,month,week) {
     return new Promise((resolve, reject) => {
         http({
                 url: API_dec.searchMonthMessage,
@@ -66,7 +66,8 @@ export function getMonthMessage(userId, projectId,month) {
                 data: {
                     userId: userId,
                     projectId: projectId,
-                    month:month
+                    month:month,
+                    week:week
                 }
             })
             .then((data, status) => {
