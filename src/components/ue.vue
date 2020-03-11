@@ -1,7 +1,7 @@
 <template>
   <div class="zdyeditor" style="">
     <!-- <el-card style="height: 100%;width:100%"> -->
-    <quill-editor v-model="content" ref="myQuillEditor"  @change="onEditorChange($event)" style="height:100%;width:100%" :options="editorOption">
+    <quill-editor v-model="newContent" ref="myQuillEditor"  @change="onEditorChange($event)" style="height:100%;width:100%" :options="editorOption">
       <!-- 自定义toolar -->
 
     </quill-editor>
@@ -87,7 +87,8 @@
               container: toolbarOptions
             }
           }
-        }
+        },
+        newContent:this.content,
       }
     },
     methods: {
@@ -108,8 +109,8 @@
           val.split("em")[0].length + 2)
           val = newval;
         }
-         this.content = val;
-         console.log( this.content)
+        this.newContent = val
+        //  this.content = val;
         
       }, // 内容改变事件
       // 转码
@@ -122,15 +123,16 @@
     computed: {
       editor() {
         return this.$refs.myQuillEditor.quill;
-        console.log(this.$refs.myQuillEditor.quill)
       },
     },
     mounted() {
+      
       // this.content = val; // 请求后台返回的内容字符串
       // this.str = this.escapeStringHTML(content);
     },
     watch: {
       content(val, oldVal) {
+        this.newContent = val;
         var newval = val;
         if (val.split("strong").length > 1) {
           newval = val.slice(0, val.split("strong")[0].length + 6) + ' style="font-weight: bold !important"' + val
