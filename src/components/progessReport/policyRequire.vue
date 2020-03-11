@@ -279,11 +279,11 @@ export default {
     },
     //   修改
     handleEdit(index, row) {
-      this.$refs.addForm.resetFields();
       this.addIndexVisible = true;
       this.title = "优化政策需求";
       console.log(row)
       this.$nextTick(() => {
+        this.$refs.addForm.resetFields();
         this.addForm = {
           userId:this.$store.state.user.userId,
           id: row.id,
