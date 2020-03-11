@@ -93,7 +93,7 @@
           <quillEditor
             @on-change-content="getcontent1"
             :content="addForm.content"
-            style="height:120px;"
+            style="height:160px;"
             ref="content"
           >
           </quillEditor>
@@ -413,10 +413,12 @@ export default {
 
 #policyRequire {
   height: calc(100% - 48px);
+  .el-dialog{
+    margin-top: 10vh !important;
+  }
   .el-row {
     height: 0.4rem;
   }
-
   #addNewdialog {
     .el-select {
       width: 100%;

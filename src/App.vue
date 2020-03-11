@@ -25,8 +25,8 @@
                   <div slot="reference"><i class="el-icon-s-custom"></i><span>{{userName}}</span></div>
                 </el-popover>
             </li>
-            <li>
-              <el-popover
+            <li @click="loginOutHandle">
+              <!-- <el-popover
                   style="min-width:100px"
                   placement="bottom"
                   title=""
@@ -38,7 +38,8 @@
                     <p @click="loginOutHandle">退出</p>
                   </div>
                   <div slot="reference"><i class="el-icon-switch-button"></i><span></span></div>
-                </el-popover>
+                </el-popover> -->
+                <div slot="reference"><i class="el-icon-switch-button"></i><span></span></div>
             </li>
         </ul>
         <el-menu

@@ -159,7 +159,7 @@
     
     .ql-toolbar.ql-snow {
       padding: 2px 8px 2px 4px;
-      line-height: 34px;
+      line-height: 18px;
       border-radius: 10px 10px 0px 0px;
          text-align: left;
       .ql-formats {

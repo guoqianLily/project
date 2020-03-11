@@ -35,3 +35,21 @@ img{border: none; display: block;}
 .fr{
     float: right;
 }
+
+
+/* 富文本的样式 */
+.ql-indent-1 {
+    padding-left: 2em !important;
+}
+.ql-indent-2 {
+    padding-left: 4em !important;
+}
+.ql-indent-3 {
+    padding-left: 6em !important;
+}
+.ql-indent-4 {
+    padding-left: 6em !important;
+}
+.ql-indent-5 {
+    padding-left: 8em !important;
+}
