@@ -27,7 +27,6 @@
                     <el-table-column prop="" label="政策月度目标">
                            <template slot-scope="scope">
                             <div v-html="scope.row.policyContext">
-                              
                             </div>
                         </template>
                     </el-table-column>
@@ -197,8 +196,8 @@
                         month: row.month,
                         userId :this.$store.state.user.userId,
                         ableFlag:'1',
-                        projectContext: row.projectContext,
-                        policyContext: row.policyContext,
+                        projectContext: row.projectContext,//.replace("&nbsp;"," ")
+                        policyContext: row.policyContext,//.replace("&nbsp;"," ")
                     }
                 });
             },

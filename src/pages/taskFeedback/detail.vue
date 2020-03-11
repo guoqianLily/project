@@ -80,12 +80,11 @@
         overflow: auto;
 
         .el-row {
-            width: 94%;
+            width: 90%;
             padding: 10px 0% 10px 8%;
             height: 44px;
             line-height: 44px;
             display: flex;
-
             .bigTitle {
                 color: #409eff;
                 font-size: 16px;

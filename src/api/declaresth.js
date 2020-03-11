@@ -50,6 +50,9 @@ const addmonthlytarget= "/chouChing/BusinessTargetController/saveData";
 //根据用户ID查询用户拥有的组织权限
 const searchOrgId= "/chouChing/sysDepartmantController/searchTreeAllDataByUserId";
 
+//
+const deleteWeekEvolve= "/chouChing/BusinessWeekController/deleteData";
+
 export default {
     searchAllData,
     searchBaseMessage,
@@ -60,7 +63,8 @@ export default {
     upDataWeekMessage,
     upDatamonthlytarget,
     addmonthlytarget,
-    searchOrgId
+    searchOrgId,
+    deleteWeekEvolve
 
 }
 

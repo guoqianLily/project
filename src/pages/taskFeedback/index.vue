@@ -8,7 +8,7 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="项目">
+                <el-form-item label="项目名称" label-width="80px">
                     <el-input v-model="formInline.projectName" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="达成时间" label-width="80px">
@@ -32,13 +32,13 @@
                     <el-table-column prop="departmantName" label="平台" align="center"  width="120"></el-table-column>
                     <el-table-column prop="projectCode" label="编号" align="center" width="120"></el-table-column>
                     <el-table-column prop="projectName" label="项目名称" align="center"></el-table-column>
-                    <el-table-column prop="deadLine" label="达成时间" align="center" width="200">
+                    <el-table-column prop="deadLine" label="达成时间" align="center">
                         <!-- <template slot-scope="scope">
                             <span>{{getLocalTime(scope.row.deadLine,"yyyy-MM")}}
                             </span>
                         </template> -->
                     </el-table-column>
-                    <el-table-column label="操作" align="center">
+                    <el-table-column label="操作" align="center" width="220">
                         <template slot-scope="scope">
                             <span class="btn" @click="declareSth(scope.$index, scope.row)">申报</span>
                             <span class="btn">导出</span>
@@ -99,13 +99,7 @@
                 currentPage: 1,
                 tableTotal: 0,
                 pageSize: 8,
-                tableData: [{
-                    id: '',
-                    engineerName: '海尔智家平台(智慧家庭)',
-                    departmantName: '1-XM02',
-                    titleName: '原28家互联工厂升级提效并满负荷',
-                    actualCompletionTime: '2020年9月',
-                }],
+                tableData: [],
                 tableHeight: window.innerHeight - 210,
                 cellStyle: {
                     padding: '7px 0',
@@ -125,22 +119,7 @@
                     terraceValue: '',
                     projectName: ''
                 },
-                options: [{
-                    value: '0',
-                    label: '海尔智家平台(智慧家庭)'
-                }, {
-                    value: '2',
-                    label: 'COSMO平台(工业互联网平台)'
-                }, {
-                    value: '3)',
-                    label: '海纳云平台(智慧社区/园区)'
-                }, {
-                    value: '4',
-                    label: '盈康一生(生命健康/生态健康)'
-                }, {
-                    value: '5',
-                    label: '海创汇平台(创业孵化平台)'
-                }],
+                options: [],
                 terraceValue: '',
                 itemValue: ''
             }
@@ -254,6 +233,7 @@
     .el-button--primary {
         height: 35px;
         line-height: 12px;
+            margin-left: 10px;
     }
 
     .el-input__inner {

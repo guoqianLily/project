@@ -56,20 +56,20 @@
             return {
                 name: '项目详情',
                 detailForm: {
-                    projectCode: '1-XM01',
-                    projectName: '原28家互联工厂升级提效并满负荷',
-                    departmantName: '海尔智家平台(智慧家庭)',
-                    deadLine: '2020-09',
-                    dockingDepartment: 'DDD',
-                    content: 'AAAAAA',
+                    projectCode: '',
+                    projectName: '',
+                    departmantName: '',
+                    deadLine: '',
+                    dockingDepartment: '',
+                    content: '',
                 },
                 newdetailForm: {
-                    projectCode: '1-XM01',
-                    projectName: '原28家互联工厂升级提效并满负荷',
-                    departmantName: '海尔智家平台(智慧家庭)',
-                    deadLine: '2020-09',
-                    dockingDepartment: 'DDD',
-                    content: 'AAAAAA',
+                    projectCode: '',
+                    projectName: '',
+                    departmantName: '',
+                    deadLine: '',
+                    dockingDepartment: '',
+                    content: '',
                 },
                 rules: {},
                 str: '',
@@ -136,7 +136,6 @@
             height: 45px;
             line-height: 45px;
             display: flex;
-
             .query {
                 width: 100%;
                 font-size: 12px;
@@ -159,6 +158,7 @@
 
                     .el-form-item__label {
                         color: #409eff;
+                        line-height: 20px;
                     }
 
                     .el-form-item__content {
@@ -166,7 +166,7 @@
                         width: calc(100% - 120px);
                         display: flex;
                         float: left;
-
+                        line-height: 20px;
                         .department,
                         .ljcontent {
                             height: 150px;

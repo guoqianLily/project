@@ -180,6 +180,25 @@ export function getOrgData(userId) {
             })
     })
 }
+export function deleteWeekEvolveData(userId,id) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.deleteWeekEvolve,
+                method: 'POST',
+                data: {
+                    userId:userId,
+                    id:id,
+                }
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
 
 //时间戳转时间格式
 export function getLocalTime(time, fmt) {
