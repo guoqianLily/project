@@ -16,7 +16,7 @@
           element-loading-spinner="el-icon-loading"
           :data="tableData"
           border
-          style="width: 100%"
+          style="width: 99.8%;"
         >
           <el-table-column prop="policyTypeName" label="政策分类" width="180px" align='center'>
           </el-table-column>
@@ -41,7 +41,7 @@
                     </div>
                 </template>
           </el-table-column>
-          <el-table-column prop="" label="操作" width="80px" align='center' v-if="upDateFlag == '1'">
+          <el-table-column prop="" label="操作" width="100px" align='center' v-if="upDateFlag == '1'">
             <template slot-scope="scope">
               <span
                 class="hanleBtns"
@@ -279,6 +279,7 @@ export default {
     },
     //   修改
     handleEdit(index, row) {
+      this.$refs.addForm.resetFields();
       this.addIndexVisible = true;
       this.title = "优化政策需求";
       console.log(row)
