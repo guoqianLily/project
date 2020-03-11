@@ -11,7 +11,6 @@ export default function http({ url, method, data }) {
         // timeout: 2000,
         withCredentials: false,
     };
-    console.log(getToken())
     if(getToken()){
         options.headers = {Authorization:getToken()}
     }
