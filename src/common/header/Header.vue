@@ -47,9 +47,9 @@
         },
         methods: {
             handleSelect(id, keyPath) {
-                // console.log(id)
+                console.log(keyPath)
                 this.$store.dispatch('getZmuneID',id.$attrs.data.id);
-                this.$router.push({name:id.$attrs.data.route})
+                // this.$router.push({path:id.$attrs.data.route})
 
             }
         },
