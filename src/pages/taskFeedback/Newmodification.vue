@@ -80,7 +80,7 @@
                 font-size: 14px;
                 float: right;
                 width: 50px;
-
+                cursor: pointer;
             }
         }
 

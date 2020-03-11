@@ -198,6 +198,38 @@ export function deleteWeekEvolveData(userId,id) {
             })
     })
 }
+export function AddNewprojectInfo(data) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.AddprojectInfo,
+                method: 'POST',
+                data: data
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
+export function updataNewprojectInfo(data) {
+    return new Promise((resolve, reject) => {
+        http({
+                url: API_dec.updataprojectInfo,
+                method: 'POST',
+                data: data
+            })
+            .then((data, status) => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(data);
+            })
+    })
+}
+
 
 
 //时间戳转时间格式

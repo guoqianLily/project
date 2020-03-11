@@ -60,8 +60,7 @@
             }
 
         },
-        mounted() {
-        },
+        mounted() {},
         methods: {
             handleClick(tab, event) {
                 //   console.log(tab, event);
@@ -73,8 +72,8 @@
         },
         watch: {
             '$route': function (to, from) {
-                window.scrollTo(0,0);
-                document.getElementById('detail').scrollTop =0
+                window.scrollTo(0, 0);
+                document.getElementById('detail').scrollTop = 0
                 document.body.scrollTop = 0
                 document.documentElement.scrollTop = 0
             }
@@ -119,7 +118,7 @@
                 font-size: 14px;
                 float: right;
                 width: 50px;
-
+                cursor: pointer;
             }
         }
 
@@ -127,6 +126,7 @@
             // position: relative;
             // float: left;
             min-height: 240px;
+            overflow: hidden;
             width: 84%;
             margin-bottom: 10px;
             padding: 10px 8% 10px 8%;
