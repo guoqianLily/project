@@ -304,7 +304,7 @@
 
             .tableBox {
                 // max-height: calc(100% - 63px);
-                height: 98%;
+                height: 100%;
                 width: 100%;
 
                 .el-table {

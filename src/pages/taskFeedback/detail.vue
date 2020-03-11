@@ -22,7 +22,7 @@
                     <monthlytarget v-if="activeName=='third'"></monthlytarget>
                 </el-tab-pane>
                 <el-tab-pane label="项目回顾" name="four">
-                <projectReview v-if="activeName=='four'"></projectReview>
+                    <projectReview v-if="activeName=='four'"></projectReview>
                 </el-tab-pane>
                 <el-tab-pane label="附件" name="five">
                     <filesUploadDown v-if="activeName=='five'"></filesUploadDown>
@@ -38,10 +38,11 @@
     import policyRequire from '../../components/progessReport/policyRequire'
     import monthlytarget from '../../components/Progressdeclaration/monthlytarget'
     import filesUploadDown from '../../components/progessReport/filesUploadDown'
-    import projectReview from'../../components/Progressdeclaration/projectReview.vue'
+    import projectReview from '../../components/Progressdeclaration/projectReview.vue'
     import 'quill/dist/quill.core.css'
     import 'quill/dist/quill.snow.css'
     import 'quill/dist/quill.bubble.css'
+
     export default {
         components: {
             projectDetails,
@@ -59,14 +60,24 @@
             }
 
         },
+        mounted() {
+        },
         methods: {
             handleClick(tab, event) {
-                console.log(tab, event);
+                //   console.log(tab, event);
             },
             //返回
             returnMonth() {
                 this.$router.replace('/taskfeedback')
             },
+        },
+        watch: {
+            '$route': function (to, from) {
+                window.scrollTo(0,0);
+                document.getElementById('detail').scrollTop =0
+                document.body.scrollTop = 0
+                document.documentElement.scrollTop = 0
+            }
         }
 
     }
@@ -75,9 +86,9 @@
     #detail {
         width: 100%;
         height: calc(100% - 53px);
-        position: relative;
-        float: left;
-        overflow: auto;
+        // position: relative;
+        // float: left;
+        // overflow: auto;
 
         .el-row {
             width: 90%;
@@ -85,12 +96,14 @@
             height: 44px;
             line-height: 44px;
             display: flex;
+
             .bigTitle {
                 color: #409eff;
                 font-size: 16px;
                 float: left;
                 position: relative;
                 width: 95%;
+
                 // padding-left: 60px;
                 span {
                     width: 2px;
@@ -111,8 +124,8 @@
         }
 
         .content {
-            position: relative;
-            float: left;
+            // position: relative;
+            // float: left;
             min-height: 240px;
             width: 84%;
             margin-bottom: 10px;

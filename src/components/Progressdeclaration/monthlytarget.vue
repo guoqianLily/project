@@ -119,6 +119,8 @@
             }
         },
         mounted() {
+             
+            // document.getElementById('detail').scrollTop = 0; // 父级容器
             this.searchMessage();
         },
         methods: {
@@ -127,7 +129,7 @@
                 //查询当月目标
                 let userid = this.$store.state.user.userId;
                 let projectId = this.$route.query.id;
-                let month = ""
+                let month = "";
                 getMonthMessage(userid, projectId, month).then((res) => {
                     if (res.data.result.length > 0) {
                         this.tableData = res.data.result;
@@ -218,9 +220,9 @@
             },
             //新增修改提交事件
             submitForm(formName) {
-                this.addForm.projectContext=this.$refs.childMethod.content;
-                this.addForm.policyContext=this.$refs.childMethod1.content;  
-                // console.log(this.$refs.childMethod.content)
+                this.addForm.projectContext=this.$refs.childMethod.newContent;
+                this.addForm.policyContext=this.$refs.childMethod1.newContent;  
+                // console.log(this.$refs.childMethod.newContent)
                 let _that = this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {

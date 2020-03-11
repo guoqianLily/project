@@ -8,7 +8,10 @@ import router from './router'
 import store from './store'
 import commonUI from './common'
 
-
+router.afterEach((to,from,next) => {
+    window.scrollTo(0,0);
+  
+  });
 Vue.use(ElementUI);
 Vue.use(commonUI);
 

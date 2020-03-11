@@ -82,7 +82,7 @@
                 rules: {},
                 state: this.$route.query.state,
                 type: this.$route.query.type,
-                searchData:{},
+                searchData: {},
                 options: [{
                     value: '海尔智家平台(智慧家庭)',
                     label: '海尔智家平台(智慧家庭)'
@@ -102,11 +102,12 @@
             }
         },
         mounted() {
+            window.scrollTo(0, 0);
             this.getweek()
         },
         methods: {
             getVal() {
-                this.projectdetailForm.content = this.$refs.childMethod.content
+                this.projectdetailForm.content = this.$refs.childMethod.newContent
             },
             //获取文本编辑器的内容
             getcontent(data) {
@@ -151,8 +152,11 @@
                     if (res.data.result.length > 0) {
                         this.projectdetailForm.projectContext = res.data.result[0].projectContext
                         // console.log(res.data)
-                    }else{
-                         this.projectdetailForm.projectContext = '';
+                        window.scrollTo(0, 0);
+                        document.body.scrollTop = 0
+                        document.documentElement.scrollTop = 0
+                    } else {
+                        this.projectdetailForm.projectContext = '';
                     }
                 });
             },
@@ -161,16 +165,19 @@
                 let businessId = this.$route.query.id;
                 let businessType = "project";
                 getWeekMessage(userId, businessId, businessType, month, week).then((res) => {
+                    window.scrollTo(0, 0);
+                    document.body.scrollTop = 0
+                    document.documentElement.scrollTop = 0
                     if (res.data.result.length > 0) {
                         this.weekData = res.data.result[0];
-                        this.projectdetailForm.content = res.data.result[0].content;//.replace("&nbsp;"," ");
+                        this.projectdetailForm.content = res.data.result[0].content; //.replace("&nbsp;"," ");
                         this.projectdetailForm.proProgressType = res.data.result[0].proProgressType;
                         this.weekId = res.data.result[0].id
                         // console.log(res.data)
-                    }else{
-                      this.weekData = [];
-                        this.projectdetailForm.content = '';//.replace("&nbsp;"," ");
-                        this.projectdetailForm.proProgressType ='';
+                    } else {
+                        this.weekData = [];
+                        this.projectdetailForm.content = ''; //.replace("&nbsp;"," ");
+                        this.projectdetailForm.proProgressType = '';
                         this.weekId = ''
                     }
                 });
@@ -185,7 +192,7 @@
                     month: this.weekobj[0].year + "-" + (this.weekobj[0].month < 10 ? "0" + this.weekobj[0].month :
                         this.weekobj[0].month),
                     week: this.weekobj[0].week,
-                    content: this.$refs.childMethod.content,//.replace(" ","&nbsp;"),
+                    content: this.$refs.childMethod.newContent, //.replace(" ","&nbsp;"),
                     proProgressType: this.projectdetailForm.proProgressType,
                     status: '1',
                     ableFlag: '1',
@@ -202,14 +209,16 @@
                                         type: "success",
                                         message: "操作成功!"
                                     });
-                                    _that.getWeekData(_that.searchData.userId, _that.searchData.month, _that.searchData
+                                    _that.getWeekData(_that.searchData.userId, _that.searchData.month,
+                                        _that.searchData
                                         .week)
                                 } else {
                                     this.$message({
                                         type: "error",
                                         message: res.data.message
                                     });
-                                    _that.getWeekData(_that.searchData.userId, _that.searchData.month, _that.searchData
+                                    _that.getWeekData(_that.searchData.userId, _that.searchData.month,
+                                        _that.searchData
                                         .week)
                                 }
                             });
@@ -222,14 +231,16 @@
                                         type: "success",
                                         message: "操作成功!"
                                     });
-                                    _that.getWeekData(_that.searchData.userId, _that.searchData.month, _that.searchData
+                                    _that.getWeekData(_that.searchData.userId, _that.searchData.month,
+                                        _that.searchData
                                         .week)
                                 } else {
                                     this.$message({
                                         type: "error",
                                         message: res.data.message
                                     });
-                                    _that.getWeekData(_that.searchData.userId,_that.searchData.month, _that.searchData
+                                    _that.getWeekData(_that.searchData.userId, _that.searchData.month,
+                                        _that.searchData
                                         .week)
                                 }
                             });
@@ -243,13 +254,13 @@
             },
             //取消
             closeForm(formName) {
-                var _that=this;
+                var _that = this;
                 // this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                 //     confirmButtonText: '确定',
                 //     cancelButtonText: '取消',
                 //     type: 'warning'
                 // }).then(() => {
-                   
+
                 // }).catch(() => {
                 //     this.$message({
                 //         type: 'info',
@@ -257,29 +268,29 @@
                 //     })
                 // })
                 //  const deleteData = {
-                     const userId=this.$store.state.user.userId;
-                     const id= this.weekId ;
-                     const month= this.weekobj[0].year + "-" + (this.weekobj[0].month < 10 ? "0" + this.weekobj[0].month :
-                        this.weekobj[0].month)
-                    const week= this.weekobj[0].week
-                    // }
-                    deleteWeekEvolveData(userId,id).then((res) => {
-                        if (res.data.success) {
-                            this.$message({
-                                type: 'success',
-                                message: '操作成功!'
-                            });
-                            
-                          _that.getWeekData(userId,month,week);
+                const userId = this.$store.state.user.userId;
+                const id = this.weekId;
+                const month = this.weekobj[0].year + "-" + (this.weekobj[0].month < 10 ? "0" + this.weekobj[0].month :
+                    this.weekobj[0].month)
+                const week = this.weekobj[0].week
+                // }
+                deleteWeekEvolveData(userId, id).then((res) => {
+                    if (res.data.success) {
+                        this.$message({
+                            type: 'success',
+                            message: '操作成功!'
+                        });
 
-                        } else {
-                            this.$message({
-                                type: 'error',
-                                message: '操作失败!'
-                            });
-                             _that.getWeekData(userId,month,week);
-                        }
-                    });
+                        _that.getWeekData(userId, month, week);
+
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: '操作失败!'
+                        });
+                        _that.getWeekData(userId, month, week);
+                    }
+                });
             },
         },
         watch: {
