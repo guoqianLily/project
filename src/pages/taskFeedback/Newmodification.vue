@@ -22,20 +22,20 @@
         },
         data() {
             return {
-                name:this.$route.params.type=="add"?'新增项目详情':'修改项目详情',
+                name: this.$route.params.type == "add" ? '新增项目详情' : '修改项目详情',
                 activeName: 'first',
-                type:this.$route.params.type
+                type: this.$route.params.type
             }
         },
-        methods(){
-            
+        methods() {
+
 
         },
         methods: {
             handleClick(tab, event) {
                 console.log(tab, event);
             },
-             //返回
+            //返回
             returnMonth() {
                 this.$router.replace('/taskfeedback')
             },
@@ -50,8 +50,9 @@
         position: relative;
         float: left;
         overflow: auto;
-       .el-row {
-            width: 100%;
+
+         .el-row {
+            width: 90%;
             padding: 10px 0% 10px 8%;
             height: 44px;
             line-height: 44px;
@@ -63,6 +64,7 @@
                 float: left;
                 position: relative;
                 width: 95%;
+
                 // padding-left: 60px;
                 span {
                     width: 2px;

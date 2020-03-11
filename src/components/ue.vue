@@ -1,7 +1,8 @@
 <template>
   <div class="zdyeditor" style="">
     <!-- <el-card style="height: 100%;width:100%"> -->
-    <quill-editor v-model="newContent" ref="myQuillEditor"   @blur="onEditorBlur($event)" style="height:100%;width:100%" :options="editorOption">
+    <quill-editor v-model="newContent" ref="myQuillEditor" @blur="onEditorBlur($event)" style="height:100%;width:100%"
+      :options="editorOption">
       <!-- 自定义toolar -->
 
     </quill-editor>
@@ -45,7 +46,9 @@
     // [{
     //   size: ['10px', '12px', '14px', '16px', '18px', '20px']
     // }], // 字体大小
-    [{'size': ['small', false, 'large', 'huge']}], // custom dropdown
+    [{
+      'size': ['small', false, 'large', 'huge']
+    }], // custom dropdown
     [{
       header: [1, 2, 3, 4, 5, 6, false]
     }], // 标题
@@ -72,8 +75,8 @@
     props: {
       content: {
         type: String,
-        default:{
-          return:'',
+        default: {
+          return: '',
         }
       }
     },
@@ -88,7 +91,7 @@
             }
           }
         },
-        newContent:this.content,
+        newContent: this.content,
       }
     },
     methods: {
@@ -96,7 +99,11 @@
       },
       // onEditorBlur() {}, // 失去焦点事件
       onEditorFocus() {}, // 获得焦点事件
-      onEditorBlur({editor, html, text}) {
+      onEditorBlur({
+        editor,
+        html,
+        text
+      }) {
         // var val=html
         // var newval = val;
         // console.log(val)
@@ -112,7 +119,7 @@
         // }
         // this.newContent = val
         //  this.content = val;
-        
+
       }, // 内容改变事件
       // 转码
       escapeStringHTML(str) {
@@ -127,7 +134,7 @@
       },
     },
     mounted() {
-      
+
       // this.content = val; // 请求后台返回的内容字符串
       // this.str = this.escapeStringHTML(content);
     },
@@ -159,12 +166,18 @@
     width: 100%;
     position: relative;
     float: left;
-    
+    .ql-snow.ql-toolbar button {
+      height: 20px;
+      padding: 3px 3px;
+      width: 20px;
+    }
+
     .ql-toolbar.ql-snow {
       padding: 2px 8px 2px 4px;
       line-height: 34px;
       border-radius: 10px 10px 0px 0px;
-         text-align: left;
+      text-align: left;
+
       .ql-formats {
         margin-right: -4px;
       }
@@ -263,22 +276,26 @@
   .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before {
     content: '20px';
   }
-.ql-snow .ql-picker.ql-size .ql-picker-label::before,
-.ql-snow .ql-picker.ql-size .ql-picker-item::before {
-  content: '14px';
-}
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
-  content: '12px';
-}
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=large]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before {
-  content: '16px';
-}
-.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=huge]::before,
-.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before {
-  content: '18px';
-}
+
+  .ql-snow .ql-picker.ql-size .ql-picker-label::before,
+  .ql-snow .ql-picker.ql-size .ql-picker-item::before {
+    content: '14px';
+  }
+
+  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
+  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
+    content: '12px';
+  }
+
+  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=large]::before,
+  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before {
+    content: '16px';
+  }
+
+  .ql-snow .ql-picker.ql-size .ql-picker-label[data-value=huge]::before,
+  .ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before {
+    content: '18px';
+  }
 
 
   .ql-snow .ql-picker.ql-header .ql-picker-label::before,

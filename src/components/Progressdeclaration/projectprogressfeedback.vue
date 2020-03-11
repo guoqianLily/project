@@ -25,12 +25,15 @@
                 <el-form-item label="项目进展分类" prop="">
                     <el-select v-if="state==1" v-model="projectdetailForm.proProgressType" @change="getVal"
                         placeholder="请选择">
-                        <el-option key="completionStatus1" label="Ⅰ已达成" value="completionStatus1">
+                        <el-option v-for="item in options " :key="item.id" :label="item.value"
+                            :value="item.key">
+                        </el-option>
+                        <!-- <el-option key="completionStatus1" label="Ⅰ已达成" value="completionStatus1">
                         </el-option>
                         <el-option key="completionStatus2" label="Ⅱ按阶段目标，预实零差" value="completionStatus2">
                         </el-option>
                         <el-option key="completionStatus3" label="Ⅲ按阶段目标，预实有差" value="completionStatus3">
-                        </el-option>
+                        </el-option> -->
                     </el-select>
                     <template v-else>
                         <span v-if="projectdetailForm.proProgressType=='completionStatus1'">Ⅰ已达成</span>
@@ -39,7 +42,7 @@
                     </template>
                 </el-form-item>
                 <el-form-item class="btnItem" v-if="state==1">
-                    <el-button @click="closeForm('ruleForm')">取消</el-button>
+                    <el-button type="primary clear" @click="closeForm('ruleForm')">取消</el-button>
                     <el-button type="primary" @click="submitForm('ruleForm')">确定</el-button>
                 </el-form-item>
             </el-form>
@@ -60,6 +63,9 @@
         deleteWeekEvolveData,
         getLocalTime
     } from '../../services/declaresth'
+    import {
+        getweekProgressClassData
+    } from "../../services/policyPage.js";
     export default {
         components: {
             quillEditor,
@@ -83,26 +89,19 @@
                 state: this.$route.query.state,
                 type: this.$route.query.type,
                 searchData: {},
-                options: [{
-                    value: '海尔智家平台(智慧家庭)',
-                    label: '海尔智家平台(智慧家庭)'
-                }, {
-                    value: 'COSMO平台(工业互联网平台)',
-                    label: 'COSMO平台(工业互联网平台)'
-                }, {
-                    value: '海纳云平台(智慧社区/园区)',
-                    label: '海纳云平台(智慧社区/园区)'
-                }, {
-                    value: '盈康一生(生命健康/生态健康)',
-                    label: '盈康一生(生命健康/生态健康)'
-                }, {
-                    value: '海创汇平台(创业孵化平台)',
-                    label: '海创汇平台(创业孵化平台)'
-                }]
+                options: []
             }
         },
         mounted() {
             window.scrollTo(0, 0);
+            // 获取申报政策进展分类得下拉框值
+            getweekProgressClassData({
+                type: 'taskProgress',
+                userId: this.$store.state.user.user
+            }).then(res => {
+                // console.log(res)
+                this.options = res.result;
+            })
             this.getweek()
         },
         methods: {
@@ -338,6 +337,10 @@
 
                 .btnItem {
                     padding-left: 40%;
+                    .clear{
+                        background-color:#fff;
+                        color: #409eff;
+                    }
                 }
             }
         }
