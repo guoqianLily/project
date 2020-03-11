@@ -129,6 +129,7 @@
         height: 48px;
         line-height: 48px;
         float: left;
+        
     }
 
     .headerNav .h-logoBox .h-logo {
@@ -154,11 +155,11 @@
     }
 
     .is-active {
-        background-color: #0080ff !important;
-        color: #fff !important;
+        /* background-color: #0080ff !important;
+        color: #fff !important; */
     }
     .headerNav .el-menu-item:hover {
-        background-color: #6c6d6e !important;
-        color: #fff !important;
+        background-color: #cbe1ff !important;
+        color: #000 !important;
     }
 </style>

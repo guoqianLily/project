@@ -2,6 +2,7 @@
 // const SAT_HOST = 'http://192.168.11.127:8081';
 // const SAT_HOST = 'http://47.105.97.248:8082';
 const SAT_HOST = 'http://10.138.25.189:8088';
+// const SAT_HOST = 'http://10.153.93.107:8080'
 //测试
 const UAT_HOST = 'http://10.138.25.189:8088';
 //生产

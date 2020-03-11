@@ -34,7 +34,8 @@ const UPdatePolicyProfeedback_API = '/chouChing/BusinessWeekController/updateDat
 // 获取申报政策进展分类得下拉框值
 const GetweekProgressClass_API = '/chouChing/sysDictionariesController/searchAllData'
 
-
+// 单点登录获取用户信息
+const GetSSOuserInfo_API = '/chouChing/loginController/portalLogin';
 
 
 
@@ -53,6 +54,7 @@ export default{
     AddPolicyProfeedback_API,
     UPdatePolicyProfeedback_API,
     GetweekProgressClass_API,
-    DeleteFileListData_API
+    DeleteFileListData_API,
+    GetSSOuserInfo_API
 }
     

@@ -123,13 +123,14 @@ export function getDepartmentDialogData() {
     })
 }
 //查询用户信息-根据部门
-export function getUserManageList(departmantId) {
+export function getUserManageList(departmantId,userId) {
     return new Promise((resolve, reject) => {
         http({
                 url: API.userSearch_API,
                 method: 'POST',
                 data: {
-                    departmantId: departmantId
+                    departmantId: departmantId,
+                    userId:userId
                 }
             })
             .then(({ data, status }) => {

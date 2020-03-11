@@ -176,10 +176,27 @@ export function updateFileListData(data){
 
 // 删除文件列表
 export function deleteFileListData(data){
-    console.log(data)
     return new Promise((resolve,reject)=>{
         http({
             url:API.DeleteFileListData_API,
+            method:'POST',
+            data:data
+        })
+        .then(({data,status})=>{
+            resolve(data);
+        })
+        .catch(error=>{
+            //请求失败
+            console.log(error);
+        })
+    })
+}
+
+// 单点登录获取用户信息
+export function getSSOuserInfo(data){
+    return new Promise((resolve,reject)=>{
+        http({
+            url:API.GetSSOuserInfo_API,
             method:'POST',
             data:data
         })

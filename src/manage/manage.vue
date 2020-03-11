@@ -1,8 +1,8 @@
 <template lang="html">
-  <div class="managePage" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="#000">
+  <div class="managePage" v-loading="loading" element-loading-text="拼命加载中" element-loading-background="rgba(255, 255, 255, 1)">
     <el-container>
-      <el-aside width="200" style="background-color:#000">
-        <div style="text-align:right;background-color:#000;">
+      <el-aside width="200" style="background-color:#3f414c">
+        <div style="text-align:right;">
           <el-checkbox-button style="display:inline-block;width:100%;" v-model="isCollapse" @change="radioChange"
             size="small"><i class="el-icon-s-fold"></i></el-checkbox-button>
         </div>
@@ -402,11 +402,11 @@
 
   .managePage .el-menu {
     border-right: none !important;
-    background-color: #000;
-     color: rgb(210, 209, 209);
+    background-color: #3f414c;
+     color: #fff;
   }
   /* .managePage .navMenu .el-menu-item i{
-        color: rgb(210, 209, 209) !important;
+        color: #000 !important;
   }
 
   .managePage .navMenu .el-menu-item:hover i {
@@ -416,21 +416,28 @@
 
     background-color: #6c6d6e !important;
   } */
+  .managePage .el-menu-item:focus, .managePage .el-menu-item:hover{
+    background-color: #606d86 !important;
+    color: #fff !important;
+  }
   .managePage .navMenu .el-menu-item:active {
-    background-color: #0080ff !important;
+    background-color: #606d86 !important;
     color: #fff !important;
   }
 
   .managePage .el-submenu.is-active .el-submenu__title,
   .managePage .el-submenu__title {
-    color: rgb(210, 209, 209) !important;
-    background-color: #000 !important;
+    color: #fff !important;
+    background-color: #3f414c !important;
   }
 
   .el-checkbox-button__inner {
     display: inline-block;
     width: 100%;
-    color: rgb(210, 209, 209) !important;
-    background-color: #000 !important;
+    color: #fff !important;
+    background-color: #3f414c !important;
+    border:none;
+    border-left: none !important;
+    border-bottom:1px solid #DCDFE6 !important;
   }
 </style>

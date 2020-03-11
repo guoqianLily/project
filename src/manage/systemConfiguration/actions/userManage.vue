@@ -49,12 +49,18 @@
                             <el-form-item label="手机号"  prop="mobile" width="200">
                                 <el-input v-model="form.mobile" auto-complete="off"></el-input>
                             </el-form-item>
+                            <el-form-item label="选择部门"  prop="departmantId">
+                                <el-select v-model="form.departmantId" placeholder="请选择">
+                                    <el-option v-for="item in departmantIdArr" :key="item.id" :label="item.departmantName" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
                             <el-form-item label="是否有效"  prop="enabled">
                                 <el-select v-model="form.enabled" placeholder="请选择">
                                     <el-option label="有效" value="1"></el-option>
                                     <el-option label="无效" value="0"></el-option>
                                 </el-select>
                             </el-form-item>
+                            
                         </el-form>
                     </el-tab-pane>
                     <el-tab-pane style="min-height:200px;" label="角色权限" name="second">
@@ -106,6 +112,9 @@ import {
         resetoneUserPasswordList,
         judgeUserCode
     } from '../../../services/Manage/postManage.js'
+    import {
+        getAlldepartsinfo,
+    } from '../../../services/rwfkPage.js'
 import {mapState} from 'vuex'
 export default {
     data() {
@@ -154,7 +163,15 @@ export default {
             tableData:[],    //表格数据
             heightItem: window.innerHeight - 150, // 计算表格的高度
             handlesActive:true, //是否显示表格的操作,
-            form: {},      // 新增弹出框
+            form: {
+                userCode:'',   //用户编号
+                userName:'',   //用户姓名
+                password:'',   //用户密码
+                mail:'',        // 邮箱号
+                mobile:'',    // 手机号
+                departmantId:'',   // 部门
+                enabled:'1'    //是否有效
+            },      // 新增弹出框
             dialogFormVisible: false,   //是否显示弹出框
             formIndex:-1,
             oldform : {}, // 取消新增后重置
@@ -169,6 +186,7 @@ export default {
             transferDataDep:[],  // 用户岗位新增
             Depvalue:  [],    // 用户所在岗位
             AdduserId:'',   // 用户新增后返回的用户id在进行给该用户新增角色，及岗位
+            departmantIdArr:[], // 部门选择数组
             ruleForm: {
                 pass: '',
                 checkPass: ''
@@ -196,6 +214,9 @@ export default {
                 ],
                 mobile:[
                     { required: true, message: '请输入手机号', trigger: 'blur' },                    
+                ],
+                departmantId:[
+                    { required: true, message: '请选择部门', trigger: 'change' },                    
                 ]
             },
             elTabFour:false,   //是否展示重置密码框
@@ -238,9 +259,10 @@ export default {
         this.$center.$on('user-event',(value)=>{
             if(value != this.departmantId){
                 this.departmantId = value;
-                getUserManageList(this.departmantId).then((result) => {
+                getUserManageList(this.departmantId,this.$store.state.user.userId).then((result) => {
                     if(result.success){
                         this.tableData = result.result;
+                        console.log(this.tableData)
                         this.loading = false
                     }else{
                         this.loading = false
@@ -249,6 +271,14 @@ export default {
                             message: '加载失败!'
                         })
                     }
+                });
+                var xldata = [];
+                getAlldepartsinfo().then((data) => {
+                    for (var i = 0; i < data.data.result.length; i++) {
+                        xldata.push(data.data.result[i])
+                    }
+                    this.departmantIdArr = xldata;
+                    console.log(this.departmantIdArr)
                 });
             }
         })
@@ -283,12 +313,13 @@ export default {
         },
         addTaskHandle() {   //新增功能
             this.form = {
-                    userCode:'',   //用户编号
-                    userName:'',   //用户姓名
-                    password:'',   //用户密码
-                    mail:'',        // 邮箱号
-                    mobile:'',    // 手机号
-                    enabled:'1'    //是否有效
+                userCode:'',   //用户编号
+                userName:'',   //用户姓名
+                password:'',   //用户密码
+                mail:'',        // 邮箱号
+                mobile:'',    // 手机号
+                departmantId:'',   // 部门
+                enabled:'1'    //是否有效
             };
             this.Rloevalue = [];
             this.Depvalue = []
@@ -296,7 +327,11 @@ export default {
             this.passwordFlag = true;
             this.elTabFour = false;
             this.activeName = 'first'  
-            this.updateIndex = '';      
+            this.updateIndex = '';  
+            this.$nextTick(() => {
+                this.$refs.userManageFormLog.resetFields(); 
+            });
+            
         },
         // 取消新增操作
         cancelHandel(){
@@ -345,7 +380,8 @@ export default {
                                 mail:'',        // 邮箱号
                                 mobile:this.form.mobile,    // 手机号
                                 enabled:this.form.enabled,    //是否有效
-                                userId:this.userId   // 登录人（用户ID）
+                                userId:this.userId,   // 登录人（用户ID）
+                                departmantId:this.form.departmantId, // 部门
                         }
                         this.dialogFormVisible = false
                         this.form.departmantId = this.departmantId;
@@ -366,7 +402,7 @@ export default {
                                 let depval = JSON.stringify([...this.Depvalue])
                                 addUser_DepsManList(this.AdduserId,depval).then((result)=>{    // 用户-岗位新增
                                     if(result.success){
-                                        getUserManageList(this.departmantId).then((result) => {
+                                        getUserManageList(this.departmantId,this.$store.state.user.userId).then((result) => {
                                             this.tableData = result.result;
                                         });
                                         if(successFlag){
@@ -453,7 +489,7 @@ export default {
                 // this.tableData.splice(index, 1)
                 deleteUserManList(row.id).then((result)=>{
                         if(result.success){
-                            getUserManageList(this.departmantId).then((result) => {
+                            getUserManageList(this.departmantId,this.$store.state.user.userId).then((result) => {
                                 this.tableData = result.result;
                             });
                             this.$message({
@@ -483,6 +519,7 @@ export default {
                 that.heightItem = window.innerHeight - 185
             })()
         }
+        
   }
 }
 </script>
@@ -513,7 +550,10 @@ export default {
             padding:6px;
         }
     }
-    
+    .el-tabs__item.is-active{
+        color:#409EFF !important;
+        background: none !important;
+    }
     .el-table th.gutter{
         display: table-cell !important;
     }

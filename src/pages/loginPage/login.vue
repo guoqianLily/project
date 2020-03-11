@@ -1,16 +1,17 @@
 <template>
-    <div class="loginPage">
-        <div class="loginBanner">
+    <div class="loginPage" v-loading="Stateloading" 
+    element-loading-background="rgba(255, 255, 255, 1)">
+        <div class="loginBanner" v-if="showFlag">
             <div class="logoTitle">
-                <span class="logo"><img src="../../assets/logo.svg" /></span>
-                <span class="logo2">2020年集团级关键项目平台</span>
+                <span class="logo"><img src="../../assets/logo1.png" /></span>
+                <!-- <span class="logo2">2020年集团级关键项目平台</span> -->
             </div>
             <!-- <div class="loginText">
                 <p class="p1">责任，自律，专注，服务</p>
                 <p class="p2">让建设资金发挥最大投资效益</p>
             </div> -->
             <div class="login-container">
-               <p class="Formtitle">2020年集团级关键项目平台</p>
+               <p class="Formtitle">登录</p>
                 <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
                     <el-form-item prop="username">
                         <span class="icon-container el-icon-user">
@@ -44,6 +45,11 @@
 import { isvalidUsername } from '@/utils/validate'
 import {searchTypeMenuData,searchUserMessageData} from '../../services/Manage/postManage.js'
 import {mapState} from 'vuex'
+import jsonp from 'jsonp';
+import {getSSOuserInfo} from '../../services/policyPage';
+import { setToken, 
+        setUserId,
+       } from '@/utils/auth'
 export default {
   name: 'login',
   data() {
@@ -72,6 +78,8 @@ export default {
       },
       loading: false,
       pwdType: 'password',
+      Stateloading:true,
+      showFlag:false,
     }
   },
   computed: {
@@ -79,6 +87,15 @@ export default {
       userInfo : state => state.user.userInfo,
       userId : state => state.user.userId
     })
+  },
+  created() {
+    if(this.$route.query.state == "1"){
+      this.Stateloading = true;
+      this.getTokenHandle();
+    }else{
+      this.Stateloading = false;
+      this.showFlag = true;
+    }
   },
   methods: {
     showPwd() {
@@ -97,7 +114,8 @@ export default {
               // 获取用户信息
               searchUserMessageData(this.userId).then(result => {
                   if(result.success){
-                      localStorage.setItem('userInfo',JSON.stringify(result.result))
+                      localStorage.setItem('userInfo',JSON.stringify(result.result));
+                      sessionStorage.setItem('loginFlag','1')
                       this.$center.$emit('userInfoCallBack', result.result);
                       // 获取头部菜单的信息
                       searchTypeMenuData(this.userId,'top').then((result)=>{
@@ -130,6 +148,70 @@ export default {
           return false
         }
       })
+    },
+    getTokenHandle(){
+      let _this = this;
+      let opts = {
+        param:'jsonpCallback',
+      }
+      let optsTwo = {
+        param:'jsonpCallback',
+      }
+      jsonp('https://idp.haier.net/idp/restful/getIDPToken?appId=S01779&remoteIp=127.0.0.1',opts,function(err,res){
+        if(res.data && res.data.isValid){
+          let tokenid = res.data.tokenid; // 获取到了tokenid;
+          getSSOuserInfo({tokenId:tokenid}).then((res) => {
+            console.log(res)
+            if(res.success){
+              setToken(res.result.token);
+              setUserId(res.result.userId);
+              _this.$store.commit('SET_TOKEN', res.result.token)  // 将touken保存到全局
+              _this.$store.commit('SET_USERID',res.result.userId)  // 将登录的用户id保存到全局
+              // 获取用户信息
+              searchUserMessageData(res.result.userId).then(result => {
+                  if(result.success){
+                      localStorage.setItem('userInfo',JSON.stringify(result.result))
+                      _this.$center.$emit('userInfoCallBack', result.result);
+                      // 获取头部菜单的信息
+                      searchTypeMenuData(_this.userId,'top').then((result)=>{
+                          if(result.success){
+                              _this.menuData = result.result;
+                              localStorage.setItem('tMenu',JSON.stringify(_this.menuData))
+                              _this.$center.$emit('headCallBack', _this.menuData);
+                              if(_this.menuData[0].childrenList == null){
+                                  _this.$router.push({ path:'/' + _this.menuData[0].route })
+                              }else{
+                                  _this.$router.push({ path:'/' + _this.menuData[0].childrenList[0].route })
+                              }
+                              _this.Stateloading = false;
+                              _this.showFlag = true;
+                          }
+                      })
+                  }
+              }).catch(error => {
+                  console.log(error)
+              })
+            }else{
+              _this.$router.push({ 
+                  path:"/login",
+              })
+              _this.Stateloading = false;
+              _this.showFlag = true;
+            }
+          })
+          // jsonp('https://idp.haier.net/idp/restful/setIDPCookie?appId=COSMOPlat-OA&tokenId='+ tokenid +'&remoteIp=127.0.0.1',optsTwo,function(err,result){
+          //   console.log(err,result)
+            
+          // })
+
+        }else{
+          _this.$router.push({ 
+            path:"/login",
+          })
+          _this.Stateloading = false;
+          _this.showFlag = true;
+        }
+      })  
     }
   }
 }
@@ -143,7 +225,7 @@ export default {
         .loginBanner{
             width:100%;
             height: 100%;
-            background:url(../../assets/bannerLogin.jpg) no-repeat;
+            background:url(../../assets/bannerLogin2.jpg) no-repeat;
             background-size: 100% 100%;
             overflow: hidden;
             .logoTitle{
@@ -186,13 +268,13 @@ export default {
         }
         .logo{
             float: left;
-            width: 60px;
-            height: 50px;
+            width: 414px;
+            height:36px;
             overflow: hidden;
             margin: 0 5px 0 0;
             img{
-                width: 60px;
-                   height: 50px;
+                width: 414px;
+                height: 36px;
             }
         }
         .logo2{
@@ -265,7 +347,7 @@ $dl_gray:#d7d7d7;
   .Formtitle{
     width: 100%;
     text-align: center;
-    font-size: 16px;
+    font-size: 20px;
     color: #fff;
     font-weight: bold;
     margin-bottom: 35px

@@ -231,7 +231,7 @@
     }
 
     .el-button--primary {
-        height: 35px;
+        // height: 35px;
         line-height: 12px;
             margin-left: 10px;
     }
@@ -311,8 +311,8 @@
                     font-size: 12px;
 
                     th {
-                        background-color: #409eff !important;
-                        color: #fff !important;
+                        background-color: #E1EFFA !important;
+                        color: #000 !important;
                     }
 
                     .btn {

@@ -3,10 +3,10 @@
     <div class="app-Header" v-if="headerFalg">
       <div class="app-headerBox">
         <div class="h-logoBox fl clearfix">
-                <div class="h-logo fl">
-                </div>
+                <!-- <div class="h-logo fl">
+                </div> -->
                 <div class="h-logoName fl">
-                    <span>2020年集团级关键项目平台</span>
+                    <!-- <span>2020年集团级关键项目平台</span> -->
                 </div>
             </div>
         <ul class="userInfo-box">
@@ -45,7 +45,7 @@
         <el-menu
           mode="horizontal"
           background-color="#000"
-          text-color="#fff"
+          text-color="#000"
           active-text-color="#ffd04b"
           :default-active="activeIndex"
           router
@@ -88,6 +88,7 @@ import {searchTypeMenuData} from './services/Manage/postManage'
 import {setPasswordResetHandle} from './services/selfPage'
 import {mapState} from 'vuex';
 import {removeToken,removeUserId,getUserInfo} from '@/utils/auth.js'
+import jsonp from 'jsonp'
 export default {
   components: {
     NavMenu: NavMenu,
@@ -178,6 +179,18 @@ export default {
       localStorage.removeItem('userInfo')
       localStorage.removeItem('tMenu')
       this.popoverFlag = false;
+      // 将setToken退出时进行销毁
+      let opts = {
+        param:'jsonpCallback',
+      }
+      jsonp('https://idp.haier.net/idp/profile/SAML2/Redirect/GLO?redirectToLogin=false&entityID=S01779',opts,function(err,res){
+        console.log(res)
+        // if(res && res.data.isValid){
+        //   let tokenid = res.data.tokenid; // 获取到了tokenid;
+        // }else{
+        //   this.$router.push({path:'/login'})
+        // }
+      })
     },
     // headCall(data){
     //   console.log(data)
@@ -332,7 +345,8 @@ display: table-cell!important;
 .app-Header{
   width:100%;
   height: 48px;
-  background: #000;
+  background:url("./assets/headerBg.png") no-repeat;
+  background-size: 100% 100%;
 }
 .app-Header .app-headerBox{
   width:90%;
@@ -349,7 +363,7 @@ display: table-cell!important;
 .h-logoBox{
     /* margin:0 40px; */
     // width:25%;
-    width: 28%;
+    width: 300px;
     height: 48px;
     line-height: 48px;
     white-space: nowrap;
@@ -358,10 +372,16 @@ display: table-cell!important;
 
 .h-logoBox .h-logoName{
     font-size: 16px;
+    width:100%;
+    height: 30px;
     color:#fff;
     font-weight: 600;
-    margin-top: 3px;
-    margin-left: 8px;
+    margin-top: 8px;
+    // margin-left: 8px;
+    background:url(./assets/logo.png) no-repeat;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+    float: left;
 }
 .userInfo-box{
     float:right;
@@ -370,9 +390,8 @@ display: table-cell!important;
     height: 48px;
     line-height: 48px;
     float:left;
-    color: rgb(255, 255, 255);
+    color: #000;
     border-bottom-color: transparent;
-    background-color: #000;
     font-size: 14px;
     cursor: pointer;
     box-sizing: border-box;
@@ -382,8 +401,8 @@ display: table-cell!important;
     padding:0 10px;
 }
 .userInfo-box li:hover{
-    background-color: #6c6d6e !important;
-    color: rgb(255, 255, 255);
+    background-color: #cbe1ff  !important;
+    color: #000;
     border-bottom-color: transparent;
 }
 
@@ -392,7 +411,7 @@ display: table-cell!important;
     text-align: center;
     font-size: 18px;
     vertical-align: middle;
-    color: #909399;
+    color: #000;
 }
 
 .userInfoPoP span{
@@ -437,7 +456,7 @@ display: table-cell!important;
 }
 .el-icon-s-custom:before,
 .el-icon-switch-button:before{
-    color: #fff;
+    color: #000;
 }
 /* .app-headerBox .oneMenu i{
   color:#fff;

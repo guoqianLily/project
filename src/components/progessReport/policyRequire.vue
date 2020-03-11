@@ -74,8 +74,8 @@
         :rules="rules"
         label-position="right"
       >
-        <el-form-item label="政策分类" >
-          <el-select v-model="addForm.policyType" porp="policyType" placeholder="请选择" @change="getVal">
+        <el-form-item label="政策分类" prop="policyType">
+          <el-select v-model="addForm.policyType" placeholder="请选择" @change="getVal">
             <el-option
               v-for="item in searchForm.policyType"
               :key="item.id"
@@ -87,9 +87,6 @@
         </el-form-item>
         
         <el-form-item label="政策内容" prop="content" class="autoElform">
-          <!-- <el-input v-model="addForm.content">
-
-          </el-input> -->
           <quillEditor
             @on-change-content="getcontent1"
             :content="addForm.content"

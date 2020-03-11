@@ -41,18 +41,15 @@ const user = {
       const username = userInfo.username.trim()    //去掉空格
       return new Promise((resolve, reject) => {
         userLoginController(username, userInfo.password).then(response => {     // 登录有获取token
-          console.log(response)
           if(response.success && response.result){
             const data = response.result
             setToken(data.token);
             setUserId(data.userId)
             commit('SET_TOKEN', data.token)  // 将touken保存到全局
             commit('SET_USERID',data.userId)  // 将登录的用户id保存到全局
-            console.log( userInfo.password)
             if( userInfo.password == '123456') commit("SET_PASSWordItem",true)   // 
             resolve()
           }else{
-            console.log(response)
             reject(response);
           }
          

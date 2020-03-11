@@ -43,19 +43,26 @@
         line-height: 40px;
         padding: 0 45px;
         min-width: 200px;
-        color: rgb(210, 209, 209);
+        color: #fff;
+        i{
+          color:#fff !important;
+        }
+        
       }
+      .el-submenu__title i{
+          color:#fff;
+        }
       .el-menu-item:hover {
-        background-color: #6c6d6e !important;
+        background-color: #606d86 !important;
         color: #fff !important;
         i {
           color: #fff !important;
         }
       }
       .is-active {
-        background-color: #0080ff !important;
+        background-color: #606d86 !important;
         color: #fff !important;
-    }
+      }
     }
       
   }
