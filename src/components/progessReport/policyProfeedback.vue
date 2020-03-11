@@ -403,6 +403,7 @@
       submitForm(formName) {
         let _that = this;
         this.addForm.weekContent = this.$refs.weekContent.newContent;
+        this.addForm.nextPolicyContext= this.$refs.nextPolicyContext.newContent;
         this.$refs[formName].validate(valid => {
           if (valid) {
             if (_that.FormType == "updateForm") {

@@ -359,7 +359,9 @@
                 // max-height: calc(100% - 63px);
                 height: 100%;
                 width: 100%;
-
+                .el-table__body-wrapper table{
+                    height: auto;
+                }
                 .el-table {
                     font-size: 12px;
 
