@@ -37,7 +37,7 @@
                     <quillEditor v-if="state==1" ref="childMethod" :content="newdetailForm.dockingDepartment"
                         style="height:150px;">
                     </quillEditor>
-                    <div v-else class="department" style="height:50px;" v-html="detailForm.dockingDepartment">
+                    <div v-else class="department"  v-html="detailForm.dockingDepartment">
                     </div>
                 </el-form-item>
                 <el-form-item label="路径/内容" prop="">
@@ -261,6 +261,7 @@
                     float: left;
                     width: 100%;
                     margin-bottom: 5px;
+                        display: flex;
 
                     .el-form-item__label {
                         color: #409eff;
@@ -276,13 +277,13 @@
 
                         .department,
                         .ljcontent {
-                            height: 150px;
-                            line-height: 20px;
+                            // height: 150px;
+                            line-height: 17px;
                             overflow: auto;
                             width: 100%;
                             border-radius: 10px;
                             border: 1px solid #DCDFE6;
-                            padding: 10px 10px 10px 10px;
+                            padding: 10px;
                         }
                     }
                 }

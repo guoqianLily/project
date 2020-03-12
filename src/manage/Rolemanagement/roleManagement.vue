@@ -5,14 +5,14 @@
             <el-button v-if="qxdata.add" type="primary" size='mini' icon="el-icon-circle-plus" class="elbutton addbtn" @click="addRole">增加
             </el-button>
             <el-dialog :title="title" :visible.sync="dialogFormVisible" :close-on-click-modal="false" id="roledialog">
-                <el-form :model="resultData" ref="resultData" :rules="rules">
+                <el-form :model="resultData" ref="resultData" :rules="rules" label-width="170px">
                     <el-form-item label="角色名称" :label-width="formLabelWidth" class="formitem" prop="roleName">
                         <el-input v-model="resultData.roleName"></el-input>
                     </el-form-item>
-                    <el-form-item label="是否有效" :label-width="formLabelWidth" class="formitem">
+                    <el-form-item label="是否有效" :label-width="formLabelWidth" class="formitem" >
                         <el-select v-model="resultData.enabled" style="width:100%">
                             <el-option value="0" label="无效"></el-option>
-                            <el-option value="1" label="有效" checked="checked"></el-option>
+                            <el-option value="1" label="有效"></el-option>
                         </el-select>
                         <!-- <el-checkbox v-if="resultData.enabled=1" checked="checked">是否有效</el-checkbox> -->
 
@@ -120,7 +120,7 @@
                 tableData: [],
                 resultData: {
                     roleName: '',
-                    enabled: '',
+                    enabled: '1',
                     id: '',
                     userId: '',
                 },
@@ -579,9 +579,15 @@
 
     }
 </style>
-<style lang="scss" scoped>
+<style lang="scss">
     // @import '../../../public/css/manage.scss';
     #rolemanegePage {
+        .el-form-item__content{
+                margin-left: 0px !important;
+            }
+            .el-form-item__label{
+                width: 100px !important;
+            }
         .elrow {
             padding-left: 4px;
             border-bottom: 1px solid #ebe9e9;
@@ -598,8 +604,10 @@
             position: relative;
             float: left;
             z-index: 11;
+            display: flex;
+            
         }
-
+        
         .formitem_btn {
             width: 100%;
             text-align: right;

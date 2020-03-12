@@ -7,7 +7,7 @@
         <div id="projectDetails" class="content">
             <projectDetails></projectDetails>
         </div>
-        <div id="projectrequirement" class="content">
+        <div  id="projectrequirement" class="content" v-if="type=='updata'">
             <policyRequire></policyRequire>
         </div>
     </div>
@@ -22,14 +22,23 @@
         },
         data() {
             return {
-                name: this.$route.params.type == "add" ? '新增项目详情' : '修改项目详情',
+                name: "新增项目详情",
                 activeName: 'first',
-                type: this.$route.params.type
+                type: this.$route.query.type,
+                show:false
             }
         },
-        methods() {
-
-
+         created() {
+           if(this.type=="add"){
+            this.show=false
+            this.name="新增项目详情"
+        }else{
+            this.show=true
+            this.name="修改项目详情"
+        }
+        },
+        mounted() {
+        
         },
         methods: {
             handleClick(tab, event) {

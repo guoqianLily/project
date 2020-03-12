@@ -53,7 +53,9 @@
 
             }
         },
-        created() {}
+        created() {
+            this.$store.dispatch('getZmuneID',this.navMenus[0].id);
+        }
     }
 </script>
 

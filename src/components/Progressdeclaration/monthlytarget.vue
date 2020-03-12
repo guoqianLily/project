@@ -162,9 +162,7 @@
                         for(var i=0;i<datalist.length;i++){
                             this.nowTimeValue =
                             datalist[i].month.split("-")[0] +
-                            "年" +
-                            (datalist[i].month.split("-")[1]) +
-                            "月第" +
+                            "年第" +
                             datalist[i].week +
                             "周";
                             res.data.result[i].month=this.nowTimeValue;
