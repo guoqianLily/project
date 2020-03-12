@@ -261,6 +261,7 @@
                     float: left;
                     width: 100%;
                     margin-bottom: 5px;
+                        display: flex;
 
                     .el-form-item__label {
                         color: #409eff;
@@ -282,9 +283,7 @@
                             width: 100%;
                             border-radius: 10px;
                             border: 1px solid #ccc;
-                            padding: 2px 10px 2px 10px;
-                            // padding: 10px 10px 10px 10px;
-                            
+                            padding: 10px;
                         }
                     }
                 }
