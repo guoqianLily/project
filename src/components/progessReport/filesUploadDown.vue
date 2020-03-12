@@ -8,7 +8,7 @@
     <div class="listBox">
       <div class="tableBox">
         <el-table v-loading="loading" element-loading-text="数据加载..." element-loading-spinner="el-icon-loading"
-          :data="tableData" border style="width: 100%">
+          :data="tableData" :border="tableData.length > 0 ? true : false" style="width: 100%">
           <el-table-column type="index" width="50" label="序号" align="center">
           </el-table-column>
           <el-table-column prop="fieldChinese" label="提交日期" width="180px" align="center">

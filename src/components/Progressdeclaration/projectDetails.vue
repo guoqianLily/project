@@ -269,7 +269,7 @@
 
                     .el-form-item__content {
                         /* margin-left: 0 !important; */
-                        width: calc(100% - 120px);
+                        width: calc(100% - 84px);
                         display: flex;
                         float: left;
                         // line-height: 20px;
@@ -281,7 +281,7 @@
                             overflow: auto;
                             width: 100%;
                             border-radius: 10px;
-                            border: 1px solid #ccc;
+                            border: 1px solid #DCDFE6;
                             padding: 10px 10px 10px 10px;
                         }
                     }

@@ -28,15 +28,17 @@
           >
           </quillEditor> -->
           <div
-            style="width:100%;height:150px;border:1px solid #ccc;border-radius:10px;padding-left:10px;line-height: 24px;"
+            style="width:100%;height:150px;border:1px solid #DCDFE6;border-radius:10px;padding-left:10px;line-height: 24px;"
             v-html="searchForm.monthBud"></div>
+        </el-form-item>
+        <el-form-item label="进度申报" class="autoElform" style="margin-bottom:0;">
         </el-form-item>
       </el-form>
     </div>
-    <div class="listBox" style="height:63%;">
+    <div class="listBox" style="height:63%; width:calc(100% - 52px);padding-left:52px;">
       <div class="tableBox" style="height:100%;">
         <el-table v-loading="loading" element-loading-text="数据加载..." element-loading-spinner="el-icon-loading"
-          :data="tableData" border style="width: 91.5%;margin:0 0 0 52px;">
+          :data="tableData" :border="tableData && tableData.length > 0 ? true : false" style="width: calc(100% - 1px);">
           <el-table-column prop="policyTypeName" label="分类" width="80px" align="center">
           </el-table-column>
           <el-table-column prop="deadLine" label="政策内容">

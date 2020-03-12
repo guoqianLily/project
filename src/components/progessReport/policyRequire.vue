@@ -8,10 +8,10 @@
         v-if="upDateFlag == '1'">
         新增政策需求</el-button>
     </div>
-    <div class="listBox">
+    <div class="listBox" style="width:calc(100% - 8px);padding-left:8px;">
       <div class="tableBox">
         <el-table v-loading="loading" element-loading-text="数据加载..." element-loading-spinner="el-icon-loading"
-          :data="tableData" border style="width: 99.8%;">
+          :data="tableData" :border="tableData && tableData.length > 0 ? true : false" style="width: calc(100% - 1px);">
           <el-table-column prop="policyTypeName" label="政策分类" width="180px" align='center'>
           </el-table-column>
           <el-table-column prop="deadLine" label="政策内容">

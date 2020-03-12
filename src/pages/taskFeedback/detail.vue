@@ -2,7 +2,7 @@
     <div id="detail">
         <el-row>
             <div class="bigTitle"><span></span>{{name}}</div>
-            <div class="returnBtn" @click="returnMonth"><span class="indic-icon el-icon-back"></span>返回</div>
+            <div class="returnBtn" @click="returnMonth"><span class="indic-icon el-icon-back"></span>&nbsp;返回</div>
         </el-row>
         <div id="projectDetails" class="content">
             <projectDetails></projectDetails>
@@ -96,7 +96,7 @@
         // overflow: auto;
 
         .el-row {
-            width: 90%;
+            width: 91.8%;
             padding: 10px 0% 10px 8%;
             height: 44px;
             line-height: 44px;
@@ -142,7 +142,9 @@
                 color: #409EFF !important;
             }
         }
-
+        .el-tabs__header{
+            padding-left: 8px;
+        }
         // .projectDetails {
         //     height: 400px;
         // }

@@ -174,7 +174,7 @@
       }
     }
     .ql-container.ql-snow {
-      border: 1px solid #ccc;
+      border: 1px solid #DCDFE6;
       height: calc(100% - 40px);
       border-radius: 0px 0px 10px 10px;
 

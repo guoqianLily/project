@@ -10,7 +10,7 @@
         <div class="listBox">
             <div class="tableBox">
                 <el-table v-loading="loading" element-loading-text="数据加载..." element-loading-spinner="el-icon-loading"
-                    :data="tableData" border style="width:100%">
+                    :data="tableData" :border="tableData && tableData.length > 0 ? true : false" style="width:100%">
                     <el-table-column label="序号" prop="" width="80">
                         <template slot-scope="scope">
                             <span v-text="getIndex(scope.$index)"> </span>
