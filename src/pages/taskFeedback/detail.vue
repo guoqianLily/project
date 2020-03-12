@@ -60,7 +60,13 @@
             }
 
         },
-        mounted() {},
+        mounted() {
+             setTimeout(function () {
+                document.body.scrollTop =0;
+                 document.getElementById('detail').scrollTop = 0;
+                  window.scrollTo(0, 0);
+            }, 800);
+        },
         methods: {
             handleClick(tab, event) {
                 //   console.log(tab, event);

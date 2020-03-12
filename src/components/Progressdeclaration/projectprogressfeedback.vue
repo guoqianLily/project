@@ -189,6 +189,7 @@
                             _that.scrollM()
                     }
                 });
+                 this.scrollM()
             },
             //查询当前周目标
             getWeekData(userId, month, week) {
@@ -202,15 +203,16 @@
                         _that.projectdetailForm.proProgressType = res.data.result[0].proProgressType;
                         _that.weekId = res.data.result[0].id
                         // console.log(res.data)
-                        _that.scrollM()
+                        // _that.scrollM()
                     } else {
                         _that.weekData = [];
                         _that.projectdetailForm.content = ''; //.replace("&nbsp;"," ");
                         _that.projectdetailForm.proProgressType = '';
                         _that.weekId = ''
-                        _that.scrollM()
+                        // _that.scrollM()
                     }
                 });
+                 this.scrollM()
             },
             //确定
             submitForm(formName) {
