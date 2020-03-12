@@ -36,8 +36,8 @@
                     </el-select>
                     <template v-else>
                         <span v-if="projectdetailForm.proProgressType=='completionStatus1'">Ⅰ已达成</span>
-                        <span v-else-if="projectdetailForm.proProgressType=='completionStatus2'">Ⅱ按阶段目标，预实零差</span>
-                        <span v-else-if="projectdetailForm.proProgressType=='completionStatus3'">Ⅲ按阶段目标，预实有差</span>
+                        <span v-else-if="projectdetailForm.proProgressType=='completionStatus2'">Ⅱ有进展</span>
+                        <span v-else-if="projectdetailForm.proProgressType=='completionStatus3'">Ⅲ无进展</span>
                     </template>
                 </el-form-item>
                 <el-form-item class="btnItem" v-if="state==1">
