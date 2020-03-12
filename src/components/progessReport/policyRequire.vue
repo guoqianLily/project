@@ -210,7 +210,7 @@
                 this.qxdata.optimize = true;
               }
                else if (result[i] == "business:report:policyprogressreport:report") {
-                this.qxdata.optimize = true;
+                this.qxdata.report = true;
               }
               
             }
