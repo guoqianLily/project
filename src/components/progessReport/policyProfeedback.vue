@@ -28,7 +28,7 @@
           >
           </quillEditor> -->
           <div
-            style="width:100%;height:150px;border:1px solid #DCDFE6;border-radius:10px;padding-left:10px;line-height: 24px;"
+            style="width:100%;height:150px;border:1px solid #DCDFE6;border-radius:10px;padding-left:10px;line-height: 24px;overflow-y:auto;"
             v-html="searchForm.monthBud"></div>
         </el-form-item>
         <el-form-item label="进度申报" class="autoElform" style="margin-bottom:0;">
