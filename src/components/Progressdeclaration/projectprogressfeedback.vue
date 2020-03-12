@@ -348,12 +348,13 @@
 
                         .department,
                         .ljcontent {
-                            height: 150px;
+                            line-height: 17px;
                             overflow: auto;
                             width: 100%;
                             border-radius: 10px;
                             border: 1px solid #DCDFE6;
-                            padding: 10px 10px 10px 10px;
+                            padding: 10px;
+                                min-height: 50px;
                         }
                     }
                 }

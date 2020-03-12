@@ -1,6 +1,6 @@
 <template>
     <div class="projectDetails">
-        <el-row v-if="state==1" style="width: 95%; height: 100%;">
+        <el-row v-if="state==1" style="width: 99.5%; height: 100%;">
             <div class="query">
                 <el-button type="primary" size="small" class="titleBtn" @click="addIndex" v-if="state==1">
                     提交</el-button>
@@ -284,6 +284,7 @@
                             border-radius: 10px;
                             border: 1px solid #DCDFE6;
                             padding: 10px;
+                                min-height: 50px;
                         }
                     }
                 }
