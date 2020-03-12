@@ -65,7 +65,7 @@
                 document.body.scrollTop =0;
                  document.getElementById('detail').scrollTop = 0;
                   window.scrollTo(0, 0);
-            }, 800);
+            }, 500);
         },
         methods: {
             handleClick(tab, event) {
@@ -107,7 +107,7 @@
                 font-size: 16px;
                 float: left;
                 position: relative;
-                width: 95%;
+                width: 99%;
 
                 // padding-left: 60px;
                 span {
