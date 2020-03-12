@@ -156,6 +156,9 @@
         :rules="rules"
         label-position="right"
       >
+        <el-form-item label="当周预算" class="autoElform" label-width="120px">
+          <div class="presentYS" v-html="searchForm.monthBud"></div>
+        </el-form-item>
         <el-form-item
           label="本周进展"
           prop="weekContent"
@@ -169,9 +172,7 @@
           >
           </quillEditor>
         </el-form-item>
-        <el-form-item label="当周预算" class="autoElform" label-width="120px">
-          <div class="presentYS" v-html="searchForm.monthBud"></div>
-        </el-form-item>
+        
         <el-form-item
           label="下周预算"
           prop="nextPolicyContext"
