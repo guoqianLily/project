@@ -26,7 +26,7 @@
         <div class="listBox">
             <div class="tableBox table_search">
                 <el-table ref="searchMulTable" v-loading="loading" element-loading-text="数据加载..." :data="tableData"
-                    element-loading-spinner="el-icon-loading" border style="width:100%;" height="98%">
+                    element-loading-spinner="el-icon-loading" border height="98%">
                     <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
                     <el-table-column prop="id" label="id" align="center" v-if='show'></el-table-column>
                     <el-table-column prop="departmantName" label="平台" align="center" width="120"></el-table-column>
@@ -41,7 +41,7 @@
                     <el-table-column label="操作" align="center" width="220">
                         <template slot-scope="scope">
                              <!-- v-show="qxdata.report" -->
-                            <span class="btn" @click="declareSth(scope.$index, scope.row)" v-show="qxdata.report"> 申报</span>
+                            <span class="btn" @click="declareSth(scope.$index, scope.row)" v-show="qxdata.report">协同</span>
                             <span class="btn" v-show="qxdata.export">导出</span>
                             <span class="btn" @click="datailQuery(scope.$index, scope.row)" v-show="qxdata.detail">详情</span>
                             <span class="btn" @click="revise(scope.$index, scope.row)"  v-show="qxdata.update">修改</span>
@@ -359,11 +359,13 @@
                 // max-height: calc(100% - 63px);
                 height: 100%;
                 width: 100%;
-                .el-table__body-wrapper table{
-                    height: auto;
-                }
+                /*.el-table__body-wrapper table{*/
+                /*    height: auto;*/
+                /*}*/
                 .el-table {
                     font-size: 12px;
+                    width: 100%;
+                    height: 98% !important;
 
                     th {
                         background-color: #E1EFFA !important;

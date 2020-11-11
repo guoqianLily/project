@@ -4,7 +4,7 @@ import { getToken } from "@/utils/auth";
 Vue.use(Router);
 
 const router = new Router({
-  // mode:"history",
+  // mode:"",
   routes: [
     {
       name: "home", //首页

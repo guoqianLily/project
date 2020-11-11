@@ -1,12 +1,12 @@
 //开发环境
 // const SAT_HOST = 'http://192.168.11.127:8081';
 // const SAT_HOST = 'http://47.105.97.248:8082';
-const SAT_HOST = 'http://10.138.25.189:8088';
-// const SAT_HOST = 'http://10.189.20.226:8080'
+// const SAT_HOST = 'http://10.138.25.189:8088';
+const SAT_HOST = 'http://124.70.79.167'
 //测试
-const UAT_HOST = 'http://10.138.25.189:8088';
+const UAT_HOST = 'http://124.70.79.167';
 //生产
-const PRO_HOST = 'http://10.138.25.189:8088'
+const PRO_HOST = 'http://124.70.79.167'
 // const PRO_HOST = 'http://47.105.97.248:8082'
 
 
